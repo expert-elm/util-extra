@@ -18,6 +18,13 @@ export const DEFAULT_TEMPLATE: string = '$1 $2 ago'
 export const DEFAULT_JUSTNOW_TEMPLATE: string = 'just now'
 
 /**
+ * apply template function
+ */
+interface TemplateFunction {
+  (number: number, description: string): ReturnType<typeof dateAgo>
+}
+
+/**
  * compute date ago from now
  * 
  * @param date compare date
@@ -27,7 +34,7 @@ export const DEFAULT_JUSTNOW_TEMPLATE: string = 'just now'
  */
 export default function dateAgo(date: Date | number | string, 
                                 from?: Date | number | string | undefined,
-                                template: string = DEFAULT_TEMPLATE,
+                                template: string | TemplateFunction = DEFAULT_TEMPLATE,
                                 justNowTemplate: string = DEFAULT_JUSTNOW_TEMPLATE): string {
   const compute: number = undefined === from ? Date.now() : transform(from)
   const target: number = transform(date)
@@ -43,6 +50,7 @@ export default function dateAgo(date: Date | number | string,
       const num: number = diff / compare | 0
       const str: string = num > 1 ? num.toString() : 'a'
       const fmt: string = desc + (num > 1 ? 's' : '')
+      if('function' === typeof template) return template(num, desc)
       return template.replace('$1', str).replace('$2', fmt)
     }
   }

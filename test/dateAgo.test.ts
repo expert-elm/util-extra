@@ -16,6 +16,10 @@ test('should apply template', () => {
   expect(ago('1990', '2000', '$1 $2 foo')).toBe('10 years foo')
 })
 
+test('should apply template function', () => {
+  expect(ago('1990', '2000', () => 'foo')).toBe('foo')
+})
+
 test('should apply justnow template', () => {
   expect(ago(new Date(), undefined, undefined, 'bar')).toBe('bar')
 })
