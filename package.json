@@ -1,0 +1,25 @@
+{
+  "name": "util-extra",
+  "version": "0.0.0",
+  "description": "utils",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/expert-elm/util-extra.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/expert-elm/util-extra/issues"
+  },
+  "homepage": "https://github.com/expert-elm/util-extra#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.13",
+    "jest": "^24.0.0",
+    "typescript": "^3.3.1"
+  }
+}
