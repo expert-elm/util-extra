@@ -88,3 +88,6 @@ typings/
 typings
 
 # End of https://www.gitignore.io/api/node,typings
+
+# Build directory
+dist
