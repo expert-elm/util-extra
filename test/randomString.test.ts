@@ -14,3 +14,7 @@ test(`should generate 10 string length`, () => {
 test(`should throw when string length greater than 13`, () => {
   expect(() => randomString(24)).toThrow()
 })
+
+test(`should throw when string length less then 1`, () => {
+  expect(() => randomString(0)).toThrow()
+})
