@@ -17,7 +17,6 @@ task('build', ['clean'], async ctx => {
 task('publish', ['build'], async ctx => {
   await ctx.exec('npm version patch')
   await fs.copy('package.json', path.resolve(OUTPUT_DIRECTORY, 'package.json'))
-  // await ctx.exec(`cd ${OUTPUT_DIRECTORY}`)
-  await ctx.exec(`cd ${OUTPUT_DIRECTORY} && npm publish`)
+  await ctx.cd(OUTPUT_DIRECTORY).exec('npm publish')
 })
 
