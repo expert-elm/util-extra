@@ -33,7 +33,7 @@ interface TemplateFunction {
  * @param justNowTemplate output just now template string
  */
 export default function dateAgo(date: Date | number | string, 
-                                from?: Date | number | string | undefined,
+                                from?: typeof date | undefined,
                                 template: string | TemplateFunction = DEFAULT_TEMPLATE,
                                 justNowTemplate: string = DEFAULT_JUSTNOW_TEMPLATE): string {
   const compute: number = undefined === from ? Date.now() : transform(from)
