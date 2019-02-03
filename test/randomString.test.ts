@@ -1,9 +1,9 @@
-import randomString from '../src/randomString'
+import randomString, { DEFAULT_LENGTH } from '../src/randomString'
 
 test(`should generate random string`, () => {
   const result = randomString()
   expect(result).toBeTruthy()
-  expect(result.length).toBe(6)
+  expect(result.length).toBe(DEFAULT_LENGTH)
 })
 
 test(`should generate 10 string length`, () => {
