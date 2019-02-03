@@ -1,3 +1,8 @@
+/**
+ * generate a random string
+ * 
+ * @param length string length
+ */
 export default function randomString(length: number = 6): string {
   if(length > 13 || length < 1) {
     throw new Error(`Argument length should less then 14 and greater then 0`)
