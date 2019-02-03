@@ -1,6 +1,6 @@
 {
   "name": "util-extra",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "utils",
   "main": "index.js",
   "scripts": {
