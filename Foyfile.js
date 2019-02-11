@@ -14,6 +14,10 @@ task('build', ['clean'], async ctx => {
   await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'test'))
 })
 
+task('test', ['clean'], async ctx => {
+  await ctx.exec('jest')
+})
+
 task('publish', ['build'], async ctx => {
   await ctx.exec('npm version patch')
   await fs.copy('package.json', path.resolve(OUTPUT_DIRECTORY, 'package.json'))
