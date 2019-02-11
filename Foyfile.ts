@@ -1,0 +1,26 @@
+import path from 'path'
+import { task, fs } from 'foy'
+
+const OUTPUT_DIRECTORY: string = path.resolve('./dist')
+
+task('clean', async () => {
+  await fs.rmrf(OUTPUT_DIRECTORY)
+})
+
+task('build', ['clean'], async ctx => {
+  await ctx.exec('tsc')
+  await fs.copy(path.resolve(OUTPUT_DIRECTORY, 'src'), OUTPUT_DIRECTORY)
+  await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'src'))
+  await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'test'))
+})
+
+task('test', ['clean'], async ctx => {
+  await ctx.exec('jest')
+})
+
+task('publish', ['build'], async ctx => {
+  await ctx.exec('npm version patch')
+  await fs.copy('package.json', path.resolve(OUTPUT_DIRECTORY, 'package.json'))
+  await ctx.cd(OUTPUT_DIRECTORY).exec('npm publish')
+})
+
