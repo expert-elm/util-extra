@@ -1,9 +1,9 @@
-const path = require('path')
-const { task, desc, option, fs } = require('foy')
+import path from 'path'
+import { task, fs } from 'foy'
 
-const OUTPUT_DIRECTORY = path.resolve('./dist')
+const OUTPUT_DIRECTORY: string = path.resolve('./dist')
 
-task('clean', async ctx => {
+task('clean', async () => {
   await fs.rmrf(OUTPUT_DIRECTORY)
 })
 
