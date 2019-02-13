@@ -9,10 +9,10 @@
     "pb": "npx foy publish"
   },
   "files": [
-    "*.js",
-    "*.js.map",
-    "*.d.ts",
-    "*.d.ts.map"
+    "**/*.js",
+    "**/*.js.map",
+    "**/*.d.ts",
+    "**/*.d.ts.map"
   ],
   "repository": {
     "type": "git",
