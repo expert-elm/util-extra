@@ -11,7 +11,6 @@ task('build', ['clean'], async ctx => {
   await ctx.exec('tsc')
   await fs.copy(path.resolve(OUTPUT_DIRECTORY, 'src'), OUTPUT_DIRECTORY)
   await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'src'))
-  await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'test'))
 })
 
 task('test', ['clean'], async ctx => {

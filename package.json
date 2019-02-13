@@ -1,17 +1,18 @@
 {
   "name": "util-extra",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "utils",
   "main": "index.js",
   "scripts": {
     "build": "npx foy build",
-    "test": "npx foy test"
+    "test": "npx foy test",
+    "pb": "npx foy publish"
   },
   "files": [
-    "*.js",
-    "*.js.map",
-    "*.d.ts",
-    "*.d.ts.map"
+    "**/*.js",
+    "**/*.js.map",
+    "**/*.d.ts",
+    "**/*.d.ts.map"
   ],
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-import randomString, { DEFAULT_LENGTH } from '../src/randomString'
+import randomString, { DEFAULT_LENGTH } from './randomString'
 
 test(`should generate random string`, () => {
   const result = randomString()
