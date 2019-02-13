@@ -1,4 +1,4 @@
-import ago, { DEFAULT_JUSTNOW_TEMPLATE } from '../src/dateAgo'
+import ago, { DEFAULT_JUSTNOW_TEMPLATE } from './ago'
 
 test('should compute date ago', () => {
   expect(ago(new Date())).toBe(DEFAULT_JUSTNOW_TEMPLATE)

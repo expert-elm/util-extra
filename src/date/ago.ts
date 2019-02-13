@@ -1,3 +1,5 @@
+import toTimestamp from './toTimestamp'
+
 /** ago flag */
 type AgoFlag = [number, string]
 
@@ -21,7 +23,7 @@ export const DEFAULT_JUSTNOW_TEMPLATE: string = 'just now'
  * apply template function
  */
 interface TemplateFunction {
-  (number: number, description: string): ReturnType<typeof dateAgo>
+  (number: number, description: string): ReturnType<typeof ago>
 }
 
 /**
@@ -32,12 +34,12 @@ interface TemplateFunction {
  * @param template output template string
  * @param justNowTemplate output just now template string
  */
-export default function dateAgo(date: Date | number | string, 
-                                from?: typeof date | undefined,
-                                template: string | TemplateFunction = DEFAULT_TEMPLATE,
-                                justNowTemplate: string = DEFAULT_JUSTNOW_TEMPLATE): string {
-  const compute: number = undefined === from ? Date.now() : transform(from)
-  const target: number = transform(date)
+export default function ago(date: Date | number | string, 
+                            from?: typeof date | undefined,
+                            template: string | TemplateFunction = DEFAULT_TEMPLATE,
+                            justNowTemplate: string = DEFAULT_JUSTNOW_TEMPLATE): string {
+  const compute: number = undefined === from ? Date.now() : toTimestamp(from)
+  const target: number = toTimestamp(date)
   const diff: number = compute - target
 
   if(diff < 0) {
@@ -56,8 +58,4 @@ export default function dateAgo(date: Date | number | string,
   }
 
   return justNowTemplate
-}
-
-function transform(date: Date | number | string): number {
-  return date instanceof Date ? date.getTime() : +new Date(date)
 }
