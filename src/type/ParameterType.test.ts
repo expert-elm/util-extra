@@ -1,18 +1,27 @@
-import * as ts from 'typescript'
-import { ParameterType } from './ParameterType'
+import { walkTypes } from 'ts-baseline'
+import * as path from 'path'
+import * as fs from 'fs'
 
-type TypeName<T> =
-  T extends string ? "string" :
-  T extends number ? "number" :
-  T extends boolean ? "boolean" :
-  T extends undefined ? "undefined" :
-  T extends Function ? "function" :
-  "object"
+test(`should get function first argument type`, () => {
+  const out: string = walkTypes(`
+    ${fs.readFileSync(path.resolve(__dirname, `./ParameterType.ts`), 'utf8')}
+    import { ParamterType } from './ParamterType
+    type T = (a: string) => void
+    type T1 = ParameterType<T>
+    var foo: T1
+  `)
 
-test(`should assert type`, () => {
-  type T = (a: string) => void
-  type T1 = ParameterType<T, 0>
-  function isT(a: unknown): a is string { return typeof a === 'string' }
-  var foo: TypeName<T1>
-  isT(foo)
+  expect(out).toMatch(/>foo : string/)
+})
+
+test(`should get function the second argument type`, () => {
+  const out: string = walkTypes(`
+    ${fs.readFileSync(path.resolve(__dirname, `./ParameterType.ts`), 'utf8')}
+    import { ParamterType } from './ParamterType
+    type T = (a: string, b: number) => void
+    type T1 = ParameterType<T, 1>
+    var foo: T1
+  `)
+
+  expect(out).toMatch(/>foo : number/)
 })
