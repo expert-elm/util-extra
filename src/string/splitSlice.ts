@@ -1,6 +1,18 @@
 /** string split strategy */
-export enum SplitStrategy { Length, Index }
+export enum SplitStrategy { 
+  /* split by offset length */
+  Length, 
+  /* split by index */
+  Index 
+}
 
+/**
+ * split string to slices array
+ * 
+ * @param string target string
+ * @param numbers split by numbers
+ * @param strategy how to split string
+ */
 export default function splitSlice(string: string, 
                                    numbers: number[], 
                                    strategy: SplitStrategy = SplitStrategy.Length): string[] {
