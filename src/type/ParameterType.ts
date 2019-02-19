@@ -4,7 +4,7 @@ type Parameters<F extends AnyFunction> = F extends (...args: infer P) => void ? 
 /**
  * function paramter type
  * 
- * @param F function
+ * @param F function type
  * @param I argument index
  */
 export type ParameterType<F extends AnyFunction, 

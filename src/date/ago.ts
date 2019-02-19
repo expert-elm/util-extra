@@ -1,4 +1,5 @@
 import toTimestamp from './toTimestamp'
+import { ParameterType } from '../type/ParameterType'
 
 /** ago flag */
 type AgoFlag = [number, string]
@@ -34,8 +35,8 @@ interface TemplateFunction {
  * @param template output template string
  * @param justNowTemplate output just now template string
  */
-export default function ago(date: Date | number | string, 
-                            from?: typeof date | undefined,
+export default function ago(date: ParameterType<typeof toTimestamp, 0>, 
+                            from?: typeof date,
                             template: string | TemplateFunction = DEFAULT_TEMPLATE,
                             justNowTemplate: string = DEFAULT_JUSTNOW_TEMPLATE): string {
   const compute: number = undefined === from ? Date.now() : toTimestamp(from)
