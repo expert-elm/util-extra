@@ -2,8 +2,8 @@
 export enum SplitStrategy { Length, Index }
 
 export default function splitSlice(string: string, 
-                                numbers: number[], 
-                                strategy: SplitStrategy = SplitStrategy.Length): string[] {
+                                   numbers: number[], 
+                                   strategy: SplitStrategy = SplitStrategy.Length): string[] {
   const func = getStringSlice(strategy)
   const [ ret, last ] = numbers.reduce<[string[], number]>(([ ret, prev ], curr) => {
     const [ slice, next ] = func(string, prev, curr)
