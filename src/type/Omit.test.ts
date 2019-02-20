@@ -4,11 +4,10 @@ import * as fs from 'fs'
 
 test(`should omit object keys`, () => {
   const out: string = walkTypes(`
-    ${fs.readFileSync(path.resolve(__dirname, `./ParameterType.ts`), 'utf8')}
+    ${fs.readFileSync(path.resolve(__dirname, `./Omit.ts`), 'utf8')}
     type O = { a: string, b: number }
-    type T = Omit<T, 'a'>
-    var foo: number
+    type T = Omit<O, 'a'>
   `)
 
-  expect(out).toMatch(/>foo : number/)  
+  expect(out).toMatch(/>T : { b: number }/)  
 })
