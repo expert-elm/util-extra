@@ -5,24 +5,24 @@ beforeEach(() => {
 })
 
 test(`should get node`, () => {
-  const node = document.createElement(`div`)
+  const node: Element = document.createElement(`div`)
   node.id = `foo`
   document.body.appendChild(node)
   expect(ensureNode(`foo`)).toEqual(node)
 })
 
 test(`should create node when not found`, () => {  
-  const node = ensureNode(`foo`)
+  const node: Element = ensureNode(`foo`)
   expect(node).toEqual(document.querySelector(`#foo`))
 })
 
 test(`should mount parent node`, () => {
-  const container: HTMLElement = document.createElement(`div`)
+  const container: Element = document.createElement(`div`)
   container.id = `foo`
-  document.body.appendChild(container)  
-  expect(
-    ensureNode(`bar`, container)
-  ).toEqual(document.querySelector(`#foo #bar`))
+  document.body.appendChild(container)
+  const node: Element = ensureNode(`bar`, container)
+  expect(node).toEqual(document.querySelector(`#foo #bar`))
+  expect(node).toEqual(container.querySelector(`#bar`))
 })
 
 test(`should mount node with custom tag`, () => {
