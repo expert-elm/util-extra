@@ -35,7 +35,7 @@ interface TemplateFunction {
  * @param template output template string
  * @param justNowTemplate output just now template string
  */
-export default function ago(date: ParameterType<typeof toTimestamp, 0>, 
+export default function ago(date: ParameterType<typeof toTimestamp>, 
                             from?: typeof date,
                             template: string | TemplateFunction = DEFAULT_TEMPLATE,
                             justNowTemplate: string = DEFAULT_JUSTNOW_TEMPLATE): string {
