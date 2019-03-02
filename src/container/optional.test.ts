@@ -1,6 +1,9 @@
 import { Some, None, isOptional, OPTIONAL_ERROR } from './optional'
+import { Ok, Err } from './result'
 
-describe(`create`, () => {
+const ERR: Error = new Error()
+
+describe(`create and predicate test`, () => {
   test(`should be Optional instance`, () => {
     expect(
       isOptional(Some(42))
@@ -73,7 +76,7 @@ describe(`binary`, () => {
   })
 })
 
-describe(`map`, () => {
+describe(`mapping`, () => {
   test(`should map optional`, () => {
     expect(
       Some(42).map(a => a + 1)
@@ -116,5 +119,53 @@ describe(`unwrap`, () => {
     expect(
       None.unwrapOr(42)
     ).toBe(42)
+  })
+})
+
+
+describe(`result`, () => {
+  test(`should transform to result`, () => {
+    expect(
+      Some(42).okOr(ERR)
+    ).toEqual(
+      Ok(42)
+    )
+    expect(
+      None.okOr(ERR)
+    ).toEqual(
+      Err(ERR)
+    )
+  })
+
+  test(`should transform to result, lazily`, () => {
+    expect(
+      Some(42).okOrElse(() => ERR)
+    ).toEqual(
+      Ok(42)
+    )
+
+    expect(
+      None.okOrElse(() => ERR)
+    ).toEqual(
+      Err(ERR)
+    )
+  })
+
+  test(`should transpose into result`, () => {
+    expect(
+      Some(Ok(42)).transpose()
+    ).toEqual(
+      Ok(Some(42))
+    )
+    expect(
+      Some(Err(ERR)).transpose()
+    ).toEqual(
+      Err(ERR)
+    )
+    expect(
+      None.transpose()
+    ).toEqual(
+      Ok(None)
+    )
   })
 })

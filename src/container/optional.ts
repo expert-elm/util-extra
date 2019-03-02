@@ -1,5 +1,10 @@
-/** Optional.None unwrap panic error */
+import { Result, UnpackResult, Ok, Err, isErr, isOk } from './result'
+
+/** `Optional.None` unwrap panic error */
 export const OPTIONAL_ERROR: Error = new Error(`Unwrapped Optional.None`)
+
+/** `Optional` transpose error */
+export const OPTIONAL_TRANSPOSE: Error = new TypeError(`Only Result<T, E> can be transpose`)
 
 /** `Optional` type */
 export const enum OptionalType { 
@@ -9,14 +14,17 @@ export const enum OptionalType {
   None
 }
 
-/**  A container that have (Some) or not (None) value */
-interface Optional<T> {
+/** unpack a `Optional<T>` transform to `T` */
+export type UnpackOptional<O> = O extends Optional<infer T> ? T : never
+
+/**  a container that have (Some) or not (None) value */
+export interface Optional<T> {
   /** the optional container value, readonly */
   readonly value: T | never
   /** the optional container type, `Some` or `None`, readonly */
   readonly type: OptionalType
 
-  /// predicates ///
+  /// PREDICATES ///
 
   /**
    * predicate function, test instance was or not a Optional.Some
@@ -35,7 +43,7 @@ interface Optional<T> {
    */
   isNone(): boolean
 
-  /// iters ///
+  /// ITERS ///
   /**
    * maps a `Optional<T>` to `Optional<U>`
    * 
@@ -60,7 +68,7 @@ interface Optional<T> {
   filter(fn: (v: T) => boolean): Optional<T>  
   // flatMap()
 
-  /// binary operations
+  /// LOGIC ///
 
   /**
    * `and` operation for Optional
@@ -105,9 +113,9 @@ interface Optional<T> {
    * @param op apply function
    */
   orElse<U>(op: (v: T) => Optional<U>): Optional<T | U>
-  // xor()
+  // xor<U>(opt: Optional<U>): Optional<U>
 
-  /// unwrap ///
+  /// UNWRAP ///
 
   /**
    * unwrap the container, throw when `None`
@@ -126,19 +134,35 @@ interface Optional<T> {
    */
   unwrapOrElse<U>(op: () => U): T | U
 
-  /// with result ///
-  // okOr()
-  // okOrElse()
-  // transpose()
+  /// RESULT ///
+  
+  /**
+   * transform `Optional<T>` to `Result<T, E>`, mapping `Some(v)` to `Ok(v)`, and
+   * `None` to `Err(e)`
+   */
+  okOr<E extends Error>(e: E): Result<T, E>
+  /**
+   * okOr for lazily evaluated
+   * 
+   * @param e err mapper
+   */
+  okOrElse<E extends Error>(e: () => E): Result<T, E>
+  /**
+   * transposes an `Optional` of a `Result` into a `Result` of an `Optional`,
+   * 1. `None` will be mapped to `Ok(None)`
+   * 2. `Some(Ok(v))` will be mapped to `Ok(Some(v))`
+   * 3. `Some(Err(v))` will be mapped to `Err(v)`
+   */
+  transpose<U extends UnpackResult<T, E>, E extends Error>(): Result<Optional<U[0]> | never, U[1]>
 }
 
-class _Some<T> implements Optional<T> {
+class OptionalSome<T> implements Optional<T> {
   public readonly type = OptionalType.Some
   constructor(public readonly value: T) {}
   
   map<U>(fn: (v: T) => U): Optional<U> {
     // use momo's solution
-    return new _Some(fn(this.value))
+    return new OptionalSome(fn(this.value))
     /* try {
       return new _Some(fn(this.value))
     } catch(_) { 
@@ -147,7 +171,7 @@ class _Some<T> implements Optional<T> {
   }
 
   filter(fn: (v: T) => boolean): Optional<T> {
-    return fn(this.value) ? new _Some(this.value) : None
+    return fn(this.value) ? new OptionalSome(this.value) : None
   }
 
   isSome(): boolean {
@@ -167,11 +191,11 @@ class _Some<T> implements Optional<T> {
   }
 
   or<U>(_opt: Optional<U>): Optional<T> {
-    return new _Some(this.value)
+    return new OptionalSome(this.value)
   }
 
   orElse<U>(_op: (v: T) => Optional<U>): Optional<T> {
-    return new _Some(this.value)
+    return new OptionalSome(this.value)
   }
 
   unwrap(): T {
@@ -185,9 +209,27 @@ class _Some<T> implements Optional<T> {
   unwrapOrElse<U>(_op: () => U): T {
     return this.value
   }
+
+  okOr(_e: never): Result<T, never> {
+    return Ok(this.value)
+  }
+
+  okOrElse(_e: () => never): Result<T, never>{
+    return Ok(this.value)
+  }
+
+  transpose<U extends UnpackResult<T, E>, E extends Error>(): Result<Optional<U[0]> | never, U[1]> {
+    if(isErr<U[1]>(this.value)) {
+      return Err(this.value.unwrapErr())
+    } else if(isOk<U[0]>(this.value)) {
+      return Ok(Some(this.value.unwrap()))
+    } else {
+      throw OPTIONAL_TRANSPOSE
+    }
+  }
 }
 
-class _None implements Optional<never> {
+class OptionalNone implements Optional<never> {
   public readonly value!: never
   public readonly type = OptionalType.None
 
@@ -234,6 +276,18 @@ class _None implements Optional<never> {
   unwrapOrElse<U>(op: (e: never) => U): U {
     return op(this.value)
   }
+
+  okOr<E extends Error>(e: E): Result<never, E> {
+    return Err(e)
+  }
+
+  okOrElse<E extends Error>(e: () => E): Result<never, E> {
+    return Err(e())
+  }
+
+  transpose(): Result<Optional<never>, never> {
+    return Ok(None)
+  }
 }
 
 /**
@@ -242,25 +296,35 @@ class _None implements Optional<never> {
  * @param v value
  */
 export function Some<T>(v: T): Optional<T> {
-  return new _Some(v)
+  return new OptionalSome(v)
 }
 
 /** Optional.None */
-export const None: Optional<never> = new _None()
-
-/**
- * create a Optional by value
- * @param v value
- */
-export function Optional<T>(v: T): Optional<T> {
-  return v === null || v === void 0 ? None : Some(v)
-}
+export const None: Optional<never> = new OptionalNone()
 
 /**
  * test given is or not a Optional
  * 
  * @param result target result
  */
-export function isOptional<T>(opt: unknown): opt is Optional<T> {
-  return opt instanceof _Some || opt === None
+export function isOptional<T>(value: unknown): value is Optional<T> {
+  return isSome(value) || isNone(value)
+}
+
+/**
+ * test value is or not Optional.Some
+ * 
+ * @param value value
+ */
+export function isSome<T>(value: unknown): value is Optional<T> {
+  return value instanceof OptionalSome
+}
+
+/**
+ * test value is or not Optional.Some
+ * 
+ * @param value value
+ */
+export function isNone(value: unknown): value is Optional<never> {
+  return value === None
 }

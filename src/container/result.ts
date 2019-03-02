@@ -1,6 +1,9 @@
-/** 
- * `Result` type, `Ok` or `Err` 
- */
+import { Optional, UnpackOptional, isSome, isNone, Some, None } from './optional'
+
+/** `Result` transpose error */
+export const RESULT_TRANSPOSE: Error = new TypeError(`Only Optional<T> can be transpose`)
+
+/** `Result` type, `Ok` or `Err` */
 export const enum ResultType { 
   /** Ok, the result success type  */
   Ok, 
@@ -9,9 +12,19 @@ export const enum ResultType {
 }
 
 /** 
+ * unpack a `Result<T, E>` transform to `[T, E]` tuple
+ * 
+ * @typeparam R result
+ */
+export type UnpackResult<R, E extends Error> = R extends Result<
+  infer T, 
+  E extends infer E ? E : never
+> ? [T, E] : never
+
+/** 
  * A container that value either success (Ok) or failure (Err) 
  */
-interface Result<T, E> {
+export interface Result<T, E> {
   /**
    * the container value, readonly
    */
@@ -20,6 +33,9 @@ interface Result<T, E> {
    * the container type, `Ok` or `Err` readonly
    */
   readonly type: ResultType
+
+  /// PREDICATES ///
+
   /**
    * return `true` if the result is `Ok`
    */
@@ -28,18 +44,10 @@ interface Result<T, E> {
    * return `false` if the result is `Err`
    */
   isErr(): boolean
-  /** 
-   * converts from `Result<T, E>` to `Maybe<T>`
-   * 
-   * @todo
-   */
-  // ok()
-  /** 
-   * converts from `Result<T, E>` to `Maybe<E>`
-   * 
-   * @todo
-   */
-  // err()
+  
+
+  /// MAPPING ///
+
   /**
    * map `Result<T, E>` to `Result<U, E>` when the result is `Ok`, keep value at `Err`
    * 
@@ -96,21 +104,37 @@ interface Result<T, E> {
    * @param op caller function
    */
   unwrapOrElse<U>(op: (e: E) => U): T | U
-  /** @todo unwrapErr */ 
-  /** @todo unwrapOrDefault */ 
-  /** @todo transpose */  
+  /** 
+   * unwrap and get error, throw when the result is `Ok`
+   */ 
+  unwrapErr(): E
+  /** 
+   * converts from `Result<T, E>` to `Optional<T>`
+   */
+  ok(): Optional<T>
+  /** 
+   * converts from `Result<T, E>` to `Optional<E>`
+   */
+  err(): Optional<E>
+  /**
+   * transposes a `Result` of an `Optional` into `Optional` of a `Result`
+   * 1. `Ok(Some(v))` will be mapped to `Some(Ok(v))`
+   * 2. `Err(v)` will be mapped to `Some(Err(v))`
+   * 3. `Ok(None)` will be mapped to `None`
+   */
+  transpose<U extends UnpackOptional<T>>(): Optional<Result<U, E>>
 }
 
-class _Ok<T> implements Result<T, never> {
+class ResultOk<T> implements Result<T, never> {
   public readonly type = ResultType.Ok
   constructor(public readonly value: T) {}
   
   map<U>(fn: (v: T) => U): Result<U, never> {
-    return new _Ok(fn(this.value))
+    return new ResultOk(fn(this.value))
   }
   
   mapErr<U extends Error>(_fn: (e: never) => U): Result<T, never> {
-    return new _Ok(this.value)
+    return new ResultOk(this.value)
   }
 
   isOk(): boolean {
@@ -130,11 +154,11 @@ class _Ok<T> implements Result<T, never> {
   }
 
   or(_res: Result<T, never>): Result<T, never> {
-    return new _Ok(this.value)
+    return new ResultOk(this.value)
   }
 
   orElse(_op: (e: never) => Result<T, never>): Result<T, never> {
-    return new _Ok(this.value)
+    return new ResultOk(this.value)
   }
 
   unwrap(): T {
@@ -148,18 +172,40 @@ class _Ok<T> implements Result<T, never> {
   unwrapOrElse<U>(_op: (e: never) => U): T {
     return this.value
   }
+
+  unwrapErr(): never {
+    throw this.value
+  }
+
+  ok(): Optional<T> {
+    return Some(this.value)
+  }
+
+  err(): Optional<never> {
+    return None
+  }
+
+  transpose<U extends UnpackOptional<T>>(): Optional<Result<U, never> | never> {
+    if(isSome<U>(this.value)) {
+      return Some(Ok(this.value.unwrap()) )
+    } else if(isNone(this.value)) {
+      return None
+    } else {
+      throw RESULT_TRANSPOSE
+    }
+  }
 }
 
-class _Err<E extends Error> implements Result<never, E> {
+class ResultErr<E extends Error> implements Result<never, E> {
   public readonly type = ResultType.Err
   constructor(public readonly value: E) {}
   
   map<U>(_fn: (v: never) => U): Result<never, E> {
-    return new _Err(this.value)
+    return new ResultErr(this.value)
   }
   
   mapErr<U extends Error>(fn: (e: E) => U): Result<never, U> {
-    return new _Err(fn(this.value))
+    return new ResultErr(fn(this.value))
   }
 
   isOk(): boolean {
@@ -171,11 +217,11 @@ class _Err<E extends Error> implements Result<never, E> {
   }
   
   and(_res: Result<never, E>): Result<never, E> {
-    return new _Err(this.value)
+    return new ResultErr(this.value)
   }
 
   andThen(_op: (v: never) => Result<never, E>): Result<never, E> {
-    return new _Err(this.value)
+    return new ResultErr(this.value)
   }
 
   or<U extends Error>(res: Result<never, U>): Result<never, U> {
@@ -197,6 +243,22 @@ class _Err<E extends Error> implements Result<never, E> {
   unwrapOrElse<U>(op: (e: E) => U): U {
     return op(this.value)
   }
+
+  unwrapErr(): E {
+    return this.value
+  }
+
+  ok(): Optional<never> {
+    return None
+  }
+
+  err(): Optional<E> {
+    return Some(this.value)
+  }
+
+  transpose(): Optional<Result<never, E>> {
+    return Some(Err(this.value))
+  }
 }
 
 /**
@@ -205,7 +267,7 @@ class _Err<E extends Error> implements Result<never, E> {
  * @param v input value
  */
 export function Ok<T>(v: T): Result<T, never> {
-  return new _Ok(v)
+  return new ResultOk(v)
 }
 
 /**
@@ -214,14 +276,32 @@ export function Ok<T>(v: T): Result<T, never> {
  * @param v input value
  */
 export function Err<E extends Error>(e: E): Result<never, E> {
-  return new _Err(e)
+  return new ResultErr(e)
 }
 
 /**
- * test given input is or not a result container
+ * test value is or not a `Result<T, E>`
  * 
- * @param result target result
+ * @param value value
  */
-export function isResult<T, E>(result: unknown): result is Result<T, E> {
-  return result instanceof _Ok || result instanceof _Err
+export function isResult<T, E>(value: unknown): value is Result<T, E> {
+  return isOk(value) || isErr(value)
+}
+
+/**
+ * test value is or not a `Ok<T>`
+ * 
+ * @param value value
+ */
+export function isOk<T>(value: unknown): value is Result<T, never> {
+  return value instanceof ResultOk
+}
+
+/**
+ * test value is or not a `Err<E>`
+ * 
+ * @param value value
+ */
+export function isErr<E extends Error>(value: unknown): value is Result<never, E> {
+  return value instanceof ResultErr
 }
