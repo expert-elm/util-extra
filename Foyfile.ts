@@ -2,7 +2,6 @@ import path from 'path'
 import { sync as glob } from 'glob'
 import { task, fs } from 'foy'
 import * as ts from 'typescript'
-// import transform from 'ts-creator'
 
 const OUTPUT_DIRECTORY: string = path.resolve('./dist')
 
@@ -11,7 +10,7 @@ task('clean', async () => {
 })
 
 task('build', ['clean'], async ctx => {
-  await ctx.exec('tsc')
+  await ctx.exec('tsc -p ./tsconfig.build.json')
   const DENO_DIRECTORY = path.resolve(OUTPUT_DIRECTORY, 'deno')
   await fs.mkdir(DENO_DIRECTORY)
   await fs.copy(path.resolve('./src'), DENO_DIRECTORY)
@@ -42,11 +41,6 @@ task('build', ['clean'], async ctx => {
       fs.writeFileSync(p, result, 'utf-8')
     }
   })
-  // glob(path.resolve(DENO_DIRECTORY, '**', '*.ts')).forEach(async p => {
-    // const content = fs.readFileSync(p, 'utf-8')
-    
-    
-  // })
   await fs.copy(path.resolve(OUTPUT_DIRECTORY, 'src'), OUTPUT_DIRECTORY)
   await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'src'))
 
@@ -72,6 +66,9 @@ task('build', ['clean'], async ctx => {
 
 task('test', ['clean'], async ctx => {
   await ctx.exec('jest')
+})
+task('test:watch', ['clean'], async ctx => {
+  await ctx.exec('jest --watch')
 })
 
 task('publish', ['build'], async ctx => {

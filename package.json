@@ -1,12 +1,13 @@
 {
   "name": "util-extra",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "utils",
   "main": "index.js",
   "scripts": {
-    "build": "npx foy build",
-    "test": "npx foy test",
-    "pb": "npx foy publish"
+    "build": "foy build",
+    "test": "foy test",
+    "test:watch": "foy test:watch",
+    "pb": "foy publish"
   },
   "files": [
     "**/*.js",
