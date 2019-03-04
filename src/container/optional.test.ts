@@ -143,7 +143,6 @@ describe(`result`, () => {
     ).toEqual(
       Ok(42)
     )
-
     expect(
       None.okOrElse(() => ERR)
     ).toEqual(
