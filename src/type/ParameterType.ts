@@ -1,5 +1,6 @@
-type AnyFunction = (...args: any[]) => void
-type Parameters<F extends AnyFunction> = F extends (...args: infer P) => void ? P : never
+import { AnyFunction } from './AnyFunction'
+
+export type Parameters<F extends AnyFunction> = F extends (...args: infer P) => void ? P : never
 
 /**
  * function paramter type
