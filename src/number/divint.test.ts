@@ -1,4 +1,4 @@
-import divint, { DIVISION_BY_ZERO_ERROR } from './divint'
+import divint, { DIVISION_BY_ZERO_OR_INFINITY_ERROR } from './divint'
 
 test(`should get interger value`, () => {
   expect(
@@ -12,6 +12,6 @@ test(`should throw when dividend was zero`, () => {
   expect(
     () => divint(5, 0, false)
   ).toThrowError(
-    DIVISION_BY_ZERO_ERROR
+    DIVISION_BY_ZERO_OR_INFINITY_ERROR
   )
 })
