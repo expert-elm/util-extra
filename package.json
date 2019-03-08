@@ -7,7 +7,7 @@
     "build": "foy build",
     "test": "foy test",
     "test:watch": "foy test:watch",
-    "pb": "foy publish"
+    "release": "foy release"
   },
   "files": [
     "**/*.js",
