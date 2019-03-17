@@ -1,4 +1,4 @@
-import heartbeat from './retry'
+import heartbeat from './heartbeat'
 
 test(`should call function 10 times`, async () => {
   const func: jest.Mock<never> = jest.fn(() => { throw 42 })
