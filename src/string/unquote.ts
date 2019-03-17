@@ -1,7 +1,12 @@
 import unwrap, { Pair } from './unwrap'
 
-export default function unquote(string: string): string {
-  return unwrap(string, [ 
+/**
+ * unwrap string by quotes
+ * 
+ * @param value string
+ */
+export default function unquote(value: string): string {
+  return unwrap(value, [ 
     Pair.SingleQuotes, 
     Pair.DoubleQuotes,
     Pair.BackQuotes
