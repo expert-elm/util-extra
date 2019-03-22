@@ -29,10 +29,11 @@ function getStringSlice(strategy: SplitStrategy) {
   return function sliceString(string: string, prev: number, curr: number): [string, number] {
     switch(strategy) {
       case SplitStrategy.Length: {
-        return [string.substr(prev, curr), prev + curr]
+        const next: number = curr + prev
+        return [string.slice(prev, next), next]
       }
       case SplitStrategy.Index: {
-        const next = curr + 1
+        const next: number = curr + 1
         return [string.slice(prev, next), next]
       }
       default: throw new Error(`Unknown split strategy "${strategy}"`)

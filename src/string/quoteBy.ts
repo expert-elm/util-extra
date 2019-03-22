@@ -13,6 +13,6 @@ type Quote =
  * @param value string
  * @param quote wrap quote
  */
-export default function quoteBy(value: string, quote: Quote = Pair.DoubleQuotes): string {
+export default function quoteBy(value: string, quote: Quote = Pair.DoubleQuotes): ReturnType<typeof wrapBy> {
   return wrapBy(value, quote as string)
 }
