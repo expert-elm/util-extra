@@ -1,7 +1,7 @@
 import { Direction, 
          INVALID_DIRECTION_ERROR, 
-         fromString, 
-         toString,
+         parse, 
+         transform,
          isDirection,
          isTop,
          isBottom,
@@ -60,7 +60,7 @@ describe(`predicate`, () => {
       false
     )
   })
-  
+
   test(`should test is not a direction`, () => {
     expect(
       isDirection(0)
@@ -78,17 +78,17 @@ describe(`predicate`, () => {
 describe(`transforms`, () => {
   test(`should convert alias to direction`, () => {
     expect(
-      fromString(`top`)
+      parse(`top`)
     ).toBe(
       Direction.Top
     )
     expect(
-      fromString(`bb`)
+      parse(`bb`)
     ).toBe(
       Direction.Bottom
     )
     expect(
-      () => fromString(`bb`, false)
+      () => parse(`bb`, false)
     ).toThrowError(
       INVALID_DIRECTION_ERROR
     )
@@ -96,12 +96,12 @@ describe(`transforms`, () => {
 
   test(`should to string`, () => {
     expect(
-      toString(Direction.Top)
+      transform(Direction.Top)
     ).toBe(
       `top`
     )
     expect(
-      () => toString(42)
+      () => transform(42)
     ).toThrowError(
       INVALID_DIRECTION_ERROR
     )

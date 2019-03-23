@@ -50,7 +50,7 @@ export const DIRECTION_ALIAS_MAP: Readonly<Map<Direction, ReadonlyArray<string>>
   [Direction.Left, [`left`, `ll`, `l`]]
 ])
 
-export function fromString(alias: string, allowShort: boolean = true): Direction {
+export function parse(alias: string, allowShort: boolean = true): Direction {
   let ret: null | Direction = null
   DIRECTION_ALIAS_MAP.forEach((aliases, direction) => {
     const as: ReadonlyArray<string> = allowShort ? aliases : aliases.slice(0, 1)
@@ -62,7 +62,7 @@ export function fromString(alias: string, allowShort: boolean = true): Direction
   return ret
 }
 
-export function toString(direction: Direction): string {
+export function transform(direction: Direction): string {
   const aliases: undefined | ReadonlyArray<string> = DIRECTION_ALIAS_MAP.get(direction)
   if(undefined === aliases) throw INVALID_DIRECTION_ERROR
   return aliases[0]

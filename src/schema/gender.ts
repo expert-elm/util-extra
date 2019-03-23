@@ -41,13 +41,13 @@ export const DIRECTION_ALIAS_MAP: Readonly<Map<Gender, Readonly<string>>> = new 
   [Gender.Female, `female`]
 ])
 
-export function toString(gender: Gender): string {
+export function transform(gender: Gender): string {
   const genders: undefined | Readonly<string> = DIRECTION_ALIAS_MAP.get(gender)
   if(undefined === genders) throw INVALID_GENDER_ERROR
   return genders
 }
 
-export function fromString(string: string): Gender {
+export function parse(string: string): Gender {
   let ret: null | Gender = null
   DIRECTION_ALIAS_MAP.forEach((value, gender) => {
     if(value !== string) return

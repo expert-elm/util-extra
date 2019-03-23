@@ -1,6 +1,7 @@
-import { Gender, 
-         fromString, 
-         toString, 
+import { Gender,
+         INVALID_GENDER_ERROR,
+         parse, 
+         transform, 
          isGender, 
          isFemale, 
          isMale } from './gender'
@@ -52,17 +53,29 @@ describe(`predicate`, () => {
 describe(`transform`, () => {
   test(`should convert to string`, () => {
     expect(
-      toString(Gender.Male)
+      transform(Gender.Male)
     ).toBe(
       'male'
+    )
+
+    expect(
+      () => transform(42)
+    ).toThrow(
+      INVALID_GENDER_ERROR
     )
   })
 
   test(`should convert string to gender`, () => {
     expect(
-      fromString(`male`)
+      parse(`male`)
     ).toBe(
       Gender.Male
+    )
+
+    expect(
+      () => parse(`foo`)
+    ).toThrow(
+      INVALID_GENDER_ERROR
     )
   })
 })
