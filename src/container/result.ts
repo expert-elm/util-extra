@@ -16,9 +16,9 @@ export const enum ResultType {
  * 
  * @typeparam R result
  */
-export type UnpackResult<R, E extends Error> = R extends Result<
+export type UnpackResult<R, E> = R extends Result<
   infer T, 
-  E extends infer E ? E : never
+  E extends infer U ? U : never
 > ? [T, E] : never
 
 /** 
@@ -63,7 +63,7 @@ export interface Result<T, E> {
    * 
    * @param fn mapper function
    */
-  mapErr<U extends Error>(fn: (e: E) => U): Result<T, U>
+  mapErr<U>(fn: (e: E) => U): Result<T, U>
   /**
    * return `Result<U, E>` when the result is `Ok`, keep value at `Err`
    * 
@@ -81,13 +81,13 @@ export interface Result<T, E> {
    * 
    * @param res new result
    */
-  or<U extends Error>(res: Result<T, U>): Result<T, U>
+  or<U>(res: Result<T, U>): Result<T, U>
   /**
    * call `op` and return `Result<T, U>` when the result is `Err`, keep value at `Ok`
    * 
    * @param res new result
    */
-  orElse<U extends Error>(op: (e: E) => Result<T, U>): Result<T, U>
+  orElse<U>(op: (e: E) => Result<T, U>): Result<T, U>
   /**
    * unwrap the container, get value, throw when result is `Err`
    */
@@ -133,7 +133,7 @@ class ResultOk<T> implements Result<T, never> {
     return new ResultOk(fn(this.value))
   }
   
-  mapErr<U extends Error>(_fn: (e: never) => U): Result<T, never> {
+  mapErr<U>(_fn: (e: never) => U): Result<T, never> {
     return new ResultOk(this.value)
   }
 
@@ -196,7 +196,7 @@ class ResultOk<T> implements Result<T, never> {
   }
 }
 
-class ResultErr<E extends Error> implements Result<never, E> {
+class ResultErr<E> implements Result<never, E> {
   public readonly type = ResultType.Err
   constructor(public readonly value: E) {}
   
@@ -204,7 +204,7 @@ class ResultErr<E extends Error> implements Result<never, E> {
     return new ResultErr(this.value)
   }
   
-  mapErr<U extends Error>(fn: (e: E) => U): Result<never, U> {
+  mapErr<U>(fn: (e: E) => U): Result<never, U> {
     return new ResultErr(fn(this.value))
   }
 
@@ -224,11 +224,11 @@ class ResultErr<E extends Error> implements Result<never, E> {
     return new ResultErr(this.value)
   }
 
-  or<U extends Error>(res: Result<never, U>): Result<never, U> {
+  or<U>(res: Result<never, U>): Result<never, U> {
     return res
   }
 
-  orElse<U extends Error>(op: (v: E) => Result<never, U>): Result<never, U> {
+  orElse<U>(op: (v: E) => Result<never, U>): Result<never, U> {
     return op(this.value)
   }
 
@@ -275,9 +275,12 @@ export function Ok<T>(v: T): Result<T, never> {
  * 
  * @param v input value
  */
-export function Err<E extends Error>(e: E): Result<never, E> {
+export function Err<E>(e: E): Result<never, E> {
   return new ResultErr(e)
 }
+
+
+/// PREDICATE ///
 
 /**
  * test value is or not a `Result<T, E>`
@@ -302,6 +305,6 @@ export function isOk<T>(value: unknown): value is Result<T, never> {
  * 
  * @param value value
  */
-export function isErr<E extends Error>(value: unknown): value is Result<never, E> {
+export function isErr<E>(value: unknown): value is Result<never, E> {
   return value instanceof ResultErr
 }
