@@ -13,28 +13,30 @@ export const enum SplitStrategy {
  * @param numbers split by numbers
  * @param strategy how to split string
  */
-function splitSlice(list: string, numbers: number[], strategy?: SplitStrategy): string
-function splitSlice<T>(list: T[], numbers: number[], strategy?: SplitStrategy): T[]
+function splitSlice(list: string, numbers: number[], strategy?: SplitStrategy): string[]
+function splitSlice<T>(list: T[], numbers: number[], strategy?: SplitStrategy): T[][]
 function splitSlice(list: any, numbers: number[], strategy: SplitStrategy = SplitStrategy.Length): any {
   if('string' === typeof list) return splitString(list, numbers, strategy)
   return split(list, numbers, strategy)
 }
 
-function split<T>(list: T[], numbers: number[], strategy: SplitStrategy): T[] {
-  const func = getStringSlice(strategy)
-  const [ ret, last ] = numbers.reduce<[T[], number]>(([ ret, prev ], curr) => {
+function split<T>(list: T[], numbers: number[], strategy: SplitStrategy): T[][] {
+  const func = makeSpliter(strategy)
+  const [ ret, lst ] = numbers.reduce<[T[][], number]>(([ ret, prev ], curr) => {
     const [ slice, next ] = func(list, prev, curr)
-    return [ret.concat(slice), next]
+    ret.push(slice)
+    return [ret, next]
   }, [[], 0])
 
-  return ret.concat(list.slice(last))
+  ret.push(list.slice(lst))
+  return ret
 }
 
-function splitString(list: string, numbers: number[], strategy: SplitStrategy): string {
-  return split(list.split(``), numbers, strategy).join(``)
+function splitString(list: string, numbers: number[], strategy: SplitStrategy): string[] {
+  return split(list.split(``), numbers, strategy).map(s => s.join(``))
 }
 
-function getStringSlice(strategy: SplitStrategy) {
+function makeSpliter(strategy: SplitStrategy) {
   return function sliceString<T>(list: T[], prev: number, curr: number): [T[], number] {
     switch(strategy) {
       case SplitStrategy.Length: {
