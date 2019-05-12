@@ -65,7 +65,7 @@ task('test:watch', async ctx => {
   await ctx.exec('jest --watch')
 })
 
-task('release', ['build'], async ctx => {
+task('release', async ctx => {
   await ctx.exec('npm version patch')
   await fs.copy('package.json', path.resolve(OUTPUT_DIRECTORY, 'package.json'))
   await ctx.cd(OUTPUT_DIRECTORY).exec('npm publish')

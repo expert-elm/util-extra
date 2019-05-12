@@ -4,6 +4,7 @@
     "outDir": "./dist"
   },
   "exclude": [
+    "dist",
     "Foyfile.ts",
     "**/*.test.ts"
   ]
