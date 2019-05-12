@@ -1,6 +1,6 @@
 {
   "name": "util-extra",
-  "version": "0.0.12",
+  "version": "0.0.17",
   "description": "utils",
   "main": "index.js",
   "scripts": {
@@ -12,9 +12,11 @@
   "files": [
     "**/*.js",
     "**/*.js.map",
+    "**/*.mjs",
+    "**/*.mjs.map",
+    "**/*.ts",
     "**/*.d.ts",
-    "**/*.d.ts.map",
-    "**/*.ts"
+    "**/*.d.ts.map"
   ],
   "repository": {
     "type": "git",
@@ -36,6 +38,7 @@
     "ts-creator": "^1.2.2",
     "ts-jest": "^23.10.5",
     "ts-node": "^8.0.2",
+    "ts-repack": "0.0.6",
     "typescript": "^3.3.1"
   },
   "sideEffects": false,

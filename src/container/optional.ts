@@ -302,6 +302,10 @@ export function Some<T>(v: T): Optional<T> {
 /** Optional.None */
 export const None: Optional<never> = new OptionalNone()
 
+
+
+/// PREDICATE ///
+
 /**
  * test given is or not a Optional
  * 

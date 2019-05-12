@@ -6,19 +6,29 @@ import * as ts from 'typescript'
 const OUTPUT_DIRECTORY: string = path.resolve('./dist')
 
 task('clean', async () => {
-  await fs.rmrf(OUTPUT_DIRECTORY)
+  if(fs.existsSync(OUTPUT_DIRECTORY)) await fs.rmrf(OUTPUT_DIRECTORY)
+  await fs.mkdir(OUTPUT_DIRECTORY)
 })
 
-task('build', ['clean'], async ctx => {
+task('build', ['clean', `build:dist`, `build:deno`], async _ctx => {
+  
+})
+
+task(`build:dist`, async ctx => {
   await ctx.exec('tsc -p ./tsconfig.build.json')
-  const DENO_DIRECTORY = path.resolve(OUTPUT_DIRECTORY, 'deno')
+  await fs.copy(path.resolve(OUTPUT_DIRECTORY, 'src'), OUTPUT_DIRECTORY)
+  await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'src'))
+})
+
+task('build:deno', async _ctx => {
+  const DENO_DIRECTORY: string = path.resolve(OUTPUT_DIRECTORY, 'deno')
   await fs.mkdir(DENO_DIRECTORY)
   await fs.copy(path.resolve('./src'), DENO_DIRECTORY)
+  
   glob(path.resolve(DENO_DIRECTORY, '**', '*.ts')).forEach(async p => {
     if(p.match(/test/)) {
       await fs.rmrf(p)
     } else {
-      console.log(p)
       const source = fs.readFileSync(p, 'utf-8')
       const resultFile = ts.createSourceFile(
         p,
@@ -28,7 +38,7 @@ task('build', ['clean'], async ctx => {
         ts.ScriptKind.TS
       )
       const printer = ts.createPrinter()
-      const transformed = ts.transform(resultFile, [ transformer() ], {
+      const transformed = ts.transform(resultFile, [ transformer(Extension.TS) ], {
         module: ts.ModuleKind.ESNext
       }).transformed
       
@@ -41,38 +51,46 @@ task('build', ['clean'], async ctx => {
       fs.writeFileSync(p, result, 'utf-8')
     }
   })
-  await fs.copy(path.resolve(OUTPUT_DIRECTORY, 'src'), OUTPUT_DIRECTORY)
-  await fs.rmrf(path.resolve(OUTPUT_DIRECTORY, 'src'))
-
-  function transformer<T extends ts.Node>(): ts.TransformerFactory<T> {
-    return (context) => {
-      const visitor: ts.Visitor = node => {      
-        if(ts.isSourceFile(node)) return ts.visitEachChild(node, visitor, context)      
-  
-        if(ts.isImportDeclaration(node)) {
-          return ts.visitEachChild(node, (node) => {
-            if(!ts.isStringLiteral(node)) return node
-            console.log(node)
-            return ts.createStringLiteral(node.text.replace(/[\'\"]/g, '') + '.ts')
-          }, context)
-        }
-        
-        return node
-      }
-      return (node) => ts.visitNode(node, visitor)
-    }
-  }
 })
 
-task('test', ['clean'], async ctx => {
+task(`build:browser`, async _ctx => {
+  
+})
+
+task('test', async ctx => {
   await ctx.exec('jest')
 })
-task('test:watch', ['clean'], async ctx => {
+
+task('test:watch', async ctx => {
   await ctx.exec('jest --watch')
 })
 
-task('publish', ['build'], async ctx => {
+task('release', ['build'], async ctx => {
   await ctx.exec('npm version patch')
   await fs.copy('package.json', path.resolve(OUTPUT_DIRECTORY, 'package.json'))
   await ctx.cd(OUTPUT_DIRECTORY).exec('npm publish')
 })
+
+enum Extension {
+  TS = '.ts',
+  JS = '.js'
+}
+
+function transformer<T extends ts.Node>(ext: Extension): ts.TransformerFactory<T> {
+  return (context) => {
+    const visitor: ts.Visitor = node => {      
+      if(ts.isSourceFile(node)) return ts.visitEachChild(node, visitor, context)      
+
+      if(ts.isImportDeclaration(node)) {
+        return ts.visitEachChild(node, (node) => {
+          if(!ts.isStringLiteral(node)) return node
+          console.log(node)
+          return ts.createStringLiteral(node.text.replace(/[\'\"]/g, '') + ext)
+        }, context)
+      }
+      
+      return node
+    }
+    return (node) => ts.visitNode(node, visitor)
+  }
+}

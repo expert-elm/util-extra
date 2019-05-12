@@ -73,7 +73,7 @@ export default async function retry<F extends AnyFunction>(fn: F, options: Parti
     try {
       const dt = equ(times, opts)
       const ms: number = (dt + 1) * base
-      return await delay(ms, fn)
+      return await delay(fn, ms)
     } catch(e) {
       times++
     }
