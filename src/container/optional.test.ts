@@ -341,7 +341,7 @@ describe(`unwrap`, () => {
 })
 
 
-describe(`to result`, () => {
+describe(`to Result`, () => {
   test(`Some.okOr()`, () => {
     expect(
       Some(42).okOr(ERR)

@@ -16,9 +16,9 @@ export const enum ResultType {
  * 
  * @typeparam R result
  */
-export type UnpackResult<R, E> = R extends Result<
+export type UnpackResult<R> = R extends Result<
   infer T, 
-  E extends infer U ? U : never
+  infer E
 > ? [T, E] : never
 
 /** 
@@ -54,6 +54,7 @@ export interface Result<T, E> {
    * @param fn mapper function
    */
   map<U>(fn: (v: T) => U): Result<U, E>
+  mapAsync<U>(fn: (v: T) => Promise<U>): Promise<Result<U, E>>
   /** 
    * @todo mapOrElse
    */
@@ -64,6 +65,7 @@ export interface Result<T, E> {
    * @param fn mapper function
    */
   mapErr<U>(fn: (e: E) => U): Result<T, U>
+  mapErrAsync<U>(fn: (e: E) => Promise<U>): Promise<Result<T, U>>
   /**
    * return `Result<U, E>` when the result is `Ok`, keep value at `Err`
    * 
@@ -76,6 +78,7 @@ export interface Result<T, E> {
    * @param res new result
    */
   andThen<U>(op: (v: T) => Result<U, E>): Result<U, E>
+  andThenAsync<U>(op: (v: T) => Promise<Result<U, E>>): Promise<Result<U, E>>
   /**
    * return `Result<T, U>` when the result is `Err`, keep value at `Ok`
    * 
@@ -88,6 +91,7 @@ export interface Result<T, E> {
    * @param res new result
    */
   orElse<U>(op: (e: E) => Result<T, U>): Result<T, U>
+  orElseAsync<U>(op: (e: E) => Promise<Result<T, U>>): Promise<Result<T, U>>
   /**
    * unwrap the container, get value, throw when result is `Err`
    */
@@ -104,6 +108,7 @@ export interface Result<T, E> {
    * @param op caller function
    */
   unwrapOrElse<U>(op: (e: E) => U): T | U
+  unwrapOrElseAsync<U>(op: (e: E) => Promise<U>): Promise<T | U>
   /** 
    * unwrap and get error, throw when the result is `Ok`
    */ 
@@ -132,8 +137,16 @@ class ResultOk<T> implements Result<T, never> {
   map<U>(fn: (v: T) => U): Result<U, never> {
     return new ResultOk(fn(this.value))
   }
+
+  async mapAsync<U>(fn: (v: T) => Promise<U>): Promise<Result<U, never>> {
+    return new ResultOk(await fn(this.value))
+  }
   
   mapErr<U>(_fn: (e: never) => U): Result<T, never> {
+    return new ResultOk(this.value)
+  }
+
+  async mapErrAsync<U>(_fn: (e: never) => Promise<U>): Promise<Result<T, never>> {
     return new ResultOk(this.value)
   }
 
@@ -153,11 +166,19 @@ class ResultOk<T> implements Result<T, never> {
     return op(this.value)
   }
 
+  async andThenAsync<U>(op: (v: T) => Promise<Result<U, never>>): Promise<Result<U, never>> {
+    return op(this.value)
+  }
+
   or(_res: Result<T, never>): Result<T, never> {
     return new ResultOk(this.value)
   }
 
   orElse(_op: (e: never) => Result<T, never>): Result<T, never> {
+    return new ResultOk(this.value)
+  }
+
+  async orElseAsync(_op: (e: never) => Promise<Result<T, never>>): Promise<Result<T, never>> {
     return new ResultOk(this.value)
   }
 
@@ -170,6 +191,10 @@ class ResultOk<T> implements Result<T, never> {
   }
 
   unwrapOrElse<U>(_op: (e: never) => U): T {
+    return this.value
+  }
+
+  async unwrapOrElseAsync<U>(_op: (e: never) => Promise<U>): Promise<T> {
     return this.value
   }
 
@@ -203,9 +228,17 @@ class ResultErr<E> implements Result<never, E> {
   map<U>(_fn: (v: never) => U): Result<never, E> {
     return new ResultErr(this.value)
   }
+
+  async mapAsync<U>(_fn: (v: never) => Promise<U>): Promise<Result<never, E>> {
+    return new ResultErr(this.value)
+  }
   
   mapErr<U>(fn: (e: E) => U): Result<never, U> {
     return new ResultErr(fn(this.value))
+  }
+
+  async mapErrAsync<U>(fn: (e: E) => Promise<U>): Promise<Result<never, U>> {
+    return new ResultErr(await fn(this.value))
   }
 
   isOk(): boolean {
@@ -224,11 +257,19 @@ class ResultErr<E> implements Result<never, E> {
     return new ResultErr(this.value)
   }
 
+  async andThenAsync(_op: (v: never) => Promise<Result<never, E>>): Promise<Result<never, E>> {
+    return new ResultErr(this.value)
+  }
+
   or<U>(res: Result<never, U>): Result<never, U> {
     return res
   }
 
   orElse<U>(op: (v: E) => Result<never, U>): Result<never, U> {
+    return op(this.value)
+  }
+
+  async orElseAsync<U>(op: (v: E) => Promise<Result<never, U>>): Promise<Result<never, U>> {
     return op(this.value)
   }
 
@@ -241,6 +282,10 @@ class ResultErr<E> implements Result<never, E> {
   }
 
   unwrapOrElse<U>(op: (e: E) => U): U {
+    return op(this.value)
+  }
+
+  async unwrapOrElseAsync<U>(op: (e: E) => Promise<U>): Promise<U> {
     return op(this.value)
   }
 
