@@ -1,5 +1,5 @@
 import dec from './dec'
-import { NAN_ERROR } from './validateNaN'
+import { NAN_ERROR } from './assertNaN'
 
 test(`should inc a number`, () => {
   expect(
