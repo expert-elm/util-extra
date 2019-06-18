@@ -64,7 +64,7 @@
     "exclude": [
       "dist",
       "Foyfile.ts",
-      "**/*.test.ts",
+      "src/**/*.test.ts",
       "test-deno.ts",
       "test-mjs.ts"
     ]

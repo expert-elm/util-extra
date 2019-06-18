@@ -1,4 +1,5 @@
 import { makeInvalidMonthError } from "./makeError"
+import assertInvalidDate from "./assertInvalidDate"
 
 export const enum Month {
   January,
@@ -15,42 +16,27 @@ export const enum Month {
   December
 }
 
-type MonthNames = { [K in Month]: string }
+type MonthNames = { [K in Month]: [string, string] }
 
 export const MonthName: MonthNames = {
-  [Month.January]: `January`,
-  [Month.February]: `February`,
-  [Month.March]: `March`,
-  [Month.April]: `April`,
-  [Month.May]: `May`,
-  [Month.June]: `June`,
-  [Month.July]: `July`,
-  [Month.August]: `August`,
-  [Month.September]: `September`,
-  [Month.October]: `October`,
-  [Month.November]: `November`,
-  [Month.December]: `December`
-}
-
-export const MonthShortName: MonthNames = {
-  [Month.January]: `Jan`,
-  [Month.February]: `Feb`,
-  [Month.March]: `Mar`,
-  [Month.April]: `Apr`,
-  [Month.May]: `May`,
-  [Month.June]: `Jun`,
-  [Month.July]: `Jul`,
-  [Month.August]: `Aug`,
-  [Month.September]: `Sep`,
-  [Month.October]: `Oct`,
-  [Month.November]: `Nov`,
-  [Month.December]: `Dec`
+  [Month.January]: [`January`, `Jan`],
+  [Month.February]: [`February`, `Feb`],
+  [Month.March]: [`March`, `Mar`],
+  [Month.April]: [`April`, `Apr`],
+  [Month.May]: [`May`, `May`],
+  [Month.June]: [`June`, `Jun`],
+  [Month.July]: [`July`, `Jul`],
+  [Month.August]: [`August`, `Aug`],
+  [Month.September]: [`September`, `Sep`],
+  [Month.October]: [`October`, `Oct`],
+  [Month.November]: [`November`, `Nov`],
+  [Month.December]: [`December`, `Dec`]
 }
 
 export default function toMonth(date: Date, short: boolean = false): string {
+  assertInvalidDate(date)
   const month: number = date.getMonth()
-  const names = short ? MonthShortName : MonthName
-  const ret: string | undefined = names[month as Month]
+  const ret: [string, string] | undefined = MonthName[month as Month]
   if(undefined === ret) throw makeInvalidMonthError(month)
-  return ret
+  return ret[short ? 0 : 1]
 }

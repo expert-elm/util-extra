@@ -1,4 +1,5 @@
 import { makeInvalidWeekdayError } from "./makeError"
+import assertInvalidDate from "./assertInvalidDate"
 
 export const enum WeekDay {
   Sunday,
@@ -10,32 +11,28 @@ export const enum WeekDay {
   Saturday
 }
 
-type WeekDayNames = { [K in WeekDay]: string }
+type WeekDayNames = { [K in WeekDay]: [string, string, string] }
+
+export const enum Format {
+  Normal,
+  Short,
+  Shorter
+}
 
 export const WeekDayName: WeekDayNames = {
-  [WeekDay.Sunday]: `Sunday`,
-  [WeekDay.Monday]: `Monday`,
-  [WeekDay.Tuesday]: `Tuesday`,
-  [WeekDay.Wednesday]: `Wednesday`,
-  [WeekDay.Thursday]: `Thursday`,
-  [WeekDay.Friday]: `Friday`,
-  [WeekDay.Saturday]: `Saturday`
+  [WeekDay.Sunday]: [`Sunday`, `Sun`, `Su`],
+  [WeekDay.Monday]: [`Monday`, `Mon`, `Mo`],
+  [WeekDay.Tuesday]: [`Tuesday`, `Tue`, `Tu`],
+  [WeekDay.Wednesday]: [`Wednesday`, `Wed`, `We`],
+  [WeekDay.Thursday]: [`Thursday`, `Thu`, `Th`],
+  [WeekDay.Friday]: [`Friday`, `Fri`, `Fr`],
+  [WeekDay.Saturday]: [`Saturday`, `Sat`, `Sa`]
 }
 
-export const WeekDayShortName: WeekDayNames = {
-  [WeekDay.Sunday]: `Sun`,
-  [WeekDay.Monday]: `Mon`,
-  [WeekDay.Tuesday]: `Tue`,
-  [WeekDay.Wednesday]: `Wed`,
-  [WeekDay.Thursday]: `Thu`,
-  [WeekDay.Friday]: `Fri`,
-  [WeekDay.Saturday]: `Sat`
-}
-
-export default function toWeekDay(date: Date, short: boolean = false): string {
+export default function toWeekDay(date: Date, format: Format = Format.Normal): string {
+  assertInvalidDate(date)
   const week: number = date.getDay()
-  const names = short ? WeekDayShortName : WeekDayName
-  const ret: string | undefined = names[week as WeekDay]
+  const ret: [string, string, string] | undefined = WeekDayName[week as WeekDay]
   if(undefined === ret) throw makeInvalidWeekdayError(week)
-  return ret
+  return ret[format]
 }

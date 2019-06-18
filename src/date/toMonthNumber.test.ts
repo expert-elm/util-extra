@@ -1,5 +1,6 @@
 import toMonthNumber from './toMonthNumber'
 import { makeInvalidMonthError } from './makeError'
+import { Formatter } from './formatDateNumber'
 
 test(`toMonthNumber()`, () => {
   expect(
@@ -11,9 +12,17 @@ test(`toMonthNumber()`, () => {
 
 test(`toMonthNumber() pad zero`, () => {
   expect(
-    toMonthNumber(new Date(`1970-01`), true)
+    toMonthNumber(new Date(`1970-01`), Formatter.PadZero)
   ).toBe(
     `01`
+  )
+})
+
+test(`toMonthNumber() pad zero`, () => {
+  expect(
+    toMonthNumber(new Date(`1970-01`), Formatter.Numeral)
+  ).toBe(
+    `1st`
   )
 })
 

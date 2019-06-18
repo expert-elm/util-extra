@@ -1,12 +1,9 @@
-import toPadZero from "../number/toPadZero"
 import { makeInvalidMonthError } from './makeError'
 import assertInvalidDate from "./assertInvalidDate"
+import formatDateNumber, { FormatterOptions } from "./formatDateNumber"
 
-export default function toMonthNumber(date: Date, padZero: boolean = false): string {
+export default function toMonthNumber(date: Date, formatter?: FormatterOptions): string {
   const month = date.getMonth()
   assertInvalidDate(date, makeInvalidMonthError(month))
-  
-  const ret: number = month + 1
-  if(false === padZero) return ret.toString()
-  return toPadZero(ret, 2)
+  return formatDateNumber(month + 1, formatter)
 }
