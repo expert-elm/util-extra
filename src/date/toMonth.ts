@@ -1,4 +1,3 @@
-import { makeInvalidMonthError } from "./makeError"
 import assertInvalidDate from "./assertInvalidDate"
 
 export const enum Month {
@@ -36,7 +35,6 @@ export const MonthName: MonthNames = {
 export default function toMonth(date: Date, short: boolean = false): string {
   assertInvalidDate(date)
   const month: number = date.getMonth()
-  const ret: [string, string] | undefined = MonthName[month as Month]
-  if(undefined === ret) throw makeInvalidMonthError(month)
-  return ret[short ? 0 : 1]
+  const ret: [string, string] = MonthName[month as Month]
+  return ret[short ? 1 : 0]
 }

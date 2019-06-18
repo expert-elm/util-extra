@@ -19,7 +19,5 @@ test(`toMidday() short`, () => {
 test(`toMidday() error`, () => {
   expect(
     () => toMidday(new Date(`foo`))
-  ).toThrowError(
-    `Invalid hours value "NaN", should between 0 and 23`
-  )
+  ).toThrow()
 })

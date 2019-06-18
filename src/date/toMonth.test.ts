@@ -19,6 +19,6 @@ test(`toMonth() short`, () => {
 test(`toMonth() error`, () => {
   expect(
     () => toMonth(new Date(`foo`))
-  ).toThrowError(`Invalid month value "NaN", should between 0 and 11`)
+  ).toThrow()
 })
 

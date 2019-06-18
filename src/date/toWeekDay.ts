@@ -1,4 +1,3 @@
-import { makeInvalidWeekdayError } from "./makeError"
 import assertInvalidDate from "./assertInvalidDate"
 
 export const enum WeekDay {
@@ -32,7 +31,6 @@ export const WeekDayName: WeekDayNames = {
 export default function toWeekDay(date: Date, format: Format = Format.Normal): string {
   assertInvalidDate(date)
   const week: number = date.getDay()
-  const ret: [string, string, string] | undefined = WeekDayName[week as WeekDay]
-  if(undefined === ret) throw makeInvalidWeekdayError(week)
+  const ret: [string, string, string] = WeekDayName[week as WeekDay]
   return ret[format]
 }

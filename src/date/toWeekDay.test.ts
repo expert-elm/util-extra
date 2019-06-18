@@ -27,7 +27,5 @@ test(`toWeekDay() shorter`, () => {
 test(`toWeekDay() error`, () => {
   expect(
     () => toWeekDay(new Date(`foo`))
-  ).toThrowError(
-    `Invalid weekday value "NaN", should between 0 and 6`
-  )
+  ).toThrow()
 })
