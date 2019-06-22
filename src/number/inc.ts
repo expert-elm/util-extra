@@ -1,4 +1,4 @@
-import validateNaN from './validateNaN'
+import assertNaN from './assertNaN'
 
 /**
  * increased a number value
@@ -6,6 +6,6 @@ import validateNaN from './validateNaN'
  * @param number number
  */
 export default function inc(number: number): number {
-  validateNaN(number)
+  assertNaN(number)
   return number + 1
 }
