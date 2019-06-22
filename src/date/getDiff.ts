@@ -12,9 +12,9 @@ export const enum Unit {
   Year
 }
 
-export function getDiff(unit: Unit, truncate: boolean = true) {
+export function getDiff(unit: Unit) {
   const num: number = mapUnitToMilliseconds(unit)
-  return function diffDateToUnit(date1: Date, date2: Date): number {
+  return function diffDateToUnit(date1: Date, date2: Date, truncate: boolean = true): number {
     const x1 = date1.getTime()
     const x2 = date2.getTime()
     const diff = x1 - x2
