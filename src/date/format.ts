@@ -6,10 +6,9 @@ import toQuarter from  './toQuarter'
 import toMidday from './toMidday'
 import toPadZero from '../number/toPadZero'
 import toNumeral from '../number/toNumeral'
-import to12Hours from './to12Hours'
+import get12HoursOfDay from './get12HoursOfDay'
 import { Formatter } from './formatDateNumber'
-import dayOfYear from './dayOfYear'
-import weekOfYear from './dayOfYear'
+import getDaysOfYear from './getDaysOfYear'
 
 export default function format(date: Date, format: string): string {
   return parse(format).map(([,trans]) => trans(date)).join('')
@@ -73,9 +72,9 @@ const transformer: { [K in Token]: Transformer } = {
   [Token.QQ]: date => toQuarter(date, Formatter.PadZero),
   [Token.Qo]: date => toQuarter(date, Formatter.Numeral),
   [Token.Q]: date => toQuarter(date),
-  [Token.DDDD]: date => toPadZero(dayOfYear(date), 3),
-  [Token.DDDo]: date => toNumeral(dayOfYear(date)),
-  [Token.DDD]: date => dayOfYear(date).toString(),
+  [Token.DDDD]: date => toPadZero(getDaysOfYear(date), 3),
+  [Token.DDDo]: date => toNumeral(getDaysOfYear(date)),
+  [Token.DDD]: date => getDaysOfYear(date).toString(),
   [Token.DD]: date => toPadZero(date.getDate(), 2),
   [Token.Do]: date => toNumeral(date.getDate()),
   [Token.D]: date => date.getDate().toString(),
@@ -84,15 +83,15 @@ const transformer: { [K in Token]: Transformer } = {
   [Token.dd]: date => toWeekDay(date, WeekFormat.Shorter),
   [Token.do]: date => toNumeral(date.getDay()),
   [Token.d]: date => date.getDay().toString(),
-  [Token.ww]: date => toPadZero(weekOfYear(date), 2),
-  [Token.wo]: date => toNumeral(weekOfYear(date)),
-  [Token.w]: date => weekOfYear(date).toString(),
+  [Token.ww]: date => toPadZero(getDaysOfYear(date), 2),
+  [Token.wo]: date => toNumeral(getDaysOfYear(date)),
+  [Token.w]: date => getDaysOfYear(date).toString(),
   [Token.A]: date => toMidday(date),
   [Token.a]: date => toMidday(date, true),
   [Token.HH]: date => toPadZero(date.getHours(), 2),
   [Token.H]: date => date.getHours().toString(),
-  [Token.hh]: date => toPadZero(to12Hours(date)[0], 2),
-  [Token.h]: date => to12Hours(date)[0].toString(),
+  [Token.hh]: date => toPadZero(get12HoursOfDay(date)[0], 2),
+  [Token.h]: date => get12HoursOfDay(date)[0].toString(),
   [Token.mm]: date => toPadZero(date.getMinutes(), 2),
   [Token.m]: date => date.getMinutes().toString(),
   [Token.ss]: date => toPadZero(date.getSeconds(), 2),
