@@ -45,5 +45,8 @@
   "sideEffects": false,
   "jest": {
     "preset": "ts-jest"
+  },
+  "dependencies": {
+    "tslib": "^1.10.0"
   }
 }
