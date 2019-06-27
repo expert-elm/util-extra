@@ -1,7 +1,7 @@
 import path from 'path'
 import { sync as glob } from 'glob'
 import { task, fs } from 'foy'
-import { Project } from 'ts-morph'
+import { Project, ts } from 'ts-morph'
 import repack, { Target } from 'ts-repack'
 
 const OUTPUT_DIRECTORY: string = path.resolve('dist')
@@ -19,7 +19,6 @@ task('build', ['clean'], async ctx => {
   repack(Target.CJS, { output: OUTPUT_CJS_DIRECTORY })
   repack(Target.MJS, { output: OUTPUT_MJS_DIRECTORY })
   ctx.run(`gen:index`)
-  ctx.run(`gen:index:ns`)
 })
 
 task('release', [`build`], async ctx => {
@@ -36,13 +35,23 @@ task(`gen:index:ns`, async () => {
   console.log(`GENERATE INDEX:\n`, indexContent)
 })
 
-task(`gen:index`, async () => {
+task(`gen:index`, [`gen:index:cjs`.async(), `gen:index:mjs`.async()])
+
+task(`gen:index:cjs`, async () => {
+  genIndexNS(ts.ModuleKind.CommonJS, OUTPUT_CJS_DIRECTORY, `.js`)
+})
+
+task(`gen:index:mjs`, async () => {
+  genIndexNS(ts.ModuleKind.ESNext, OUTPUT_MJS_DIRECTORY, `.mjs`)
+})
+
+async function genIndexNS(moduleKind: ts.ModuleKind, output: string, extname: string) {
   const project = new Project({
     skipFileDependencyResolution: true
   })
   const ns = glob(`src/*`).map(dirpath => dirpath.replace(/^src\//, ''))
   ns.forEach(async str => {
-    const indexPath: string = path.resolve(OUTPUT_DIRECTORY, str, `index.js`)
+    const indexPath: string = path.resolve(output, str, `index${extname}`)
     const files: string[] = glob(`src/${str}/*.ts`).filter(filepath => !filepath.match(/test/))
     const indexContent = files.map(file => {
       const sourceFile = project.addExistingSourceFile(path.resolve(file))
@@ -50,13 +59,23 @@ task(`gen:index`, async () => {
       const defaultExportSymbol = sourceFile.getDefaultExportSymbol()
       project.removeSourceFile(sourceFile)
       const filename = path.basename(file, path.extname(file))
-      return `export { ${exportSymbols.join(', ')}${defaultExportSymbol ? `, default as ${filename}` : ``} } from './${filename}'`
+      const source = `export { ${exportSymbols.join(', ')}${defaultExportSymbol ? `, default as ${filename}` : ``} } from './${filename}'`
+      const result = ts.transpile(source, {
+        module: moduleKind
+      })
+      return result
     }).join('\n')
 
     await fs.writeFile(indexPath, indexContent, `utf-8`)
     console.log(`GENERATE ${str} INDEX:\n`, indexContent)
   })
-})
+  const rootIndexPath: string = path.resolve(output, `index${extname}`)
+  const rootSource: string = ns.map(str => `export * from './${str}'`).join('\n')
+  const rootIndexContent: string = ts.transpile(rootSource, { module: moduleKind })
+  await fs.writeFile(rootIndexPath, rootIndexContent, `utf-8`)
+  console.log(`GENERATE ROOT INDEX:\n`, rootIndexContent)
+}
+
 
 task('test', async ctx => {
   await ctx.exec('jest')
