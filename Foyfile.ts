@@ -3,6 +3,7 @@ import { sync as glob } from 'glob'
 import { task, fs } from 'foy'
 import { Project, ts, SourceFile } from 'ts-morph'
 import repack, { Target } from 'ts-repack'
+import log from 'log-extra'
 
 const OUTPUT_DIRECTORY: string = path.resolve('dist')
 const OUTPUT_MJS_DIRECTORY: string = path.resolve(OUTPUT_DIRECTORY, 'module')
@@ -33,14 +34,6 @@ task('release', [`build`], async ctx => {
   await ctx.exec('npm version patch')
   await fs.copy('package.json', path.resolve(OUTPUT_DIRECTORY, 'package.json'))
   await ctx.cd(OUTPUT_DIRECTORY).exec('npm publish')
-})
-
-task(`gen:index:ns`, async () => {
-  const ns = glob(`src/*`).map(dirpath => dirpath.replace(/^src\//, ''))
-  const indexPath: string = path.resolve(OUTPUT_DIRECTORY, `index.js`)
-  const indexContent: string = ns.map(str => `export * from './${str}'`).join('\n')
-  await fs.writeFile(indexPath, indexContent, `utf-8`)
-  console.log(`GENERATE INDEX:\n`, indexContent)
 })
 
 task(`gen:index`, [`gen:index:cjs`.async(), `gen:index:mjs`.async()])
@@ -99,9 +92,8 @@ async function genIndexNS(moduleKind: ts.ModuleKind, output: string, extname: st
     const sourceFile: SourceFile = project.createSourceFile(indexPath, indexContent)
     const emitOutput = sourceFile.getEmitOutput()
     for (const outputFile of emitOutput.getOutputFiles()) {
-      console.log(outputFile.getFilePath())
-      console.log(outputFile.getWriteByteOrderMark())
-      console.log(outputFile.getText())
+      log.debug(`gen`, `index.emit.file`, outputFile.getFilePath())
+      log.debug(`gen`, `index.emit.content`, outputFile.getFilePath())
       fs.writeFileSync(
         outputFile.getFilePath().replace(/\.js/g, extname),
         outputFile.getText(),
@@ -109,25 +101,28 @@ async function genIndexNS(moduleKind: ts.ModuleKind, output: string, extname: st
       )
     }
 
-    console.log(`GENERATE ${str} INDEX:\n`, indexPath, indexContent)
+    log(`gen`, `index.file`, indexPath)
+    log(`gen`, `index.content`, indexContent)
   })
 
 
   const rootIndexPath: string = path.resolve(`src`, `index.ts`)
   const rootIndexContent: string = ns.map(str => `export * from './${str}'`).join('\n')
   const sourceFile: SourceFile = project.createSourceFile(rootIndexPath, rootIndexContent)
-  console.log(`GENERATE ROOT INDEX:\n`, rootIndexPath, rootIndexContent)
+  
   const emitOutput = sourceFile.getEmitOutput()
   for (const outputFile of emitOutput.getOutputFiles()) {
-    console.log(outputFile.getFilePath())
-    console.log(outputFile.getWriteByteOrderMark())
-    console.log(outputFile.getText())
+    log.debug(`gen`, `index.root.emit.file`, outputFile.getFilePath())
+    log.debug(`gen`, `index.root.emit.content`, outputFile.getFilePath())
     fs.writeFileSync(
       outputFile.getFilePath().replace(/\.js/g, extname),
       outputFile.getText(),
       `utf-8`
     )
   }
+
+  log(`gen`, `index.root.file`, rootIndexPath)
+  log(`gen`, `index.root.content`, rootIndexContent)
 }
 
 
