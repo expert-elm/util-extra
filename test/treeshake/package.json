@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "util-extra-test-treeshake",
+  "version": "0.0.0",
+  "description": "util-extra tree shake test",
+  "scripts": {
+    "start": "webpack -d --devtool=none",
+    "build": "webpack -p --display-chunks --display-modules --display-origins"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "util-extra": "file:../../dist",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.4"
+  }
+}

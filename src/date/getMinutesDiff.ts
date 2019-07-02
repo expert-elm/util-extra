@@ -1,5 +1,5 @@
-import { getDiff, Unit } from "./getDiff"
+import { diff, Unit } from "./getDiff"
 
-const getMinutesDiff= getDiff(Unit.Minute)
+const getMinutesDiff= diff(Unit.Minute)
 export default getMinutesDiff
 

@@ -1,4 +1,4 @@
-import { getDiff, Unit } from "./getDiff"
+import { diff, Unit } from "./getDiff"
 
-const getWeeksDiff = getDiff(Unit.Week)
+const getWeeksDiff = diff(Unit.Week)
 export default getWeeksDiff

@@ -1,4 +1,4 @@
-import { getDiff, Unit } from "./getDiff"
+import { diff, Unit } from "./getDiff"
 
-const getYearsDiff = getDiff(Unit.Year)
+const getYearsDiff = diff(Unit.Year)
 export default getYearsDiff

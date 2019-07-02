@@ -1,4 +1,4 @@
-import { getDiff, Unit } from "./getDiff"
+import { diff, Unit } from "./getDiff"
 
-const getDaysDiff = getDiff(Unit.Day)
+const getDaysDiff = diff(Unit.Day)
 export default getDaysDiff
