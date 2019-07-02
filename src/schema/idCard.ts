@@ -1,5 +1,5 @@
 import splitSlice from '../list/splitSlice'
-import { toBoolean } from '../function/fromTryCatch'
+import toBoolean from '../function/toBoolean'
 import toLocalString, { Type } from '../date/toLocalString'
 
 export interface IDCard {
