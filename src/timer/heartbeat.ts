@@ -1,5 +1,5 @@
 import delay from './delay'
-import { AnyFunction } from '../type/AnyFunction'
+import AnyFunction from '../type/AnyFunction'
 
 /** build-in timing function */
 export const enum TimingFunction {
@@ -73,7 +73,7 @@ export default async function retry<F extends AnyFunction>(fn: F, options: Parti
     try {
       const dt = equ(times, opts)
       const ms: number = (dt + 1) * base
-      return await delay(fn, ms)
+      return await delay(ms, fn)
     } catch(e) {
       times++
     }

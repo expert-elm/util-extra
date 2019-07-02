@@ -63,9 +63,8 @@
     },
     "exclude": [
       "dist",
+      "test",
       "Foyfile.ts",
-      "src/**/*.test.ts",
-      "test-deno.ts",
-      "test-mjs.ts"
+      "src/**/*.test.ts"
     ]
   }

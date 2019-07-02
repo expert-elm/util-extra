@@ -1,4 +1,4 @@
-import { Thunk } from "../type/Thunk"
+import Thunk from "../type/Thunk"
 import { Optional, Some, None } from "../container/optional"
 import { Result, Ok, Err } from "../container/result"
 

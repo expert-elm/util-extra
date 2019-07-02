@@ -1,13 +1,7 @@
 import sleep from './sleep'
-import { AnyFunction } from '../type/AnyFunction'
+import AnyFunction from '../type/AnyFunction'
 
-/**
- * delay ms to call function
- * 
- * @param fn caller
- * @param ms sleep ms
- */
-export default async function delay<F extends AnyFunction>(fn: F, ms: number = 0): Promise<ReturnType<F>> {
-  await sleep(ms)
+export default async function delay<F extends AnyFunction>(millisecond: number, fn: F): Promise<ReturnType<F>> {
+  await sleep(millisecond)
   return fn()
 }

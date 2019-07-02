@@ -1,5 +1,5 @@
 import toTimestamp from './toTimestamp'
-import { ParameterType } from '../type/ParameterType'
+import ParameterType from '../type/ParameterType'
 
 /** ago flag */
 type AgoFlag = [number, string]

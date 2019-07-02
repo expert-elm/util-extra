@@ -1,5 +1,5 @@
 import { IDCard } from "./IDCardType"
-import { ParameterType } from "../type/ParameterType"
+import ParameterType from "../type/ParameterType"
 import splitSlice from "../list/splitSlice"
 
 const IDCARDLENGTHERROR: Error = new Error(`IDCard length should be 18`)
