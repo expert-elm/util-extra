@@ -56,6 +56,8 @@ async function genIndexNS(moduleKind: ts.ModuleKind, output: string, extname: st
       module: moduleKind
     }
   })
+
+  const nameTable: Map<string, string[]> = new Map()
   
   const ns: string[] = glob(`src/*`).map(dirpath => dirpath.replace(/^src\//, ''))
   
@@ -71,15 +73,16 @@ async function genIndexNS(moduleKind: ts.ModuleKind, output: string, extname: st
       exportedDeclarations.forEach((nodes, key) => {
         const name: string = `default` === key ? `default as ${filename}` : key
         const node = nodes[0]
+        
         const leadingCommentRanges = node.getLeadingCommentRanges()
-        if(0 === leadingCommentRanges.length) {
-          acc.push(name)
-          return 
+        if(0 !== leadingCommentRanges.length) {
+          const text = leadingCommentRanges[0].getText()
+          if(/@noexport/.test(text)) return
         }
 
-        const text = leadingCommentRanges[0].getText()
-        if(/@noexport/.test(text)) return
-
+        const names = nameTable.get(name) || []
+        nameTable.set(name, names.concat(`${str}.${filename}`))
+        
         acc.push(name)
         return
       })
@@ -105,6 +108,10 @@ async function genIndexNS(moduleKind: ts.ModuleKind, output: string, extname: st
     log(`gen`, `index.content`, indexContent)
   })
 
+  nameTable.forEach((files, name) => {
+    if(files.length <= 1) return
+    log.warn(`gen`, `index`, `"${name}" are both exports by ${files.join(', ')}`)
+  })
 
   const rootIndexPath: string = path.resolve(`src`, `index.ts`)
   const rootIndexContent: string = ns.map(str => `export * from './${str}'`).join('\n')
