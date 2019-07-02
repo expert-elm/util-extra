@@ -1,2 +1,2 @@
-import { Some } from 'util-extra/container/optional'
+import { Some } from 'util-extra'
 export default Some(42)

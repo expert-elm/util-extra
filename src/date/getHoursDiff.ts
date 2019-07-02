@@ -1,4 +1,4 @@
-import { getDiff, Unit } from "./getDiff"
+import { diff, Unit } from "./getDiff"
 
-const getHoursDiff= getDiff(Unit.Hour)
+const getHoursDiff= diff(Unit.Hour)
 export default getHoursDiff

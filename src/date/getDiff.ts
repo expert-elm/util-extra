@@ -12,7 +12,7 @@ export const enum Unit {
   Year
 }
 
-export function getDiff(unit: Unit) {
+export function diff(unit: Unit) {
   const num: number = mapUnitToMilliseconds(unit)
   return function diffDateToUnit(date1: Date, date2: Date, truncate: boolean = true): number {
     const x1 = date1.getTime()
@@ -37,10 +37,13 @@ function mapUnitToMilliseconds(unit: unknown): number {
 }
 
 /**
- * @export test
+ * @noexport
  */
 export function makeUnknownUnitError(unit: unknown): Error {
   return new TypeError(`Unknown unit "${String(unit)}"`)
 }
 
-export default getDiff(Unit.Millisecond)
+/**
+ * @export getDiffTimestamp
+ */
+export default diff(Unit.Millisecond)
