@@ -1,5 +1,5 @@
 import { limited } from './limited'
-import sleep from '../timer/sleep'
+import sleep from '../function/sleep'
 
 const start = Date.now()
 class WaitingJob {

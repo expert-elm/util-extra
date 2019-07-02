@@ -1,4 +1,4 @@
-import { sleep } from '../async/sleep'
+import sleep from '../function/sleep'
 import { queued } from './queued'
 
 class Job {

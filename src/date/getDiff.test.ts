@@ -1,4 +1,4 @@
-import getTimestampDiff, { getDiff, makeUnknownUnitError } from './getDiff'
+import getTimestampDiff, { diff, makeUnknownUnitError } from './getDiff'
 import { DAY_SECONDS } from './constant'
 
 test(`getTimestampDiff()`, () => {
@@ -14,9 +14,9 @@ test(`getTimestampDiff()`, () => {
   )
 })
 
-test(`getDiff() throw unknonw unit`, () => {
+test(`diff() throw unknonw unit`, () => {
   expect(
-    () => getDiff(42)
+    () => diff(42)
   ).toThrowError(
     makeUnknownUnitError(42)
   )

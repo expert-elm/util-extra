@@ -1,5 +1,5 @@
 import { Queue } from './Queue'
-import sleep from '../timer/sleep'
+import sleep from '../function/sleep'
 
 test('should queued function be executed serially', async () => {
   let queue = new Queue()
