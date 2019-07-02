@@ -3,7 +3,7 @@
   "version": "0.0.19",
   "description": "utils",
   "main": "index.js",
-  "module": "module/index.js",
+  "module": "module/index.mjs",
   "scripts": {
     "start": "tsc -w",
     "build": "foy build",
