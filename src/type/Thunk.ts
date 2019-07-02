@@ -1,2 +1,2 @@
-/** thunk container type */
-export type Thunk<T> = () => T
+type Thunk<T> = () => T
+export default Thunk
