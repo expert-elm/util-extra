@@ -1,2 +1,2 @@
-import { Some } from 'util-extra'
-export default Some(42)
+import { randomString } from 'util-extra'
+export default randomString()

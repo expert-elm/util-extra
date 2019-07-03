@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "description": "util-extra tree shake test",
   "scripts": {
-    "start": "webpack -d --devtool=none",
-    "build": "webpack -p --display-chunks --display-modules --display-origins"
+    "start": "webpack"
   },
   "license": "MIT",
   "dependencies": {
