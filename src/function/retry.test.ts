@@ -1,6 +1,6 @@
 import retry, { MAX_RETRY_TIMES_ERROR } from './retry'
 
-test(`should retry until success`, async () => {
+test(`retry(), until success`, async () => {
   let i: number = 0
   const fn: jest.Mock<void> = jest.fn(() => {
     if(i >= 5) return
@@ -15,7 +15,7 @@ test(`should retry until success`, async () => {
   )
 })
 
-test(`should throw when retry max times`, async () => {
+test(`retry(), throw max times`, async () => {
   const fn: jest.Mock<void> = jest.fn(() => { throw 42 })
   expect(
     retry(fn, 3)
