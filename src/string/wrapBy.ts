@@ -1,5 +1,4 @@
-import { Pair } from './unwrap'
-export { Pair } from './unwrap'
+import Pair from './pair'
 
 /**
  * wrap a string with pairs

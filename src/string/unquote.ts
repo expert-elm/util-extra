@@ -1,4 +1,5 @@
-import unwrap, { Pair } from './unwrap'
+import Pair from './pair'
+import unwrap from './unwrap'
 
 /**
  * unwrap string by quotes

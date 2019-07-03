@@ -1,5 +1,6 @@
-import wrapBy, { Pair } from './wrapBy'
-export { Pair } from './wrapBy'
+import Pair from './pair'
+import wrapBy from './wrapBy'
+
 
 /** quotes defined from pair */
 type Quote = 

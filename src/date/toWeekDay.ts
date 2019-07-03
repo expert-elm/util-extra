@@ -12,7 +12,7 @@ export const enum WeekDay {
 
 type WeekDayNames = { [K in WeekDay]: [string, string, string] }
 
-export const enum Format {
+export const enum WeekFormat {
   Normal,
   Short,
   Shorter
@@ -28,7 +28,7 @@ export const WeekDayName: WeekDayNames = {
   [WeekDay.Saturday]: [`Saturday`, `Sat`, `Sa`]
 }
 
-export default function toWeekDay(date: Date, format: Format = Format.Normal): string {
+export default function toWeekDay(date: Date, format: WeekFormat = WeekFormat.Normal): string {
   assertInvalidDate(date)
   const week: number = date.getDay()
   const ret: [string, string, string] = WeekDayName[week as WeekDay]

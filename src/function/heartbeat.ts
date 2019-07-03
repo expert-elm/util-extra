@@ -1,5 +1,6 @@
 import delay from './delay'
 import AnyFunction from '../type/AnyFunction'
+import { MAX_RETRY_TIMES_ERROR } from './retry'
 
 /** build-in timing function */
 export const enum TimingFunction {
@@ -33,11 +34,11 @@ export const TIMING_FUNCTION: TimingFunctions = {
  * @param options retry options
  */
 export interface TimingFunctionType {
-  (times: number, options: Options): number
+  (times: number, options: HeartbeatOptions): number
 }
 
 /** retry options type */
-export interface Options {
+export interface HeartbeatOptions {
   /** basic interval, default to 1s */
   base: number,
   /** max retry times, default to 10 times */
@@ -47,14 +48,11 @@ export interface Options {
 }
 
 /** default retry options */
-export const DEFAULT_OPTIONS: Options = {
+export const DEFAULT_OPTIONS: HeartbeatOptions = {
   base: 1000,
   max: 10,
   func: TimingFunction.Linear
 }
-
-/** max retry times errors  */
-export const MAX_RETRY_TIMES_ERROR: Error = new Error(`Maximum retry times`)
 
 /**
  * retry function that not throw
@@ -62,8 +60,8 @@ export const MAX_RETRY_TIMES_ERROR: Error = new Error(`Maximum retry times`)
  * @param fn caller
  * @param options retry options
  */
-export default async function retry<F extends AnyFunction>(fn: F, options: Partial<Options> = {}): Promise<ReturnType<F>> {
-  const opts: Options = { ...DEFAULT_OPTIONS, ...options }
+export default async function retry<F extends AnyFunction>(fn: F, options: Partial<HeartbeatOptions> = {}): Promise<ReturnType<F>> {
+  const opts: HeartbeatOptions = { ...DEFAULT_OPTIONS, ...options }
   const { base, max, func } = opts
 
   let times: number = 0

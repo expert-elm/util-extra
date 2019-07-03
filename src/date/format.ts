@@ -1,7 +1,7 @@
 import toYear from './toYear'
 import toMonth from './toMonth'
 import toMonthNumber from './toMonthNumber'
-import toWeekDay, { Format as WeekFormat } from './toWeekDay'
+import toWeekDay, { WeekFormat } from './toWeekDay'
 import toQuarter from  './toQuarter'
 import toMidday from './toMidday'
 import toPadZero from '../number/toPadZero'

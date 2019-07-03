@@ -44,16 +44,16 @@ export type YearResult = {
   thisYearOffset: number
 }
 
-export interface Options<T, E extends T> {
+export interface CalendarOptions<T, E extends T> {
   type?: Type,
   view?: View,
   weekStart?: WeekDay,
   callback?(result: T): E
 }
 
-export default function toCalendar<T extends DayResult>(date: Date, type: Type.Day, options?: Options<DayResult, T>): DayResult[]
-export default function toCalendar<T extends MonthResult>(date: Date, type: Type.Month, options?: Options<MonthResult, T>): MonthResult[]
-export default function toCalendar<T extends YearResult>(date: Date, type: Type.Year, options?: Options<YearResult, T>): YearResult[]
+export default function toCalendar<T extends DayResult>(date: Date, type: Type.Day, options?: CalendarOptions<DayResult, T>): DayResult[]
+export default function toCalendar<T extends MonthResult>(date: Date, type: Type.Month, options?: CalendarOptions<MonthResult, T>): MonthResult[]
+export default function toCalendar<T extends YearResult>(date: Date, type: Type.Year, options?: CalendarOptions<YearResult, T>): YearResult[]
 export default function toCalendar(date: Date, type: Type, options = {}) {
   assertInvalidDate(date)
   const today: Date = new Date
@@ -66,7 +66,7 @@ export default function toCalendar(date: Date, type: Type, options = {}) {
   }
 }
 
-function renderDays<T extends DayResult>(date: Date, today: Date, options: Options<DayResult, T> = {}): DayResult[] {
+function renderDays<T extends DayResult>(date: Date, today: Date, options: CalendarOptions<DayResult, T> = {}): DayResult[] {
   assertInvalidDate(date)
 
   const { 
@@ -108,7 +108,7 @@ function renderDays<T extends DayResult>(date: Date, today: Date, options: Optio
   }
 }
 
-function renderMonths<T extends MonthResult>(date: Date, today: Date, options: Options<MonthResult, T> = {}): MonthResult[] {
+function renderMonths<T extends MonthResult>(date: Date, today: Date, options: CalendarOptions<MonthResult, T> = {}): MonthResult[] {
   const {} = options
   const thisMonth: number = today.getMonth()
   const thisYear: number = today.getFullYear()
@@ -142,7 +142,7 @@ function renderMonths<T extends MonthResult>(date: Date, today: Date, options: O
   })
 }
 
-function renderYears<T extends YearResult>(date: Date, today: Date, options: Options<YearResult, T> = {}): YearResult[] {
+function renderYears<T extends YearResult>(date: Date, today: Date, options: CalendarOptions<YearResult, T> = {}): YearResult[] {
   const {} = options
   const thisYear: number = today.getFullYear()
   const year = date.getFullYear()

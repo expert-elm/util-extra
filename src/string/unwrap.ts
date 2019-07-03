@@ -1,28 +1,4 @@
-/** build-in pairs */
-export const enum Pair {
-  SingleQuotes = "''",
-  DoubleQuotes = '""',
-  BackQuotes = '``',
-  Parenthesis = '()',
-  SquareBrackets = '[]',
-  Braces = '{}',
-  AngleBrackets = '<>',
-  Underscores = '__',
-  Stars = '**'
-}
-
-/** build-in pair list */
-export const BUILDIN_PAIRS: string[] = [
-  Pair.SingleQuotes,
-  Pair.DoubleQuotes,
-  Pair.BackQuotes,
-  Pair.Parenthesis,
-  Pair.SquareBrackets,
-  Pair.Braces,
-  Pair.AngleBrackets,
-  Pair.Underscores,
-  Pair.Stars
-]
+import { Pairs } from './pair'
 
 /** includes predicate function */
 export interface IncludePredicateFunction {
@@ -44,7 +20,7 @@ export default function unwrap(value: string, includes?: string[] | IncludePredi
   const join: string = fst + lst
 
   if('function' === typeof includes) return !includes(value, fst, lst) ? value : value.slice(1, -1)
-  const matchers: string[] = undefined !== includes ? includes : BUILDIN_PAIRS
+  const matchers: string[] = undefined !== includes ? includes : Pairs
   if(!matchers.includes(join)) return value
   return value.slice(1, -1)
 }

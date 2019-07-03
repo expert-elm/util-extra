@@ -1,5 +1,8 @@
 import AnyFunction from '../type/AnyFunction'
 
+/**
+ * @noexport
+ */
 export const MAX_RETRY_TIMES_ERROR: Error = new Error(`Maximum retry times`)
 
 export default async function retry<F extends AnyFunction>(fn: F, max: number = Infinity): Promise<ReturnType<F>> {

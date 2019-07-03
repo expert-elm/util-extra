@@ -18,7 +18,7 @@ export function defaultEquals<T>(a: T, b: T): boolean {
 type BaseTest<T> = T | TestPredicateFunction<T>
 
 /** choose options */
-export interface Options<T, U = never> {
+export interface ChooseOptions<T, U = never> {
   test: BaseTest<T> | U,
   include: T | T[],
   exclude: T | T[],
@@ -31,8 +31,8 @@ export interface Options<T, U = never> {
  * @param list list
  * @param options options
  */
-function choose(list: string[], options?: Partial<Options<string, RegExp>>): string[]
-function choose<T, U>(list: T[], options?: Partial<Options<T, U>>): T[]
+function choose(list: string[], options?: Partial<ChooseOptions<string, RegExp>>): string[]
+function choose<T, U>(list: T[], options?: Partial<ChooseOptions<T, U>>): T[]
 function choose(list: any, options?: any): any {
   if(0 === list.length) return []
   switch(typeof list[0]) {
@@ -41,13 +41,13 @@ function choose(list: any, options?: any): any {
   }
 }
 
-function chooseString(list: string[], options: Partial<Options<string>> = {}): string[] {
+function chooseString(list: string[], options: Partial<ChooseOptions<string>> = {}): string[] {
   const { test } = options
   if(!(test instanceof RegExp)) return chooseAny(list, options)
   return chooseAny(list, { ...options, test: (item: string) => test.test(item) })
 }
 
-function chooseAny<T>(list: T[], options: Partial<Options<T, never>> = {}): T[] {
+function chooseAny<T>(list: T[], options: Partial<ChooseOptions<T, never>> = {}): T[] {
   const { test = () => true, include = [], exclude = [], equals = defaultEquals } = options
   const match: TestPredicateFunction<T> = 'function' === typeof test
     ? test as TestPredicateFunction<T>
