@@ -7,7 +7,7 @@
   "scripts": {
     "start": "tsc -w",
     "build": "foy build",
-    "test": "foy test",
+    "test": "jest",
     "test:watch": "foy test:watch",
     "release": "foy release"
   },
@@ -35,7 +35,8 @@
     "@types/jest": "^23.3.14",
     "@types/node": "^10.14.10",
     "foy": "^0.1.23",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
+    "jest-canvas-mock": "^2.1.1",
     "log-extra": "0.0.4",
     "ts-baseline": "0.0.1",
     "ts-creator": "^1.2.5",
@@ -48,6 +49,9 @@
   "sideEffects": false,
   "jest": {
     "preset": "ts-jest",
+    "setupFiles": [
+      "jest-canvas-mock"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "<rootDir>/dist/",
@@ -57,6 +61,7 @@
     "verbose": true
   },
   "dependencies": {
+    "glob": "^7.1.4",
     "tslib": "^1.10.0"
   }
 }

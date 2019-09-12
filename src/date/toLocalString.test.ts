@@ -1,4 +1,4 @@
-import toLocalString, { Type } from './toLocalString'
+import toLocalString, { DateFormat } from './toLocalString'
 
 const DATE: Date = new Date(0)
 
@@ -7,11 +7,11 @@ test(`should transform to datetime string`, () => {
 })
 
 test(`should transform to date string`, () => {
-  expect(toLocalString(DATE, Type.Date)).toBe(`1970-01-01`)
+  expect(toLocalString(DATE, DateFormat.Date)).toBe(`1970-01-01`)
 })
 
 test(`should transform to time string`, () => {
-  expect(toLocalString(DATE, Type.Time)).toBe(`08:00:00`)
+  expect(toLocalString(DATE, DateFormat.Time)).toBe(`08:00:00`)
 })
 
 test(`should throw error when type was invalide`, () => {

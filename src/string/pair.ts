@@ -1,4 +1,4 @@
-const enum Pair {
+export const enum Pair {
   SingleQuotes = "''",
   DoubleQuotes = '""',
   BackQuotes = '``',

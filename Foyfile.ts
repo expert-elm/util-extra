@@ -131,12 +131,3 @@ async function genIndexNS(moduleKind: ts.ModuleKind, output: string, extname: st
   log(`gen`, `index.root.file`, rootIndexPath)
   log(`gen`, `index.root.content`, rootIndexContent)
 }
-
-
-task('test', async ctx => {
-  await ctx.exec('jest')
-})
-
-task('test:watch', async ctx => {
-  await ctx.exec('jest --watch')
-})

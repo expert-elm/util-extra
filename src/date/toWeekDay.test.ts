@@ -1,4 +1,4 @@
-import toWeekDay, { WeekDay, WeekDayName, Format } from './toWeekDay'
+import toWeekDay, { WeekDay, WeekDayName, WeekFormat } from './toWeekDay'
 
 test(`toWeekDay()`, () => {
   expect(
@@ -10,7 +10,7 @@ test(`toWeekDay()`, () => {
 
 test(`toWeekDay() short`, () => {
   expect(
-    toWeekDay(new Date(`1970-01-01`), Format.Short)
+    toWeekDay(new Date(`1970-01-01`), WeekFormat.Short)
   ).toBe(
     WeekDayName[WeekDay.Thursday][1]
   )
@@ -18,7 +18,7 @@ test(`toWeekDay() short`, () => {
 
 test(`toWeekDay() shorter`, () => {
   expect(
-    toWeekDay(new Date(`1970-01-01`), Format.Shorter)
+    toWeekDay(new Date(`1970-01-01`), WeekFormat.Shorter)
   ).toBe(
     WeekDayName[WeekDay.Thursday][2]
   )

@@ -1,4 +1,5 @@
-import wrapBy, { Pair } from './wrapBy'
+import wrapBy from './wrapBy'
+import { Pair } from './pair'
 
 test(`should wrap chars`, () => {
   expect(

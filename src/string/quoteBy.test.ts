@@ -1,4 +1,5 @@
-import quoteBy, { Pair } from './quoteBy'
+import quoteBy from './quoteBy'
+import { Pair } from './pair'
 
 test(`should wrap quote`, () => {
   expect(
