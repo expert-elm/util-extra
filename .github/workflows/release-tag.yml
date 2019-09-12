@@ -1,9 +1,9 @@
-name: Publish master barnch
+name: Release version
 
 on: 
   push:
     branches:
-      - 'release/*'
+      - release/*
 
 jobs:
   build:
@@ -12,6 +12,7 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
+        ref: ${{ github.ref }}
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
