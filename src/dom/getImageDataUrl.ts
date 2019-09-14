@@ -2,11 +2,10 @@ export interface GetImageDataUrlOptions {
   readonly size?: number
   readonly type?: string
   readonly quality?: any
-  beforeRunder?(context: CanvasRenderingContext2D): void
 }
 
 export default async function getImageDataUrl(src: string, options: GetImageDataUrlOptions = {}): Promise<string> {
-  const { size = 1, type, quality, beforeRunder } = options
+  const { size = 1, type, quality } = options
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   if(null === ctx) throw new Error(`Can't get canvas context`)
@@ -26,9 +25,7 @@ export default async function getImageDataUrl(src: string, options: GetImageData
   image.setAttribute('width', width.toString())
   image.setAttribute('height', height.toString())
 
-  // ctx.clearRect(0, 0, width, height)
   ctx.drawImage(image, 0, 0, width, height)
-  if('function' === typeof beforeRunder) beforeRunder(ctx)
 
   return canvas.toDataURL(type, quality)
 }

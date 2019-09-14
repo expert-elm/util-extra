@@ -1,4 +1,4 @@
-import setIconLinkTag from './setIconLinkTag'
+import setIconLinkElement from './setIconLinkElement'
 import getNodes from './getNodes'
 
 afterEach(() => {
@@ -6,13 +6,13 @@ afterEach(() => {
 })
 
 test(`default`, () => {
-  const link = setIconLinkTag('./foo')
+  const link = setIconLinkElement('./foo')
   expect(link).toBeInstanceOf(HTMLLinkElement)
   expect(link.getAttribute('href')).toBe('./foo')
 })
 
 test(`append`, () => {
-  setIconLinkTag('./foo')
+  setIconLinkElement('./foo')
   expect(getNodes('link').length).toBe(1)
 })
 
@@ -20,6 +20,6 @@ test(`replace`, () => {
   const link = document.createElement('link')
   link.setAttribute('rel', 'icon')
   document.head.appendChild(link)
-  setIconLinkTag('./foo')
+  setIconLinkElement('./foo')
   expect(getNodes('link').length).toBe(1)
 })

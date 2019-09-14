@@ -1,4 +1,4 @@
-import getIconLinkTag from './getIconLinkTag'
+import getIconLinkElement from './getIconLinkElement'
 import getNodes from './getNodes'
 
 afterEach(() => {
@@ -6,14 +6,14 @@ afterEach(() => {
 })
 
 test('undefined', () => {
-  expect(getIconLinkTag()).toBeUndefined()
+  expect(getIconLinkElement()).toBeUndefined()
 })
 
 test('single', () => {
   const link = document.createElement('link')
   link.setAttribute('rel', 'icon')
   document.head.appendChild(link)
-  expect(getIconLinkTag()).toBe(link)
+  expect(getIconLinkElement()).toBe(link)
 })
 
 test('multi', () => {
@@ -23,5 +23,5 @@ test('multi', () => {
   const link2 = document.createElement('link')
   link2.setAttribute('rel', 'icon')
   document.head.appendChild(link2)
-  expect(getIconLinkTag()).toBe(link2)
+  expect(getIconLinkElement()).toBe(link2)
 })

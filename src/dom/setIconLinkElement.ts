@@ -1,10 +1,10 @@
-import getIconLinkTag from './getIconLinkTag'
+import getIconLinkTag from './getIconLinkElement'
 
 type Attributes = { 
   [K in keyof Omit<HTMLLinkElement, 'href'> ]: HTMLLinkElement[K] 
 }
 
-export default function setIconLinkTag(source: string, rel: string = 'icon', attributes: Partial<Readonly<Attributes>> = {}): HTMLLinkElement {
+export default function setIconLinkElement(source: string, attributes: Partial<Readonly<Attributes>> = {}): HTMLLinkElement {
   const link = document.createElement('link')
   for (const key in attributes) {
     if (attributes.hasOwnProperty(key)) {
@@ -13,7 +13,7 @@ export default function setIconLinkTag(source: string, rel: string = 'icon', att
     }
   }
 
-  link.setAttribute('rel', rel)
+  attributes.rel && link.setAttribute('rel', 'shortcut icon')
   link.setAttribute('href', source)
 
   const oldLink = getIconLinkTag()
