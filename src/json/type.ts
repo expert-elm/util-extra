@@ -34,19 +34,6 @@ export function isJsonNullType(json: Json): json is null {
   return isNull(json)
 }
 
-export function isJsonNotNullValueType(json: Json): json is number | string | boolean {
-  return true
-    || isJsonNumberType(json) 
-    || isJsonStringType(json)
-    || isJsonBooleanType(json)
-}
-
-export function isJsonValueType(json: Json): json is number | string | boolean | null {
-  return true
-    || isJsonNotNullValueType(json) 
-    || isJsonNullType(json)
-}
-
 //#endregion
 
 
@@ -77,7 +64,7 @@ export function assertJsonBooleanType(json: Json): asserts json is boolean {
 }
 
 export function assertJsonNumberType(json: Json): asserts json is number {
-  if(isJsonStringType(json)) return
+  if(isJsonNumberType(json)) return
   throw makeError('Number')
 }
 //#endregion
