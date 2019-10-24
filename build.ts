@@ -3,7 +3,6 @@ import * as fs from 'fs'
 import { sync as glob } from 'glob'
 import { Project, ts, printNode } from 'ts-morph'
 import repack, { Target } from 'ts-repack'
-import log from 'log-extra'
 
 const OUTPUT_DIRECTORY: string = path.resolve('dist')
 const OUTPUT_MJS_DIRECTORY: string = path.resolve(OUTPUT_DIRECTORY, 'module')
@@ -44,8 +43,6 @@ function generateIndex(moduleKind: ts.ModuleKind, output: string, extname: strin
   
   const emitOutput = sourceFile.getEmitOutput()
   for (const outputFile of emitOutput.getOutputFiles()) {
-    log.debug(`gen`, `index.root.emit.file`, outputFile.getFilePath())
-    log.debug(`gen`, `index.root.emit.content`, outputFile.getFilePath())
     fs.writeFileSync(
       outputFile.getFilePath().replace(/\.js/g, extname),
       outputFile.getText(),

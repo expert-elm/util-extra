@@ -1,2 +1,2 @@
-import { randomString } from 'util-extra'
-export default randomString()
+import { isNull } from 'util-extra'
+export default isNull()

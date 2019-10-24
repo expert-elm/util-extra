@@ -33,18 +33,14 @@
   },
   "homepage": "https://github.com/expert-elm/util-extra#readme",
   "devDependencies": {
-    "@types/execa": "^0.9.0",
     "@types/jest": "^24.0.19",
     "@types/node": "^10.14.10",
-    "foy": "^0.1.23",
+    "glob": "^7.1.4",
     "jest": "^24.9.0",
     "jest-canvas-mock": "^2.1.1",
-    "log-extra": "0.0.4",
-    "ts-baseline": "0.0.1",
-    "ts-creator": "^1.2.5",
     "ts-jest": "^24.1.0",
-    "ts-morph": "^2.3.0",
-    "ts-node": "^8.3.0",
+    "ts-morph": "^4.3.2",
+    "ts-node": "^8.4.1",
     "ts-repack": "0.0.9",
     "typescript": "^3.7.0-beta"
   },
@@ -63,7 +59,6 @@
     "verbose": true
   },
   "dependencies": {
-    "glob": "^7.1.4",
     "tslib": "^1.10.0"
   }
 }

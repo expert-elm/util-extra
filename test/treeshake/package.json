@@ -8,7 +8,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "util-extra": "0.0.22",
+    "terser-webpack-plugin": "^2.2.1",
+    "util-extra": "0.0.23",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.4"
   }
