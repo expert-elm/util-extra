@@ -1,6 +1,6 @@
 import wrapBy from './wrapBy'
 import quoteBy from './quoteBy'
-import ParameterType from '../type/ParameterType'
+import { ParameterType } from '../type/ParameterType'
 
 type Attributes = {
   [key: string]: string

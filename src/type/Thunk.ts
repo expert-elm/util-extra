@@ -1,2 +1,1 @@
-type Thunk<T> = () => T
-export default Thunk
+export type Thunk<T> = () => T

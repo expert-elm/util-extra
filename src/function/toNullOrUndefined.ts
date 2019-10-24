@@ -1,4 +1,4 @@
-import Thunk from '../type/Thunk'
+import { Thunk } from '../type/Thunk'
 
 export default function toNullOrUndefiend<T = any, V = null | undefined>(fn: Thunk<T>, nullOrUndefined?: V): T | V {
   try { 

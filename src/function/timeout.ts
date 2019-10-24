@@ -1,4 +1,4 @@
-import AnyFunction from '../type/AnyFunction'
+import { AnyFunction } from '../type/any'
 
 export default function timeout<F extends AnyFunction>(timeout: number, fn: F): Promise<ReturnType<F>> {
   return new Promise(async (res, rej) => {

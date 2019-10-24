@@ -1,4 +1,4 @@
-import hash31 from './hash31'
+import { hash31 } from './hash31'
 
 test('should hash31 work', async () => {
   expect(hash31('123')).toBe(48690)

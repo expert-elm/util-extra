@@ -1,4 +1,4 @@
-import AnyFunction from '../type/AnyFunction'
+import { AnyFunction } from '../type/any'
 
 /**
  * @noexport

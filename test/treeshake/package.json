@@ -8,8 +8,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "util-extra": "file:../../dist",
-    "webpack": "^4.35.0",
+    "util-extra": "0.0.22",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.4"
   }
 }

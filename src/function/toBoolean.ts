@@ -1,4 +1,4 @@
-import Thunk from '../type/Thunk'
+import { Thunk } from '../type/Thunk'
 
 export default function toBoolean<T = any>(fn: Thunk<T>): boolean {
   try { 

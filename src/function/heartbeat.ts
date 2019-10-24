@@ -1,5 +1,5 @@
 import delay from './delay'
-import AnyFunction from '../type/AnyFunction'
+import { AnyFunction } from '../type/any'
 import { MAX_RETRY_TIMES_ERROR } from './retry'
 
 /** build-in timing function */

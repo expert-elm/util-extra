@@ -1,4 +1,4 @@
-export default function hash31(str: string) {
+export function hash31(str: string) {
   let hash = 0
   if (str.length === 0) return hash
   for (let i = 0, len = str.length; i < len; i++) {
