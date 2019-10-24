@@ -1,7 +1,9 @@
 import {
   isEven,
   isOdd,
-  assertNaN
+  assertNaN,
+  assertInfinity,
+  assertNaNAndInfinity
 } from './predicate'
 
 describe('even & odd', () => {
@@ -16,9 +18,20 @@ describe('even & odd', () => {
   })
 })
 
-describe('NaN', () => {
-  test('assert NaN', () => {
+describe('assert', () => {
+  test('NaN', () => {
     expect(() => assertNaN(NaN)).toThrow()
     expect(() => assertNaN(42)).not.toThrow()
+  })
+
+  test('Infinity', () => {
+    expect(() => assertInfinity(Infinity)).toThrow()
+    expect(() => assertInfinity(42)).not.toThrow()
+  })
+
+  test('NaN or Infinity', () => {
+    expect(() => assertNaNAndInfinity(NaN)).toThrow()
+    expect(() => assertNaNAndInfinity(Infinity)).toThrow()
+    expect(() => assertNaNAndInfinity(42)).not.toThrow()
   })
 })
