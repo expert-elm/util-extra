@@ -1,6 +1,6 @@
 {
   "name": "util-extra",
-  "version": "0.0.20",
+  "version": "0.0.22",
   "description": "utils",
   "main": "cjs/index.js",
   "module": "module/index.mjs",
