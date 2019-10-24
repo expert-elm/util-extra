@@ -1,4 +1,4 @@
-import assertNaN from "./assertNaN"
+import { assertNaN } from "./predicate"
 
 export const OVERFLOW_ERROR: Error = new Error(`number length was large then size`)
 

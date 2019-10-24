@@ -23,7 +23,11 @@ export function isNumber(value: any): value is number {
 }
 
 export function isNaN(value: any): value is typeof NaN {
-  return isNumber(value) && isNaN(value)
+  return isNumber(value) && Number.isNaN(value)
+}
+
+export function isInfinity(value: any): value is typeof Infinity {
+  return isNumber(value) && !Number.isFinite(value)
 }
 
 export function isZero(value: any): value is 0 {

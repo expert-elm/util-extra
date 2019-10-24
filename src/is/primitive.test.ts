@@ -3,6 +3,8 @@ import {
   isNull,
   isNil,
   isNumber,
+  isNaN,
+  isInfinity,
   isZero,
   isString,
   isBlankString,
@@ -45,6 +47,11 @@ describe('number & string & boolean', () => {
   test('isNaN', () => {
     expect(isNaN(42)).toBe(false)
     expect(isNaN(NaN)).toBe(true)
+  })
+
+  test('isInfinity', () => {
+    expect(isInfinity(42)).toBe(false)
+    expect(isInfinity(Infinity)).toBe(true)
   })
 
   test('isZero', () => {

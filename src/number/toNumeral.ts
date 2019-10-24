@@ -1,4 +1,4 @@
-import assertNaN from "./assertNaN"
+import { assertNaN } from "./predicate"
 
 export default function toNumeral(number: number): string {
   assertNaN(number)
