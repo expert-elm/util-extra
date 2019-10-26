@@ -3,7 +3,7 @@ import {
   generateRandomString
 } from './generator'
 
-const ns = path.basename(path.dirname(__filename))
+const ns = path.basename(__dirname)
 
 describe(ns + ' generate', () => {
   test('function ' + generateRandomString.name, () => {

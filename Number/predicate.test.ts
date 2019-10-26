@@ -17,7 +17,7 @@ import {
   isNonNegativeInteger
 } from './predicate'
 
-const ns = path.basename(path.dirname(__filename))
+const ns = path.basename(__dirname)
 
 describe(ns + ' predicate', () => {
   test('function ' + isNumber.name, () => {

@@ -9,7 +9,7 @@ import {
   wrapXMLTag
 } from './process'
 
-const ns = path.basename(path.dirname(__filename))
+const ns = path.basename(__dirname)
 
 describe(ns + ' word', () => {
   test('function ' + unwrap.name, () => {

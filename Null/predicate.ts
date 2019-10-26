@@ -21,3 +21,11 @@ export function isNull(value: any): value is null {
 export function isNil(value: any): value is (null | undefined) {
   return isUndefined(value) || isNull(value)
 }
+
+/**
+ * assert never used for switch match case, this one should never matched
+ * @param value value
+ */
+export function assertNever(value: never): never {
+  throw new Error('Unexpected object: ' + value)
+}

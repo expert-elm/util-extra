@@ -4,7 +4,7 @@ import {
   toPrependZero
 } from './conversion'
 
-const ns = path.basename(path.dirname(__filename))
+const ns = path.basename(__dirname)
 
 describe(ns + ' convert to string', () => {
   test('function ' + toNumeralString.name, () => {
