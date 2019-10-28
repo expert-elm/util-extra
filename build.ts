@@ -144,8 +144,12 @@ function generateIndex(moduleKind: ts.ModuleKind, output: string, extname: strin
 
 function generateREADME(): void {
   const out: string[] = []
+  out.push('```ts')
+  out.push(`import {`)
   nameTable.forEach((_, symbol) => {
-    out.push(`- \`${symbol}\``)
+    out.push(`,  ${symbol}`)
   })
+  out.push(`} from 'util-extra'`)
+  out.push('```')
   fs.writeFileSync('README.md', out.join('\n'), 'utf-8')
 }

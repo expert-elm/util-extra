@@ -493,10 +493,10 @@ export interface ToCalendarOptions<T, E extends T> {
   readonly callback?: (result: T) => E
 }
 
-export default function toCalendar<T extends DayResult>(date: Date, options?: ToCalendarOptions<DayResult, T>): DayResult[]
-export default function toCalendar<T extends MonthResult>(date: Date, options?: ToCalendarOptions<MonthResult, T>): MonthResult[]
-export default function toCalendar<T extends YearResult>(date: Date, options?: ToCalendarOptions<YearResult, T>): YearResult[]
-export default function toCalendar(date: Date, options: ToCalendarOptions<any, any> = {}) {
+export function toCalendar<T extends DayResult>(date: Date, options?: ToCalendarOptions<DayResult, T>): DayResult[]
+export function toCalendar<T extends MonthResult>(date: Date, options?: ToCalendarOptions<MonthResult, T>): MonthResult[]
+export function toCalendar<T extends YearResult>(date: Date, options?: ToCalendarOptions<YearResult, T>): YearResult[]
+export function toCalendar(date: Date, options: ToCalendarOptions<any, any> = {}) {
   assertNonInvalidDate(date)
   const today: Date = new Date
   
