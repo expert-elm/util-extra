@@ -45,7 +45,7 @@ function analysisExport(files: string[]) {
 
     exportedDeclarations.forEach((nodes, symbol) => {
       const node = nodes[0]
-      const { line, column } = sourceFile.getLineAndColumnAtPos(node.getEnd())
+      const { line, column } = sourceFile.getLineAndColumnAtPos(node.getStart())
       if('default' === symbol) {
         defaultExportFiles.add(
           `${dirName}/${fileName} has default export\n` + 
