@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/expert-elm/util-extra#readme",
   "devDependencies": {
+    "@types/glob": "^7.1.1",
     "@types/jest": "^24.0.19",
     "@types/node": "^10.14.10",
     "glob": "^7.1.4",
