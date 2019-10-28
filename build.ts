@@ -33,7 +33,7 @@ function analysisExport(files: string[]) {
     tsConfigFilePath: path.resolve('./tsconfig.json'),
     addFilesFromTsConfig: false
   })
-  const nameTable: Map<string, { name: string, file: string }[]> = new Map
+  const nameTable: Map<string, { name: string, file: string, line: number, column: number }[]> = new Map
   const defaultExportFiles: Set<string> = new Set
 
   files.forEach(filePath => {
@@ -61,7 +61,7 @@ function analysisExport(files: string[]) {
       }
 
       const names = nameTable.get(symbol) || []
-      nameTable.set(symbol, names.concat({ name: [dirName, fileName].join('/'), file: `${filePath}.ts:${line}:${column}` }))
+      nameTable.set(symbol, names.concat({ name: [dirName, fileName].join('/'), file: `${filePath}.ts`, line, column }))
 
       exportNames.push(symbol)
       return
@@ -75,8 +75,8 @@ function analysisExport(files: string[]) {
       if(files.length <= 1) continue
       const out = []
       out.push(`"${name}" are both exports by ${files.map(({ name }) => name).join(', ')}`)
-      files.forEach(({ file }) => {
-        out.push(`  @ ${file}`)
+      files.forEach(({ file, line, column }) => {
+        out.push(`  @ ${file}:${line}:${column}`)
       })
       errors.add(out.join('\n'))
     }
@@ -144,12 +144,9 @@ function generateIndex(moduleKind: ts.ModuleKind, output: string, extname: strin
 
 function generateREADME(): void {
   const out: string[] = []
-  out.push('```ts')
-  out.push(`import {`)
-  nameTable.forEach((_, symbol) => {
-    out.push(`,  ${symbol}`)
+  nameTable.forEach((names, symbol) => {
+    const { file, line } = names[0]
+    out.push(`- \`[${symbol}\`](${file}#L${line})`)
   })
-  out.push(`} from 'util-extra'`)
-  out.push('```')
   fs.writeFileSync('README.md', out.join('\n'), 'utf-8')
 }
