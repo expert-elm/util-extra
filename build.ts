@@ -146,7 +146,7 @@ function generateREADME(): void {
   const out: string[] = []
   nameTable.forEach((names, symbol) => {
     const { file, line } = names[0]
-    out.push(`- \`[${symbol}\`](${file}#L${line})`)
+    out.push(`- [\`${symbol}\`](${file}#L${line})`)
   })
   fs.writeFileSync('README.md', out.join('\n'), 'utf-8')
 }
