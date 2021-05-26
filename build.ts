@@ -13,7 +13,7 @@ const files = glob('./**/*.ts', { ignore }).filter((filename: string) => {
 
 const nameTable = analysisExport(files)
 
-const OUTPUT_DIRECTORY: string = path.resolve('dist')
+const OUTPUT_DIRECTORY: string = path.resolve('lib')
 const OUTPUT_MJS_DIRECTORY: string = path.resolve(OUTPUT_DIRECTORY, 'module')
 const OUTPUT_CJS_DIRECTORY: string = path.resolve(OUTPUT_DIRECTORY, 'cjs')
 

@@ -14,6 +14,8 @@
     "release": "cd dist && npm publish"
   },
   "files": [
+    "!.pnp.cjs",
+    "!build.ts",
     "**/*.js",
     "**/*.js.map",
     "**/*.mjs",
@@ -22,11 +24,8 @@
     "**/*.d.ts",
     "**/*.d.ts.map"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/expert-elm/util-extra.git"
-  },
-  "author": "",
+  "repository": "git+https://github.com/expert-elm/util-extra.git",
+  "author": "Rabbit <yfhj1990@hotmali.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/expert-elm/util-extra/issues"
@@ -43,7 +42,7 @@
     "ts-morph": "^2.3.0",
     "ts-node": "^8.3.0",
     "ts-repack": "0.0.11",
-    "typescript": "^3.8.0-dev.20191026"
+    "typescript": "4.1.5"
   },
   "sideEffects": false,
   "jest": {
