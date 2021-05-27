@@ -1,141 +1,272 @@
-- [`ensureArray`](./Array/conversion.ts#L5)
-- [`chooseArray`](./Array/map.ts#L3)
-- [`ChooseArrayOptions`](./Array/map.ts#L12)
-- [`isArray`](./Array/predicate.ts#L8)
-- [`isEmptyArray`](./Array/predicate.ts#L16)
-- [`toBoolean`](./Boolean/conversion.ts#L5)
-- [`isBoolean`](./Boolean/predicate.ts#L9)
-- [`isTrue`](./Boolean/predicate.ts#L17)
-- [`isFalse`](./Boolean/predicate.ts#L25)
-- [`isFalsy`](./Boolean/predicate.ts#L33)
-- [`isTruthy`](./Boolean/predicate.ts#L41)
-- [`assertTrue`](./Boolean/predicate.ts#L56)
-- [`assertFalse`](./Boolean/predicate.ts#L65)
-- [`assertTruthy`](./Boolean/predicate.ts#L74)
-- [`assertFalsy`](./Boolean/predicate.ts#L83)
-- [`getDateAgo`](./Date/compute.ts#L35)
-- [`getDateDiff`](./Date/compute.ts#L97)
-- [`getQuarterOfYear`](./Date/compute.ts#L191)
-- [`getMonthDays`](./Date/compute.ts#L217)
-- [`get12HoursOfDate`](./Date/compute.ts#L239)
-- [`getHourOfTimezone`](./Date/compute.ts#L247)
-- [`DateAgoText`](./Date/compute.ts#L17)
-- [`DateAgoOptions`](./Date/compute.ts#L61)
-- [`DateDiffType`](./Date/compute.ts#L80)
-- [`DateDiffOptions`](./Date/compute.ts#L108)
-- [`getMillisecondOfYear`](./Date/compute.ts#L161)
-- [`getSecondOfYear`](./Date/compute.ts#L166)
-- [`getMinuteOfYear`](./Date/compute.ts#L171)
-- [`getHourOfYear`](./Date/compute.ts#L176)
-- [`getWeekDayOfYear`](./Date/compute.ts#L181)
-- [`getDateOfYear`](./Date/compute.ts#L186)
-- [`DateConstant`](./Date/constant.ts#L1)
-- [`WeekDay`](./Date/constant.ts#L20)
-- [`TimezoneFormat`](./Date/constant.ts#L30)
-- [`Quarter`](./Date/constant.ts#L36)
-- [`Month`](./Date/constant.ts#L43)
-- [`Midday`](./Date/constant.ts#L58)
-- [`WeekDayNames`](./Date/constant.ts#L63)
-- [`MonthNames`](./Date/constant.ts#L73)
-- [`MiddayNames`](./Date/constant.ts#L88)
-- [`toDateYearString`](./Date/conversion.ts#L41)
-- [`toDateWeekDayString`](./Date/conversion.ts#L52)
-- [`toDateTimezoneString`](./Date/conversion.ts#L63)
-- [`toDateQuarterString`](./Date/conversion.ts#L79)
-- [`toDateMonthNumberString`](./Date/conversion.ts#L88)
-- [`toDateMonthString`](./Date/conversion.ts#L98)
-- [`toDateMiddayString`](./Date/conversion.ts#L109)
-- [`toDateJson`](./Date/conversion.ts#L132)
-- [`formatDate`](./Date/conversion.ts#L147)
-- [`toCalendar`](./Date/conversion.ts#L496)
-- [`DateNumberFormat`](./Date/conversion.ts#L9)
-- [`DateNameFormat`](./Date/conversion.ts#L25)
-- [`ToDateYearStringOptions`](./Date/conversion.ts#L48)
-- [`ToDateWeekDayStringOptions`](./Date/conversion.ts#L58)
-- [`ToDateTimezoneStringOptions`](./Date/conversion.ts#L75)
-- [`ToDateMonthNumberStringOptions`](./Date/conversion.ts#L94)
-- [`ToDateMonthStringOptions`](./Date/conversion.ts#L104)
-- [`ToDateMiddayStringOptions`](./Date/conversion.ts#L115)
-- [`CalendarDataType`](./Date/conversion.ts#L449)
-- [`CalendarView`](./Date/conversion.ts#L456)
-- [`ToCalendarOptions`](./Date/conversion.ts#L489)
-- [`isDate`](./Date/predicate.ts#L8)
-- [`isInvalidDate`](./Date/predicate.ts#L16)
-- [`assertNonInvalidDate`](./Date/predicate.ts#L24)
-- [`isLeapYear`](./Date/predicate.ts#L32)
-- [`isValidMonthNumber`](./Date/predicate.ts#L43)
-- [`assertMonthNumber`](./Date/predicate.ts#L49)
-- [`isValidDateNumber`](./Date/predicate.ts#L53)
-- [`assertDateNumber`](./Date/predicate.ts#L59)
-- [`isValidWeekDayNumber`](./Date/predicate.ts#L63)
-- [`assertWeekDayNumber`](./Date/predicate.ts#L69)
-- [`isValidSecondNumber`](./Date/predicate.ts#L73)
-- [`assertSecondNumber`](./Date/predicate.ts#L79)
-- [`isValidMinuteNumber`](./Date/predicate.ts#L83)
-- [`assertMinuteNumber`](./Date/predicate.ts#L89)
-- [`isValidHourNumber`](./Date/predicate.ts#L93)
-- [`assertHourNumber`](./Date/predicate.ts#L99)
-- [`areSameDate`](./Date/predicate.ts#L109)
-- [`isFunction`](./Function/predicate.ts#L8)
-- [`isJsonArrayType`](./Json/predicate.ts#L18)
-- [`isJsonObjectType`](./Json/predicate.ts#L22)
-- [`isJsonStringType`](./Json/predicate.ts#L26)
-- [`isJsonNumberType`](./Json/predicate.ts#L30)
-- [`isJsonBooleanType`](./Json/predicate.ts#L34)
-- [`isJsonNullType`](./Json/predicate.ts#L38)
-- [`assertJsonArrayType`](./Json/predicate.ts#L51)
-- [`assertJsonObjectType`](./Json/predicate.ts#L56)
-- [`assertJsonStringType`](./Json/predicate.ts#L61)
-- [`assertJsonBooleanType`](./Json/predicate.ts#L66)
-- [`assertJsonNumberType`](./Json/predicate.ts#L71)
-- [`Json`](./Json/predicate.ts#L8)
-- [`ensureJsonArrayType`](./Json/predicate.ts#L85)
-- [`ensureJsonObjectType`](./Json/predicate.ts#L86)
-- [`inc`](./Number/calculation.ts#L9)
-- [`dec`](./Number/calculation.ts#L19)
-- [`getInteger`](./Number/calculation.ts#L28)
-- [`divint`](./Number/calculation.ts#L42)
-- [`divintOptions`](./Number/calculation.ts#L53)
-- [`toNumeralString`](./Number/conversion.ts#L14)
-- [`toPrependZero`](./Number/conversion.ts#L37)
-- [`isNumber`](./Number/predicate.ts#L10)
-- [`isNaN`](./Number/predicate.ts#L19)
-- [`isInfinity`](./Number/predicate.ts#L28)
-- [`isZero`](./Number/predicate.ts#L36)
-- [`isInteger`](./Number/predicate.ts#L44)
-- [`isNonNegativeInteger`](./Number/predicate.ts#L52)
-- [`hasDecimal`](./Number/predicate.ts#L60)
-- [`isOdd`](./Number/predicate.ts#L69)
-- [`isEven`](./Number/predicate.ts#L78)
-- [`assertInteger`](./Number/predicate.ts#L92)
-- [`assertPositiveInteger`](./Number/predicate.ts#L100)
-- [`assertNonNegativeInteger`](./Number/predicate.ts#L109)
-- [`assertNonZero`](./Number/predicate.ts#L118)
-- [`assertNonNaN`](./Number/predicate.ts#L127)
-- [`assertNonInfinity`](./Number/predicate.ts#L136)
-- [`getObjectType`](./Object/conversion.ts#L1)
-- [`makeObjectPropertyNonEnumerable`](./Object/object.ts#L1)
-- [`isObject`](./Object/predicate.ts#L3)
-- [`AnyFunction`](./Primitive/AnyFunction.ts#L1)
-- [`assert_never`](./Primitive/assert_never.ts#L4)
-- [`assert_nil`](./Primitive/assert_nil.ts#L4)
-- [`assert_null`](./Primitive/assert_null.ts#L3)
-- [`assert_undefined`](./Primitive/assert_undefined.ts#L3)
-- [`is_nil`](./Primitive/is_nil.ts#L5)
-- [`is_null`](./Primitive/is_null.ts#L1)
-- [`is_undefined`](./Primitive/is_undefined.ts#L1)
-- [`Nil`](./Primitive/Nil.ts#L1)
-- [`thunk`](./Primitive/thunk.ts#L1)
-- [`toHashCode`](./String/conversion.ts#L6)
-- [`generateRandomString`](./String/generator.ts#L6)
-- [`isString`](./String/predicate.ts#L7)
-- [`isBlankString`](./String/predicate.ts#L16)
-- [`assertNonBlankString`](./String/predicate.ts#L37)
-- [`isBlankStringOptions`](./String/predicate.ts#L24)
-- [`unwrap`](./String/process.ts#L33)
-- [`unwrapDeep`](./String/process.ts#L53)
-- [`unquote`](./String/process.ts#L70)
-- [`wrapPattern`](./String/process.ts#L104)
-- [`wrapQuote`](./String/process.ts#L120)
-- [`wrapXMLTag`](./String/process.ts#L131)
-- [`PairPattern`](./String/process.ts#L4)
+<details>
+<summary>base/array</summary>
+
+- [`ensure_array`](./base/array.ts#L5)
+- [`is_array`](./base/array.ts#L13)
+- [`is_empty_array`](./base/array.ts#L21)
+- [`choose_array`](./base/array.ts#L26)
+- [`splitSlice`](./base/array.ts#L59)
+- [`ChooseArrayOptions`](./base/array.ts#L35)
+- [`SplitStrategy`](./base/array.ts#L45)
+</details>
+
+<details>
+<summary>base/boolean</summary>
+
+- [`to_boolean`](./base/boolean.ts#L7)
+- [`is_boolean`](./base/boolean.ts#L15)
+- [`is_true`](./base/boolean.ts#L23)
+- [`is_false`](./base/boolean.ts#L31)
+- [`is_falsy`](./base/boolean.ts#L39)
+- [`is_truthy`](./base/boolean.ts#L47)
+- [`assert_true`](./base/boolean.ts#L57)
+- [`assert_false`](./base/boolean.ts#L66)
+- [`assert_truthy`](./base/boolean.ts#L75)
+- [`assert_falsy`](./base/boolean.ts#L84)
+</details>
+
+<details>
+<summary>base/date</summary>
+
+- [`is_date`](./base/date.ts#L118)
+- [`is_invalid_date`](./base/date.ts#L127)
+- [`assert_non_invalid_date`](./base/date.ts#L135)
+- [`is_leap_year`](./base/date.ts#L143)
+- [`is_valid_month_number`](./base/date.ts#L156)
+- [`assert_month_number`](./base/date.ts#L161)
+- [`is_valid_date_number`](./base/date.ts#L165)
+- [`assert_date_number`](./base/date.ts#L170)
+- [`is_valid_weekday_number`](./base/date.ts#L174)
+- [`assert_weekday_number`](./base/date.ts#L179)
+- [`is_valid_second_number`](./base/date.ts#L183)
+- [`assert_second_number`](./base/date.ts#L188)
+- [`is_valid_minute_number`](./base/date.ts#L192)
+- [`assert_minute_number`](./base/date.ts#L197)
+- [`is_valid_hour_number`](./base/date.ts#L201)
+- [`assert_hour_number`](./base/date.ts#L206)
+- [`are_same_date`](./base/date.ts#L216)
+- [`ago`](./base/date.ts#L250)
+- [`diff_date`](./base/date.ts#L301)
+- [`get_quarter_of_year`](./base/date.ts#L395)
+- [`get_month_days`](./base/date.ts#L421)
+- [`get_12_hours_of_date`](./base/date.ts#L443)
+- [`get_hour_of_timezone`](./base/date.ts#L451)
+- [`to_date_year_string`](./base/date.ts#L491)
+- [`to_date_weekday_string`](./base/date.ts#L502)
+- [`to_date_timezone_string`](./base/date.ts#L513)
+- [`to_date_quarter_string`](./base/date.ts#L529)
+- [`to_date_month_number_string`](./base/date.ts#L538)
+- [`to_date_month_string`](./base/date.ts#L548)
+- [`to_date_midday_string`](./base/date.ts#L559)
+- [`to_date_json`](./base/date.ts#L582)
+- [`formatDate`](./base/date.ts#L597)
+- [`render_calendar`](./base/date.ts#L946)
+- [`DateConstant`](./base/date.ts#L6)
+- [`DateUnit`](./base/date.ts#L27)
+- [`WeekDay`](./base/date.ts#L38)
+- [`TimezoneFormat`](./base/date.ts#L48)
+- [`Quarter`](./base/date.ts#L54)
+- [`Month`](./base/date.ts#L61)
+- [`Midday`](./base/date.ts#L76)
+- [`WeekDayNames`](./base/date.ts#L81)
+- [`MonthNames`](./base/date.ts#L91)
+- [`MiddayNames`](./base/date.ts#L106)
+- [`DateAgoText`](./base/date.ts#L232)
+- [`AgoOptions`](./base/date.ts#L276)
+- [`DateDiffOptions`](./base/date.ts#L312)
+- [`get_millisecond_of_year`](./base/date.ts#L365)
+- [`get_second_of_year`](./base/date.ts#L370)
+- [`get_minute_of_year`](./base/date.ts#L375)
+- [`get_hour_of_year`](./base/date.ts#L380)
+- [`get_weekday_of_year`](./base/date.ts#L385)
+- [`get_date_of_year`](./base/date.ts#L390)
+- [`DateNumberFormat`](./base/date.ts#L459)
+- [`DateNameFormat`](./base/date.ts#L475)
+- [`ToDateYearStringOptions`](./base/date.ts#L498)
+- [`ToDateWeekDayStringOptions`](./base/date.ts#L508)
+- [`ToDateTimezoneStringOptions`](./base/date.ts#L525)
+- [`ToDateMonthNumberStringOptions`](./base/date.ts#L544)
+- [`ToDateMonthStringOptions`](./base/date.ts#L554)
+- [`ToDateMiddayStringOptions`](./base/date.ts#L565)
+- [`DateJson`](./base/date.ts#L572)
+- [`CalendarDataType`](./base/date.ts#L899)
+- [`CalendarView`](./base/date.ts#L906)
+- [`ToCalendarOptions`](./base/date.ts#L939)
+</details>
+
+<details>
+<summary>base/function</summary>
+
+- [`is_function`](./base/function.ts#L13)
+- [`AnyFunction`](./base/function.ts#L7)
+</details>
+
+<details>
+<summary>base/json</summary>
+
+- [`is_json_array`](./base/json.ts#L19)
+- [`is_json_object`](./base/json.ts#L23)
+- [`is_json_string`](./base/json.ts#L27)
+- [`is_json_number`](./base/json.ts#L31)
+- [`is_json_boolean`](./base/json.ts#L35)
+- [`is_json_null`](./base/json.ts#L39)
+- [`assert_json_array`](./base/json.ts#L52)
+- [`assert_json_object`](./base/json.ts#L56)
+- [`assert_json_string`](./base/json.ts#L60)
+- [`assert_json_boolean`](./base/json.ts#L64)
+- [`assert_json_number`](./base/json.ts#L68)
+- [`assert_json_null`](./base/json.ts#L72)
+- [`Json`](./base/json.ts#L9)
+- [`ensure_json_array`](./base/json.ts#L85)
+- [`ensure_json_object`](./base/json.ts#L86)
+</details>
+
+<details>
+<summary>base/never</summary>
+
+- [`assert_never`](./base/never.ts#L4)
+</details>
+
+<details>
+<summary>base/nil</summary>
+
+- [`is_nil`](./base/nil.ts#L6)
+- [`assert_nil`](./base/nil.ts#L10)
+- [`Nil`](./base/nil.ts#L4)
+</details>
+
+<details>
+<summary>base/null</summary>
+
+- [`is_null`](./base/null.ts#L1)
+- [`assert_null`](./base/null.ts#L5)
+</details>
+
+<details>
+<summary>base/number</summary>
+
+- [`is_number`](./base/number.ts#L15)
+- [`is_nan`](./base/number.ts#L30)
+- [`is_infinity`](./base/number.ts#L45)
+- [`is_zero`](./base/number.ts#L53)
+- [`is_integer`](./base/number.ts#L61)
+- [`is_non_negative_integer`](./base/number.ts#L69)
+- [`has_decimal`](./base/number.ts#L77)
+- [`is_odd`](./base/number.ts#L86)
+- [`is_even`](./base/number.ts#L95)
+- [`assert_integer`](./base/number.ts#L109)
+- [`assertPositiveInteger`](./base/number.ts#L117)
+- [`assert_non_negative_integer`](./base/number.ts#L126)
+- [`assertNonZero`](./base/number.ts#L135)
+- [`assert_non_nan`](./base/number.ts#L144)
+- [`assert_non_infinity`](./base/number.ts#L153)
+- [`inc`](./base/number.ts#L163)
+- [`dec`](./base/number.ts#L173)
+- [`get_integer`](./base/number.ts#L182)
+- [`divint`](./base/number.ts#L196)
+- [`to_numeral_string`](./base/number.ts#L227)
+- [`prepend_zero`](./base/number.ts#L251)
+- [`DivintOptions`](./base/number.ts#L207)
+</details>
+
+<details>
+<summary>base/object</summary>
+
+- [`object_type`](./base/object.ts#L9)
+- [`make_object_property_non_enumerable`](./base/object.ts#L15)
+- [`is_object`](./base/object.ts#L24)
+- [`create_object_null`](./base/object.ts#L28)
+</details>
+
+<details>
+<summary>base/promise</summary>
+
+- [`Job`](./base/promise.ts#L1)
+- [`Queue`](./base/promise.ts#L6)
+</details>
+
+<details>
+<summary>base/string</summary>
+
+- [`hash_string`](./base/string.ts#L8)
+- [`random_string`](./base/string.ts#L25)
+- [`is_string`](./base/string.ts#L34)
+- [`is_blank_string`](./base/string.ts#L44)
+- [`assert_non_blank_string`](./base/string.ts#L56)
+- [`unwrap`](./base/string.ts#L91)
+- [`unwrap_deep`](./base/string.ts#L111)
+- [`unquote`](./base/string.ts#L128)
+- [`wrap_pattern`](./base/string.ts#L162)
+- [`wrap_quote`](./base/string.ts#L178)
+- [`wrap_xml`](./base/string.ts#L189)
+- [`PairPattern`](./base/string.ts#L62)
+</details>
+
+<details>
+<summary>base/thunk</summary>
+
+- [`thunk`](./base/thunk.ts#L3)
+- [`Thunk`](./base/thunk.ts#L1)
+</details>
+
+<details>
+<summary>base/timer</summary>
+
+- [`sleep`](./base/timer.ts#L4)
+- [`timeout`](./base/timer.ts#L8)
+- [`delay`](./base/timer.ts#L20)
+- [`call_to_boolean`](./base/timer.ts#L26)
+- [`call_to_factory`](./base/timer.ts#L35)
+- [`call_to_null`](./base/timer.ts#L43)
+- [`call_to_undefined`](./base/timer.ts#L47)
+- [`retry`](./base/timer.ts#L113)
+- [`TimingFunctionType`](./base/timer.ts#L53)
+- [`TIMING_FUNCTION`](./base/timer.ts#L67)
+- [`TimingFunction`](./base/timer.ts#L83)
+- [`Options`](./base/timer.ts#L88)
+- [`DEFAULT_OPTIONS`](./base/timer.ts#L98)
+</details>
+
+<details>
+<summary>base/undefined</summary>
+
+- [`is_undefined`](./base/undefined.ts#L1)
+- [`assert_undefined`](./base/undefined.ts#L5)
+</details>
+
+<details>
+<summary>data/model</summary>
+
+- [`Model`](./data/model.ts#L106)
+- [`DataModel`](./data/model.ts#L3)
+</details>
+
+<details>
+<summary>data/optional</summary>
+
+- [`Some`](./data/optional.ts#L352)
+- [`isOptional`](./data/optional.ts#L368)
+- [`isSome`](./data/optional.ts#L377)
+- [`isNone`](./data/optional.ts#L386)
+- [`OPTIONAL_ERROR`](./data/optional.ts#L4)
+- [`OPTIONAL_TRANSPOSE`](./data/optional.ts#L7)
+- [`OptionalType`](./data/optional.ts#L10)
+- [`UnpackOptional`](./data/optional.ts#L18)
+- [`Optional`](./data/optional.ts#L21)
+- [`None`](./data/optional.ts#L357)
+</details>
+
+<details>
+<summary>data/result</summary>
+
+- [`Ok`](./data/result.ts#L314)
+- [`Err`](./data/result.ts#L323)
+- [`is_result`](./data/result.ts#L335)
+- [`is_ok`](./data/result.ts#L344)
+- [`is_err`](./data/result.ts#L353)
+- [`RESULT_TRANSPOSE`](./data/result.ts#L4)
+- [`ResultType`](./data/result.ts#L7)
+- [`UnpackResult`](./data/result.ts#L19)
+- [`Result`](./data/result.ts#L27)
+</details>
+

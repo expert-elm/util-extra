@@ -2,13 +2,13 @@
   "name": "util-extra",
   "version": "0.0.23",
   "description": "utils",
-  "main": "cjs/index.js",
-  "module": "module/index.mjs",
+  "type": "module",
+  "module": "lib/index.js",
   "scripts": {
     "start": "tsc -w",
     "test": "jest",
     "prebuild": "rm dist -rf",
-    "build": "ts-node build.ts",
+    "build": "node --loader ts-node/esm build.ts",
     "postbuild": "cp package.json dist && cp LICENSE dist && cp README.md dist",
     "prerelease": "npm run build && npm version patch && cp package.json dist",
     "release": "cd dist && npm publish"
@@ -40,8 +40,7 @@
     "jest-canvas-mock": "^2.1.1",
     "ts-jest": "^24.1.0",
     "ts-morph": "^2.3.0",
-    "ts-node": "^8.3.0",
-    "ts-repack": "0.0.11",
+    "ts-node": "^10.0.0",
     "typescript": "4.1.5"
   },
   "sideEffects": false,
@@ -52,6 +51,7 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
+      "<rootDir>/lib/",
       "<rootDir>/dist/",
       "<rootDir>/test/",
       "<rootDir>/node_modules/"
@@ -60,5 +60,13 @@
   },
   "dependencies": {
     "tslib": "^1.10.0"
+  },
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "dependenciesMeta": {
+    "ts-node@10.0.0": {
+      "unplugged": true
+    }
   }
 }
