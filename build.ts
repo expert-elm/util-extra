@@ -1,11 +1,10 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import { sync as glob } from 'glob'
+import glob from 'glob'
 import { Project, ts, printNode } from 'ts-morph'
-import repack, { Target } from 'ts-repack'
 
-const ignore = ['./node_modules/**', './test/**', './dist/**', './build.ts']
-const files = glob('./**/*.ts', { ignore }).filter((filename: string) => {
+const ignore = ['./node_modules/**', './test/**', './lib/**', './build.ts']
+const files = glob.sync('./**/*.ts', { ignore }).filter((filename: string) => {
   return ~['build.ts'].includes(filename) 
     && !filename.endsWith('.test.ts') 
     && !filename.startsWith('_')
@@ -14,19 +13,32 @@ const files = glob('./**/*.ts', { ignore }).filter((filename: string) => {
 const nameTable = analysisExport(files)
 
 const OUTPUT_DIRECTORY: string = path.resolve('lib')
-const OUTPUT_MJS_DIRECTORY: string = path.resolve(OUTPUT_DIRECTORY, 'module')
-const OUTPUT_CJS_DIRECTORY: string = path.resolve(OUTPUT_DIRECTORY, 'cjs')
 
-fs.mkdirSync(OUTPUT_DIRECTORY)
-fs.mkdirSync(OUTPUT_CJS_DIRECTORY)
-fs.mkdirSync(OUTPUT_MJS_DIRECTORY)
-repack(Target.CJS, { output: OUTPUT_CJS_DIRECTORY })
-repack(Target.MJS, { output: OUTPUT_MJS_DIRECTORY })
+fs.mkdirSync(OUTPUT_DIRECTORY, { recursive: true })
 
-
-generateIndex(ts.ModuleKind.CommonJS, OUTPUT_CJS_DIRECTORY, `.js`)
-generateIndex(ts.ModuleKind.ESNext, OUTPUT_MJS_DIRECTORY, `.mjs`)
+build()
+generateIndex(ts.ModuleKind.ESNext, OUTPUT_DIRECTORY, `.js`)
 generateREADME()
+
+function build() {
+  const project = new Project({
+    tsConfigFilePath: path.resolve('./tsconfig.json'),
+    addFilesFromTsConfig: false
+  })
+
+  files.forEach(filePath => {
+    // const dirName = path.basename(path.dirname(filePath))
+    // const fileName = path.basename(filePath, path.extname(filePath))
+    // const sourceFile = project.addExistingSourceFile(filePath + '.ts')
+    project.addExistingSourceFile(filePath + '.ts')
+  })
+
+  project.emit({
+    customTransformers: {
+      after: [ transformer() ]
+    }
+  })
+}
 
 function analysisExport(files: string[]) {
   const project = new Project({
@@ -43,6 +55,7 @@ function analysisExport(files: string[]) {
     const exportedDeclarations = sourceFile.getExportedDeclarations()
     const exportNames: string[] = []
 
+    console.log(filePath)
     exportedDeclarations.forEach((nodes, symbol) => {
       const node = nodes[0]
       const { line, column } = sourceFile.getLineAndColumnAtPos(node.getStart())
@@ -143,10 +156,58 @@ function generateIndex(moduleKind: ts.ModuleKind, output: string, extname: strin
 }
 
 function generateREADME(): void {
-  const out: string[] = []
+  let out: string = ''
+  const groups: { [key: string]: string[] } = {}
   nameTable.forEach((names, symbol) => {
     const { file, line } = names[0]
-    out.push(`- [\`${symbol}\`](${file}#L${line})`)
+    if(!groups[file]) groups[file] = []
+    groups[file].push(`- [\`${symbol}\`](${file}#L${line})`)
+    // out.push(`- [\`${symbol}\`](${file}#L${line})`)
   })
-  fs.writeFileSync('README.md', out.join('\n'), 'utf-8')
+  Object.keys(groups).forEach(file => {
+    const name = file.replace('./', '').replace('.ts', '')
+    out += '<details>\n'
+    out += `<summary>${name}</summary>\n\n`
+    groups[file].forEach(row => {
+      out += `${row}\n`
+    })
+    out += '</details>\n\n'
+  })
+  fs.writeFileSync('README.md', out, 'utf-8')
+}
+
+
+
+function transformer(): ts.TransformerFactory<ts.SourceFile> {
+  return (transformationContext: ts.TransformationContext) => {
+    return (sourceFile: ts.SourceFile) => {
+      function visitNode(node: ts.Node): ts.VisitResult<ts.Node> {
+        if (shouldMutateModuleSpecifier(node)) {
+          if (ts.isImportDeclaration(node)) {
+            const newModuleSpecifier = ts.createLiteral(`${node.moduleSpecifier.text}.js`)
+            return ts.updateImportDeclaration(node, node.decorators, node.modifiers, node.importClause, newModuleSpecifier)
+          } else if (ts.isExportDeclaration(node)) {
+            const newModuleSpecifier = ts.createLiteral(`${node.moduleSpecifier.text}.js`)
+            return ts.updateExportDeclaration(node, node.decorators, node.modifiers, node.exportClause, newModuleSpecifier, node.isTypeOnly)
+          }
+        }
+
+        return ts.visitEachChild(node, visitNode, transformationContext)
+      }
+
+      function shouldMutateModuleSpecifier(node: ts.Node): node is (ts.ImportDeclaration | ts.ExportDeclaration) & { moduleSpecifier: ts.StringLiteral } {
+        if (!ts.isImportDeclaration(node) && !ts.isExportDeclaration(node)) return false
+        if (node.moduleSpecifier === undefined) return false
+        // only when module specifier is valid
+        if (!ts.isStringLiteral(node.moduleSpecifier)) return false
+        // only when path is relative
+        if (!node.moduleSpecifier.text.startsWith('./') && !node.moduleSpecifier.text.startsWith('../')) return false
+        // only when module specifier has no extension
+        if (path.extname(node.moduleSpecifier.text) !== '') return false
+        return true
+      }
+
+      return ts.visitNode(sourceFile, visitNode)
+    }
+  }
 }
