@@ -156,7 +156,19 @@ function generateIndex(moduleKind: ts.ModuleKind, output: string, extname: strin
 }
 
 function generateREADME(): void {
-  let out: string = ''
+  let out: string = `\
+<br/>
+
+<div align=left>
+
+# util-extra
+
+_name enough_
+
+</div>
+
+<br />
+`
   const groups: { [key: string]: string[] } = {}
   nameTable.forEach((names, symbol) => {
     const { file, line } = names[0]
