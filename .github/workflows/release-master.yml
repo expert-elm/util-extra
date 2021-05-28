@@ -1,9 +1,11 @@
-name: Publish master barnch
+name: release latest commit on pr merged
 
 on: 
-  push:
+  pull_request_review:
     branches:
       - master
+    types:
+      - submitted
 
 jobs:
   build:
