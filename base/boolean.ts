@@ -3,7 +3,7 @@ import { object_type } from './object'
 /**
  * Convert value to boolean
  * 
- * @param value value
+ * @param value - value
  * @returns boolean
  * 
  * @example ```ts
@@ -18,7 +18,7 @@ export function to_boolean(value: any): boolean {
 /**
  * Test value is boolean type
  * 
- * @param value value
+ * @param value - value
  * @returns value is boolean type or not
  * 
  * @example```ts
@@ -34,7 +34,7 @@ export function is_boolean(value: any): value is boolean {
 /**
  * Test a boolean value is true
  * 
- * @param bool boolean
+ * @param bool - boolean
  * @returns test result
  * 
  * @example```ts
@@ -49,7 +49,7 @@ export function is_true(bool: boolean): bool is true {
 /**
  * Test a boolean value is false
  * 
- * @param bool boolean
+ * @param bool - boolean
  * @returns test result
  * 
  * @example```ts

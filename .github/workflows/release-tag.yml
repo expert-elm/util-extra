@@ -20,7 +20,7 @@ jobs:
       run: npm i && npm run build
     - uses: HairyRabbit/actions/release-tag@latest
       with:
-        context: 'dist'
+        context: 'lib'
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

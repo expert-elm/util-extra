@@ -20,6 +20,6 @@ jobs:
       run: npm i && npm run build
     - uses: HairyRabbit/actions/release-master@latest
       with:
-        context: 'dist'
+        context: 'lib'
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

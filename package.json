@@ -5,8 +5,8 @@
   "type": "module",
   "module": "lib/index.js",
   "scripts": {
-    "start": "tsc -w",
-    "test": "jest",
+    "start": "jest --verbose --watch",
+    "test": "jest --coverage",
     "prebuild": "rm dist -rf",
     "build": "node --loader ts-node/esm build.ts",
     "postbuild": "cp package.json dist && cp LICENSE dist && cp README.md dist",
@@ -51,6 +51,7 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
+      ".yarn",
       "<rootDir>/lib/",
       "<rootDir>/dist/",
       "<rootDir>/test/",
