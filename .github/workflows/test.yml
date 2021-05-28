@@ -1,0 +1,20 @@
+name: Test
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+        ref: ${{ github.ref }}
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://registry.npmjs.org'
+    - name: test
+      run: yarn && yarn test
