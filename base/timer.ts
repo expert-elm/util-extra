@@ -1,5 +1,5 @@
 import { AnyFunction } from './function'
-import { Thunk } from './thunk'
+import { Thunk } from '../data/thunk'
 
 export function sleep(timeout: number): Promise<void> {
   return new Promise(res => setTimeout(res, timeout))
