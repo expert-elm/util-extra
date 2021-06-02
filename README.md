@@ -9,32 +9,30 @@ _name enough_
 </div>
 
 <br />
-
 <details>
 <summary>base/array</summary>
 
-- [`ensure_array`](./base/array.ts#L5)
-- [`is_array`](./base/array.ts#L13)
-- [`is_empty_array`](./base/array.ts#L21)
-- [`choose_array`](./base/array.ts#L26)
-- [`splitSlice`](./base/array.ts#L59)
-- [`ChooseArrayOptions`](./base/array.ts#L35)
-- [`SplitStrategy`](./base/array.ts#L45)
+- [`ensure_array`](./base/array.ts#L23)
+- [`is_array`](./base/array.ts#L38)
+- [`is_empty_array`](./base/array.ts#L53)
+- [`select_array`](./base/array.ts#L64)
+- [`cut_at`](./base/array.ts#L102)
+- [`cut`](./base/array.ts#L126)
+- [`cut_all`](./base/array.ts#L144)
+- [`ElementType`](./base/array.ts#L10)
+- [`SelectArrayOptions`](./base/array.ts#L84)
 </details>
 
 <details>
 <summary>base/boolean</summary>
 
-- [`to_boolean`](./base/boolean.ts#L7)
-- [`is_boolean`](./base/boolean.ts#L15)
-- [`is_true`](./base/boolean.ts#L23)
-- [`is_false`](./base/boolean.ts#L31)
-- [`is_falsy`](./base/boolean.ts#L39)
-- [`is_truthy`](./base/boolean.ts#L47)
-- [`assert_true`](./base/boolean.ts#L57)
-- [`assert_false`](./base/boolean.ts#L66)
-- [`assert_truthy`](./base/boolean.ts#L75)
-- [`assert_falsy`](./base/boolean.ts#L84)
+- [`to_boolean`](./base/boolean.ts#L14)
+- [`is_boolean`](./base/boolean.ts#L30)
+- [`is_true`](./base/boolean.ts#L45)
+- [`is_false`](./base/boolean.ts#L61)
+- [`is_falsy`](./base/boolean.ts#L85)
+- [`is_truthy`](./base/boolean.ts#L101)
+- [`Falsy`](./base/boolean.ts#L70)
 </details>
 
 <details>
@@ -109,49 +107,33 @@ _name enough_
 <details>
 <summary>base/function</summary>
 
-- [`is_function`](./base/function.ts#L13)
-- [`AnyFunction`](./base/function.ts#L7)
+- [`is_function`](./base/function.ts#L22)
+- [`AnyFunction`](./base/function.ts#L8)
 </details>
 
 <details>
 <summary>base/json</summary>
 
-- [`is_json_array`](./base/json.ts#L19)
-- [`is_json_object`](./base/json.ts#L23)
-- [`is_json_string`](./base/json.ts#L27)
-- [`is_json_number`](./base/json.ts#L31)
-- [`is_json_boolean`](./base/json.ts#L35)
-- [`is_json_null`](./base/json.ts#L39)
-- [`assert_json_array`](./base/json.ts#L52)
-- [`assert_json_object`](./base/json.ts#L56)
-- [`assert_json_string`](./base/json.ts#L60)
-- [`assert_json_boolean`](./base/json.ts#L64)
-- [`assert_json_number`](./base/json.ts#L68)
-- [`assert_json_null`](./base/json.ts#L72)
-- [`Json`](./base/json.ts#L9)
-- [`ensure_json_array`](./base/json.ts#L85)
-- [`ensure_json_object`](./base/json.ts#L86)
+- [`Json`](./base/json.ts#L2)
 </details>
 
 <details>
 <summary>base/never</summary>
 
-- [`assert_never`](./base/never.ts#L4)
+- [`throw_never`](./base/never.ts#L15)
 </details>
 
 <details>
 <summary>base/nil</summary>
 
-- [`is_nil`](./base/nil.ts#L6)
-- [`assert_nil`](./base/nil.ts#L10)
+- [`is_nil`](./base/nil.ts#L18)
 - [`Nil`](./base/nil.ts#L4)
 </details>
 
 <details>
 <summary>base/null</summary>
 
-- [`is_null`](./base/null.ts#L1)
-- [`assert_null`](./base/null.ts#L5)
+- [`is_null`](./base/null.ts#L11)
 </details>
 
 <details>
@@ -160,34 +142,37 @@ _name enough_
 - [`is_number`](./base/number.ts#L15)
 - [`is_nan`](./base/number.ts#L30)
 - [`is_infinity`](./base/number.ts#L45)
-- [`is_zero`](./base/number.ts#L53)
-- [`is_integer`](./base/number.ts#L61)
-- [`is_non_negative_integer`](./base/number.ts#L69)
-- [`has_decimal`](./base/number.ts#L77)
-- [`is_odd`](./base/number.ts#L86)
-- [`is_even`](./base/number.ts#L95)
-- [`assert_integer`](./base/number.ts#L109)
-- [`assertPositiveInteger`](./base/number.ts#L117)
-- [`assert_non_negative_integer`](./base/number.ts#L126)
-- [`assertNonZero`](./base/number.ts#L135)
-- [`assert_non_nan`](./base/number.ts#L144)
-- [`assert_non_infinity`](./base/number.ts#L153)
-- [`inc`](./base/number.ts#L163)
-- [`dec`](./base/number.ts#L173)
-- [`get_integer`](./base/number.ts#L182)
-- [`divint`](./base/number.ts#L196)
-- [`to_numeral_string`](./base/number.ts#L227)
-- [`prepend_zero`](./base/number.ts#L251)
-- [`DivintOptions`](./base/number.ts#L207)
+- [`is_zero`](./base/number.ts#L55)
+- [`is_integer`](./base/number.ts#L63)
+- [`is_non_negative_integer`](./base/number.ts#L71)
+- [`has_decimal`](./base/number.ts#L79)
+- [`is_odd`](./base/number.ts#L88)
+- [`is_even`](./base/number.ts#L97)
+- [`assert_integer`](./base/number.ts#L111)
+- [`assertPositiveInteger`](./base/number.ts#L119)
+- [`assert_non_negative_integer`](./base/number.ts#L128)
+- [`assertNonZero`](./base/number.ts#L137)
+- [`assert_non_nan`](./base/number.ts#L146)
+- [`assert_non_infinity`](./base/number.ts#L155)
+- [`inc`](./base/number.ts#L165)
+- [`dec`](./base/number.ts#L175)
+- [`get_integer`](./base/number.ts#L184)
+- [`divint`](./base/number.ts#L198)
+- [`to_numeral_string`](./base/number.ts#L229)
+- [`prepend_zero`](./base/number.ts#L253)
+- [`DivintOptions`](./base/number.ts#L209)
 </details>
 
 <details>
 <summary>base/object</summary>
 
 - [`object_type`](./base/object.ts#L9)
-- [`make_object_property_non_enumerable`](./base/object.ts#L15)
 - [`is_object`](./base/object.ts#L24)
-- [`create_object_null`](./base/object.ts#L28)
+- [`create_null_object`](./base/object.ts#L35)
+- [`is_null_object`](./base/object.ts#L51)
+- [`set_unenumerable`](./base/object.ts#L68)
+- [`set_enumerable`](./base/object.ts#L83)
+- [`is_enumerable`](./base/object.ts#L99)
 </details>
 
 <details>
@@ -215,35 +200,22 @@ _name enough_
 </details>
 
 <details>
-<summary>base/thunk</summary>
-
-- [`thunk`](./base/thunk.ts#L3)
-- [`Thunk`](./base/thunk.ts#L1)
-</details>
-
-<details>
 <summary>base/timer</summary>
 
-- [`sleep`](./base/timer.ts#L4)
-- [`timeout`](./base/timer.ts#L8)
-- [`delay`](./base/timer.ts#L20)
-- [`call_to_boolean`](./base/timer.ts#L26)
-- [`call_to_factory`](./base/timer.ts#L35)
-- [`call_to_null`](./base/timer.ts#L43)
-- [`call_to_undefined`](./base/timer.ts#L47)
-- [`retry`](./base/timer.ts#L113)
-- [`TimingFunctionType`](./base/timer.ts#L53)
-- [`TIMING_FUNCTION`](./base/timer.ts#L67)
-- [`TimingFunction`](./base/timer.ts#L83)
-- [`Options`](./base/timer.ts#L88)
-- [`DEFAULT_OPTIONS`](./base/timer.ts#L98)
+- [`sleep`](./base/timer.ts#L3)
+- [`timeout`](./base/timer.ts#L7)
+- [`delay`](./base/timer.ts#L21)
+- [`retry`](./base/timer.ts#L78)
+- [`TimingFunctionType`](./base/timer.ts#L30)
+- [`TIMING_FUNCTION`](./base/timer.ts#L44)
+- [`TimingFunction`](./base/timer.ts#L60)
+- [`Options`](./base/timer.ts#L65)
 </details>
 
 <details>
 <summary>base/undefined</summary>
 
-- [`is_undefined`](./base/undefined.ts#L1)
-- [`assert_undefined`](./base/undefined.ts#L5)
+- [`is_undefined`](./base/undefined.ts#L11)
 </details>
 
 <details>
@@ -280,5 +252,12 @@ _name enough_
 - [`ResultType`](./data/result.ts#L7)
 - [`UnpackResult`](./data/result.ts#L19)
 - [`Result`](./data/result.ts#L27)
+</details>
+
+<details>
+<summary>data/thunk</summary>
+
+- [`thunk`](./data/thunk.ts#L3)
+- [`Thunk`](./data/thunk.ts#L1)
 </details>
 

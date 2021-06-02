@@ -4,6 +4,10 @@
   "description": "utils",
   "type": "module",
   "module": "lib/index.js",
+  "exports": {
+    ".": "lib/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "start": "jest --verbose --watch",
     "test": "jest --coverage",
@@ -32,6 +36,7 @@
   },
   "homepage": "https://github.com/expert-elm/util-extra#readme",
   "devDependencies": {
+    "@jest/globals": "^27.0.3",
     "@types/glob": "^7.1.1",
     "@types/jest": "^24.0.19",
     "@types/node": "^10.14.10",
