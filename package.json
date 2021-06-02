@@ -18,15 +18,7 @@
     "release": "cd dist && npm publish"
   },
   "files": [
-    "!.pnp.cjs",
-    "!build.ts",
-    "**/*.js",
-    "**/*.js.map",
-    "**/*.mjs",
-    "**/*.mjs.map",
-    "**/*.ts",
-    "**/*.d.ts",
-    "**/*.d.ts.map"
+    "lib"
   ],
   "repository": "git+https://github.com/expert-elm/util-extra.git",
   "author": "Rabbit <yfhj1990@hotmali.com>",
