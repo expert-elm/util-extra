@@ -7,7 +7,6 @@
  * is_null(null)      // true
  * is_null(undefined) // false
  * ```
- * @inline
  */
 export function is_null(value: unknown): value is null {
   return null === value

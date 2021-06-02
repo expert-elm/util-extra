@@ -18,7 +18,6 @@ export type AnyFunction<R = any> = (...args: any[]) => R
  * is_function(()=>{})         // true
  * is_function(class {})       // true
  * ```
- * @inline
  */
 export function is_function<R>(value: unknown): value is AnyFunction<R> {
   return 'function' === typeof value || 'Function' === object_type(value)
