@@ -1,51 +1,28 @@
 import { AnyFunction } from './function'
-import { Thunk } from '../data/thunk'
 
 export function sleep(timeout: number): Promise<void> {
   return new Promise(res => setTimeout(res, timeout))
 }
 
-export function timeout<F extends AnyFunction>(timeout: number, fn: F): Promise<ReturnType<F>> {
-  return new Promise(async (res, rej) => {
-    const timer = setTimeout(cleanup, timeout)
-    res(await fn())
+export function timeout<F extends AnyFunction>(fn: F, timeout: number) {
+  return async (...args: Parameters<F>): Promise<ReturnType<F>> => {
+    return new Promise(async (res, rej) => {
+      const timer = setTimeout(cleanup, timeout)
+      res(await fn(...args))
 
-    function cleanup(): void {
-      clearTimeout(timer)
-      rej(new Error(`Timeout`))
-    }
-  })
-}
-
-export async function delay<F extends AnyFunction>(timeout: number, fn: F): Promise<ReturnType<F>> {
-  await sleep(timeout)
-  return fn()
-}
-
-
-export function call_to_boolean<T = any>(fn: Thunk<T>): boolean {
-  try { 
-    fn() 
-    return true 
-  } catch(_) { 
-    return false
+      function cleanup() {
+        clearTimeout(timer)
+        rej(new Error('Timeout'))
+      }
+    })
   }
 }
 
-export function call_to_factory<T = any, V = null | undefined>(fn: Thunk<T>, nullOrUndefined?: V): T | V {
-  try { 
-    return fn()
-  } catch(_) { 
-    return nullOrUndefined as V
+export function delay<F extends AnyFunction>(fn: F, timeout: number) {
+  return async (...args: Parameters<F>): Promise<ReturnType<F>> => {
+    await sleep(timeout)
+    return await fn(...args)
   }
-}
-
-export function call_to_null<T = any>(fn: Thunk<T>): T | null {
-  return call_to_factory(fn, null)
-}
-
-export function call_to_undefined<T = any>(fn: Thunk<T>): T | undefined {
-  return call_to_factory(fn, undefined)
 }
 
 
@@ -86,23 +63,11 @@ export interface TimingFunction {
 
 /** retry options type */
 export interface Options {
-  /** basic interval, default to 1s */
+  /** base interval, default to 1s */
   base?: number,
-  /** max retry times, default to 10 times */
-  max?: number
   /** timing function, use build-in or custom equation, default to linear */
-  func?: TimingFunctionType | TimingFunction
+  timing?: TimingFunctionType | TimingFunction
 }
-
-/** default retry options */
-export const DEFAULT_OPTIONS: Options = {
-  base: 1000,
-  max: 10,
-  func: TimingFunctionType.Linear
-}
-
-/** max retry times errors  */
-const MAX_RETRY_TIMES_ERROR: Error = new Error(`Maximum retry times`)
 
 /**
  * retry function that not throw
@@ -110,21 +75,26 @@ const MAX_RETRY_TIMES_ERROR: Error = new Error(`Maximum retry times`)
  * @param fn caller
  * @param options retry options
  */
-export async function retry<F extends AnyFunction<R>, R>(fn: F, options: Options = {}): Promise<ReturnType<F>> {
-  const { base = 1000, max = 10, func = TimingFunctionType.Linear } = options
-
-  let times: number = 0
-  const equ: TimingFunction = 'function' === typeof func ? func : TIMING_FUNCTION[func]
-  
-  while(times < max) {    
-    try {
-      const dt = equ(times, { base, max, func })
-      const ms: number = (dt + 1) * base
-      return await delay(ms, fn)
-    } catch(e) {
-      times++
+export function retry<F extends AnyFunction<R>, R>(fn: F, max: number = 10, options: Options = {}) {
+  return async (...args: Parameters<F>): Promise<ReturnType<F>> => {
+    const { 
+      base = 1000, 
+      timing = TimingFunctionType.Linear 
+    } = options
+    
+    let times: number = 0
+    const func: TimingFunction = 'function' === typeof timing ? timing : TIMING_FUNCTION[timing]
+    
+    while(times < max) {    
+      try {
+        const dt = func(times, options)
+        const ms: number = (dt + 1) * base
+        return await delay(fn, ms)(...args)
+      } catch(e) {
+        times++
+      }
     }
-  }
 
-  throw MAX_RETRY_TIMES_ERROR
+    throw new Error('Maximum retry times')
+  }
 }

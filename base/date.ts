@@ -1,7 +1,7 @@
 import { is_function } from './function'
 import { prepend_zero, to_numeral_string } from './number'
 import { is_undefined } from './undefined'
-import { assert_never } from './never'
+import { throw_never } from './never'
 
 export const enum DateConstant {
   MillisecondsOfSecond = 1000,
@@ -330,7 +330,7 @@ function calc_milliseconds(type: DateUnit): number {
     case DateUnit.WeekDay:     return DateConstant.WeekDaySeconds
     case DateUnit.Month:       return DateConstant.DaySeconds * 30
     case DateUnit.Year:        return DateConstant.DaySeconds * 30 * DateConstant.MonthsOfYear
-    default: assert_never(type)
+    default: throw_never(type)
   }
 }
 
@@ -408,7 +408,7 @@ export function get_quarter_of_year(date: Date): number {
     case 9:
     case 10:
     case 11: return Quarter.Fourth
-    default: assert_never(month as never)
+    default: throw_never(month as never)
   }
 }
 //#endregion
@@ -435,7 +435,7 @@ export function get_month_days(date: Date): number {
     case 9:
     case 11: return 30
     case 2: return is_leap_year(date) ? 29 : 28
-    default: assert_never(month as never)
+    default: throw_never(month as never)
   }
 }
 
@@ -468,7 +468,7 @@ function format_date_number(number: number, format: DateNumberFormat | ((number:
     case DateNumberFormat.Normal: return number.toString()
     case DateNumberFormat.PadZero: return prepend_zero(number, 2)
     case DateNumberFormat.Numeral: return to_numeral_string(number)
-    default: assert_never(format as never)
+    default: throw_never(format as never)
   }
 }
 
@@ -484,7 +484,7 @@ function format_date_name<T extends { [key: number]: string }>(name: number, nam
     case DateNameFormat.Normal: return str
     case DateNameFormat.Short: return str.substring(0, 3)
     case DateNameFormat.Shorter: return str.substring(0, 2)
-    default: throw assert_never(format)
+    default: throw throw_never(format)
   }
 }
 
@@ -954,7 +954,7 @@ export function render_calendar(date: Date, options: ToCalendarOptions<any, any>
     case CalendarDataType.Day: return render_days(date, today, options)
     case CalendarDataType.Month: return render_months(date, today, options)
     case CalendarDataType.Year: return render_years(date, today, options)
-    default: assert_never(options.type as never)
+    default: throw_never(options.type as never)
   }
 }
 

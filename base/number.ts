@@ -41,16 +41,19 @@ export function is_nan(number: number): boolean {
  * is_infinity(Infinity) // true
  * ```
  * @todo return type should be `number is typeof Infinity`
+ * @inline
  */
 export function is_infinity(number: number): Boolean {
   return !Number.isFinite(number)
 }
 
 /**
- * Test value is `0`
+ * Test value is `0` or `-0`
+ * 
  * @param number number
+ * @returns test result
  */
-export function is_zero(number: number): number is 0 {
+export function is_zero(number: number): number is 0 | -0 {
   return 0 === number
 }
 
