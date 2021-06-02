@@ -11,7 +11,6 @@
  *   default: throw_never(T) // should never match
  * }
  * ```
- * @inline
  */
 export function throw_never(value?: never): never {
   throw new Error('Unknown value ' + value)

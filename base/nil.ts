@@ -14,7 +14,6 @@ export type Nil = undefined | null
  * is_nil(0)         // false
  * is_nil('')        // false
  * ```
- * @inline
  */
 export function is_nil(value: unknown): value is Nil {
   return is_undefined(value) || is_null(value)

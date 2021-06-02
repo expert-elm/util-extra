@@ -34,7 +34,6 @@ export function ensure_array<T>(value: T | T[]): T[] {
  * is_array(Array())   // true
  * is_array({ 0: 42 }) // false
  * ```
- * @inline
  */
 export function is_array(value: any): boolean {
   return Array.isArray(value)
