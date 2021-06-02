@@ -139,7 +139,7 @@ function generateIndex(moduleKind: ts.ModuleKind, output: string, extname: strin
       undefined,
       undefined,
       undefined,
-      ts.createStringLiteral(filename)
+      ts.createStringLiteral(filename + '.js')
     )
   })
   const rootIndexPath: string = path.resolve('index.ts')
