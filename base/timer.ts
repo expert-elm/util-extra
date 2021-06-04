@@ -1,14 +1,32 @@
 import { AnyFunction } from './function'
 
+/**
+ * Sleep millseconds
+ * 
+ * @param timeout - sleep millseconds
+ * @example ```ts
+ * await sleep(100)
+ * ```
+ */
 export function sleep(timeout: number): Promise<void> {
+  if(timeout < 0) throw new Error(`timeout should greate then 0, got ${timeout}`)
   return new Promise(res => setTimeout(res, timeout))
 }
 
+export function delay<F extends AnyFunction>(fn: F, timeout: number) {
+  if(timeout < 0) throw new Error(`timeout should greate then 0, got ${timeout}`)
+  return (...args: Parameters<F>): Promise<ReturnType<F>> => {
+    return new Promise(res => setTimeout(() => {
+      res(fn(args))
+    }, timeout))
+  }
+}
+
 export function timeout<F extends AnyFunction>(fn: F, timeout: number) {
-  return async (...args: Parameters<F>): Promise<ReturnType<F>> => {
-    return new Promise(async (res, rej) => {
+  return (...args: Parameters<F>): Promise<ReturnType<F>> => {
+    return new Promise((res, rej) => {
       const timer = setTimeout(cleanup, timeout)
-      res(await fn(...args))
+      res(fn(...args))
 
       function cleanup() {
         clearTimeout(timer)
@@ -18,16 +36,11 @@ export function timeout<F extends AnyFunction>(fn: F, timeout: number) {
   }
 }
 
-export function delay<F extends AnyFunction>(fn: F, timeout: number) {
-  return async (...args: Parameters<F>): Promise<ReturnType<F>> => {
-    await sleep(timeout)
-    return await fn(...args)
-  }
-}
+
 
 
 /** build-in timing function */
-export const enum TimingFunctionType {
+export const enum TimingFunction {
   /* change by steps */
   Step,
   /* linear, interval no changed */
@@ -36,19 +49,14 @@ export const enum TimingFunctionType {
   Curve
 }
 
-type TimingFunctions = {
-  [K in TimingFunctionType]: TimingFunction
-}
-
-/** build-in timing function implements  */
-export const TIMING_FUNCTION: TimingFunctions = {
-  [TimingFunctionType.Step]: a => {
+const TIMING_FUNCTION: { [K in TimingFunction]: ITimingFunction } = {
+  [TimingFunction.Step]: a => {
     if(a <= 3) return 0
     else if(a <= 6) return 1
     else return 2
   },
-  [TimingFunctionType.Linear]: a => a,
-  [TimingFunctionType.Curve]: a => Math.log1p(a)
+  [TimingFunction.Linear]: a => a,
+  [TimingFunction.Curve]: a => Math.log1p(a)
 }
 
 /** 
@@ -57,7 +65,7 @@ export const TIMING_FUNCTION: TimingFunctions = {
  * @param times current run times
  * @param options retry options
  */
-export interface TimingFunction {
+export interface ITimingFunction {
   (times: number, options: Options): number
 }
 
@@ -65,8 +73,8 @@ export interface TimingFunction {
 export interface Options {
   /** base interval, default to 1s */
   base?: number,
-  /** timing function, use build-in or custom equation, default to linear */
-  timing?: TimingFunctionType | TimingFunction
+  /** timing function, use build-in or custom equation, default to `TimingFunction.Linear` */
+  timing?: TimingFunction | ITimingFunction
 }
 
 /**
@@ -75,15 +83,15 @@ export interface Options {
  * @param fn caller
  * @param options retry options
  */
-export function retry<F extends AnyFunction<R>, R>(fn: F, max: number = 10, options: Options = {}) {
+export function retry_by_timer<F extends AnyFunction<R>, R>(fn: F, max: number = 10, options: Options = {}) {
   return async (...args: Parameters<F>): Promise<ReturnType<F>> => {
     const { 
       base = 1000, 
-      timing = TimingFunctionType.Linear 
+      timing = TimingFunction.Linear 
     } = options
     
     let times: number = 0
-    const func: TimingFunction = 'function' === typeof timing ? timing : TIMING_FUNCTION[timing]
+    const func: ITimingFunction = 'function' === typeof timing ? timing : TIMING_FUNCTION[timing]
     
     while(times < max) {    
       try {

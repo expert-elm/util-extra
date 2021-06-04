@@ -6,8 +6,8 @@ import { object_type } from './object'
  * @param value - value
  * @returns test result
  * @example ```ts
- * is_regexp(/./)          // true
- * is_regexp(new RegExp()) // true
+ * is_regexp(/./)            // true
+ * is_regexp(new RegExp('')) // true
  * ```
  */
 export function is_regexp(value: unknown): value is RegExp {
