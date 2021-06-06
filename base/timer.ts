@@ -13,6 +13,18 @@ export function sleep(timeout: number): Promise<void> {
   return new Promise(res => setTimeout(res, timeout))
 }
 
+/**
+ * Function wrapper, call delay millseconds
+ * 
+ * @param fn - wrapp function
+ * @param timeout - millseconds
+ * @returns function
+ * @example ```ts
+ * const fn = () => 42
+ * const delay_fn = delay(fn, 1000)
+ * await delay_fn() // 42, will exec after one second
+ * ```
+ */
 export function delay<F extends AnyFunction>(fn: F, timeout: number) {
   if(timeout < 0) throw new Error(`timeout should greate then 0, got ${timeout}`)
   return (...args: Parameters<F>): Promise<ReturnType<F>> => {
@@ -22,6 +34,23 @@ export function delay<F extends AnyFunction>(fn: F, timeout: number) {
   }
 }
 
+/**
+ * Function wrapper, throw when overtime
+ * 
+ * @param fn - wrap function
+ * @param timeout - millseconds
+ * @throws timeout
+ * @returns function
+ * @example ```ts
+ * const fn = () => 42
+ * const timeout_fn = timeout(fn, 1000)
+ * await timeout_fn() // 42
+ * 
+ * const fn = () => sleep(2000)
+ * const timeout_fn = timeout(fn, 1000)
+ * await timeout_fn() // throw Timeout
+ * ```
+ */
 export function timeout<F extends AnyFunction>(fn: F, timeout: number) {
   return (...args: Parameters<F>): Promise<ReturnType<F>> => {
     return new Promise((res, rej) => {

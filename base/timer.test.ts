@@ -3,8 +3,8 @@ import {
   sleep,
   delay,
   timeout,
-  retry,
-  TimingFunctionType,
+  retry_by_timer,
+  TimingFunction,
 } from './timer'
 
 beforeEach(() => {
@@ -53,7 +53,7 @@ describe(timeout, () => {
   })
 })
 
-describe.skip(retry, () => {
+describe.skip(retry_by_timer, () => {
   test('retry', async () => {
     let i = 0
     const fn = jest.fn(() => {
@@ -61,7 +61,7 @@ describe.skip(retry, () => {
       if(i !== 5) throw 42
       return 42
     })
-    const retry_fn = retry(fn, 5, { base: 100, timing: TimingFunctionType.Linear })
+    const retry_fn = retry_by_timer(fn, 5, { base: 100, timing: TimingFunction.Linear })
     const res = await retry_fn()
     expect(res).toBe(42)
     expect(fn).toBeCalledTimes(5)
@@ -72,7 +72,7 @@ describe.skip(retry, () => {
       i += 1
       if(i !== 5) throw 42
     })
-    const retry_fn = retry(fn, 3, { base: 100 })
+    const retry_fn = retry_by_timer(fn, 3, { base: 100 })
     expect(retry_fn()).rejects.toThrowError()
   })
   test('step', async () => {
@@ -83,7 +83,7 @@ describe.skip(retry, () => {
       return 42
     })
     
-    const retry_fn = retry(fn, 5, { base: 100, timing: TimingFunctionType.Step })
+    const retry_fn = retry_by_timer(fn, 5, { base: 100, timing: TimingFunction.Step })
     const beg = performance.now()
     const res = await retry_fn()
     const end = performance.now()
@@ -98,7 +98,7 @@ describe.skip(retry, () => {
       if(i !== 5) throw 42
       return 42
     })
-    const retry_fn = retry(fn, 5, { base: 100, timing: TimingFunctionType.Curve })
+    const retry_fn = retry_by_timer(fn, 5, { base: 100, timing: TimingFunction.Curve })
     const beg = performance.now()
     const res = await retry_fn()
     const end = performance.now()
