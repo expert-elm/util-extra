@@ -2,8 +2,12 @@
   "name": "util-extra",
   "version": "0.0.24",
   "description": "utils",
+  "keywords": [
+    "utils"
+  ],
   "type": "module",
   "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "exports": {
     ".": "lib/index.js",
     "./package.json": "./package.json"
@@ -18,17 +22,12 @@
     "release": "cd dist && npm publish"
   },
   "files": [
-    "!.pnp.cjs",
-    "!build.ts",
-    "**/*.js",
-    "**/*.js.map",
-    "**/*.mjs",
-    "**/*.mjs.map",
-    "**/*.ts",
-    "**/*.d.ts",
-    "**/*.d.ts.map"
+    "lib"
   ],
-  "repository": "git+https://github.com/expert-elm/util-extra.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/expert-elm/util-extra.git"
+  },
   "author": "Rabbit <yfhj1990@hotmali.com>",
   "license": "MIT",
   "bugs": {
@@ -69,10 +68,5 @@
   },
   "ts-node": {
     "transpileOnly": true
-  },
-  "dependenciesMeta": {
-    "ts-node@10.0.0": {
-      "unplugged": true
-    }
   }
 }

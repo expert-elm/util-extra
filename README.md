@@ -183,6 +183,12 @@ _name enough_
 </details>
 
 <details>
+<summary>base/regexp</summary>
+
+- [`is_regexp`](./base/regexp.ts#L13)
+</details>
+
+<details>
 <summary>base/string</summary>
 
 - [`hash_string`](./base/string.ts#L8)
@@ -202,14 +208,14 @@ _name enough_
 <details>
 <summary>base/timer</summary>
 
-- [`sleep`](./base/timer.ts#L3)
-- [`timeout`](./base/timer.ts#L7)
-- [`delay`](./base/timer.ts#L21)
-- [`retry`](./base/timer.ts#L78)
-- [`TimingFunctionType`](./base/timer.ts#L30)
-- [`TIMING_FUNCTION`](./base/timer.ts#L44)
-- [`TimingFunction`](./base/timer.ts#L60)
-- [`Options`](./base/timer.ts#L65)
+- [`sleep`](./base/timer.ts#L11)
+- [`delay`](./base/timer.ts#L16)
+- [`timeout`](./base/timer.ts#L23)
+- [`retry`](./base/timer.ts#L89)
+- [`TimingFunctionType`](./base/timer.ts#L41)
+- [`TIMING_FUNCTION`](./base/timer.ts#L55)
+- [`TimingFunction`](./base/timer.ts#L71)
+- [`Options`](./base/timer.ts#L76)
 </details>
 
 <details>
