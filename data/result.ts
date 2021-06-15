@@ -1,4 +1,4 @@
-import { Optional, UnpackOptional, isSome, isNone, Some, None } from './optional'
+import { Optional, UnpackOptional, is_some, is_none, Some, None } from './optional'
 
 /** `Result` transpose error */
 export const RESULT_TRANSPOSE: Error = new TypeError(`Only Optional<T> can be transpose`)
@@ -39,11 +39,11 @@ export interface Result<T, E> {
   /**
    * return `true` if the result is `Ok`
    */
-  isOk(): boolean
+  is_ok(): boolean
   /**
    * return `false` if the result is `Err`
    */
-  isErr(): boolean
+  is_err(): boolean
   
 
   /// MAPPING ///
@@ -54,7 +54,7 @@ export interface Result<T, E> {
    * @param fn mapper function
    */
   map<U>(fn: (v: T) => U): Result<U, E>
-  mapAsync<U>(fn: (v: T) => Promise<U>): Promise<Result<U, E>>
+  map_async<U>(fn: (v: T) => Promise<U>): Promise<Result<U, E>>
   /** 
    * @todo mapOrElse
    */
@@ -64,8 +64,8 @@ export interface Result<T, E> {
    * 
    * @param fn mapper function
    */
-  mapErr<U>(fn: (e: E) => U): Result<T, U>
-  mapErrAsync<U>(fn: (e: E) => Promise<U>): Promise<Result<T, U>>
+  map_err<U>(fn: (e: E) => U): Result<T, U>
+  map_err_async<U>(fn: (e: E) => Promise<U>): Promise<Result<T, U>>
   /**
    * return `Result<U, E>` when the result is `Ok`, keep value at `Err`
    * 
@@ -77,8 +77,8 @@ export interface Result<T, E> {
    * 
    * @param res new result
    */
-  andThen<U>(op: (v: T) => Result<U, E>): Result<U, E>
-  andThenAsync<U>(op: (v: T) => Promise<Result<U, E>>): Promise<Result<U, E>>
+  and_then<U>(op: (v: T) => Result<U, E>): Result<U, E>
+  and_then_async<U>(op: (v: T) => Promise<Result<U, E>>): Promise<Result<U, E>>
   /**
    * return `Result<T, U>` when the result is `Err`, keep value at `Ok`
    * 
@@ -90,8 +90,8 @@ export interface Result<T, E> {
    * 
    * @param res new result
    */
-  orElse<U>(op: (e: E) => Result<T, U>): Result<T, U>
-  orElseAsync<U>(op: (e: E) => Promise<Result<T, U>>): Promise<Result<T, U>>
+  or_else<U>(op: (e: E) => Result<T, U>): Result<T, U>
+  or_else_async<U>(op: (e: E) => Promise<Result<T, U>>): Promise<Result<T, U>>
   /**
    * unwrap the container, get value, throw when result is `Err`
    */
@@ -101,18 +101,18 @@ export interface Result<T, E> {
    *   
    * @param u option value
    */
-  unwrapOr<U>(u: U): T | U
+  unwrap_or<U>(u: U): T | U
   /**
    * unwrap the container and get value, when the result is `Err`, call op wieh `E`
    * 
    * @param op caller function
    */
-  unwrapOrElse<U>(op: (e: E) => U): T | U
-  unwrapOrElseAsync<U>(op: (e: E) => Promise<U>): Promise<T | U>
+  unwrap_or_else<U>(op: (e: E) => U): T | U
+  unwrap_or_else_async<U>(op: (e: E) => Promise<U>): Promise<T | U>
   /** 
    * unwrap and get error, throw when the result is `Ok`
    */ 
-  unwrapErr(): E
+  unwrap_err(): E
   /** 
    * converts from `Result<T, E>` to `Optional<T>`
    */
@@ -138,23 +138,23 @@ class ResultOk<T> implements Result<T, never> {
     return new ResultOk(fn(this.value))
   }
 
-  async mapAsync<U>(fn: (v: T) => Promise<U>): Promise<Result<U, never>> {
+  async map_async<U>(fn: (v: T) => Promise<U>): Promise<Result<U, never>> {
     return new ResultOk(await fn(this.value))
   }
   
-  mapErr<U>(_fn: (e: never) => U): Result<T, never> {
+  map_err<U>(_fn: (e: never) => U): Result<T, never> {
     return new ResultOk(this.value)
   }
 
-  async mapErrAsync<U>(_fn: (e: never) => Promise<U>): Promise<Result<T, never>> {
+  async map_err_async<U>(_fn: (e: never) => Promise<U>): Promise<Result<T, never>> {
     return new ResultOk(this.value)
   }
 
-  isOk(): boolean {
+  is_ok(): boolean {
     return true
   }
   
-  isErr(): boolean {
+  is_err(): boolean {
     return false
   }
   
@@ -162,11 +162,11 @@ class ResultOk<T> implements Result<T, never> {
     return res
   }
 
-  andThen<U>(op: (v: T) => Result<U, never>): Result<U, never> {
+  and_then<U>(op: (v: T) => Result<U, never>): Result<U, never> {
     return op(this.value)
   }
 
-  async andThenAsync<U>(op: (v: T) => Promise<Result<U, never>>): Promise<Result<U, never>> {
+  async and_then_async<U>(op: (v: T) => Promise<Result<U, never>>): Promise<Result<U, never>> {
     return op(this.value)
   }
 
@@ -174,11 +174,11 @@ class ResultOk<T> implements Result<T, never> {
     return new ResultOk(this.value)
   }
 
-  orElse(_op: (e: never) => Result<T, never>): Result<T, never> {
+  or_else(_op: (e: never) => Result<T, never>): Result<T, never> {
     return new ResultOk(this.value)
   }
 
-  async orElseAsync(_op: (e: never) => Promise<Result<T, never>>): Promise<Result<T, never>> {
+  async or_else_async(_op: (e: never) => Promise<Result<T, never>>): Promise<Result<T, never>> {
     return new ResultOk(this.value)
   }
 
@@ -186,19 +186,19 @@ class ResultOk<T> implements Result<T, never> {
     return this.value
   }
 
-  unwrapOr(_v: any): T {
+  unwrap_or(_v: any): T {
     return this.value
   }
 
-  unwrapOrElse<U>(_op: (e: never) => U): T {
+  unwrap_or_else<U>(_op: (e: never) => U): T {
     return this.value
   }
 
-  async unwrapOrElseAsync<U>(_op: (e: never) => Promise<U>): Promise<T> {
+  async unwrap_or_else_async<U>(_op: (e: never) => Promise<U>): Promise<T> {
     return this.value
   }
 
-  unwrapErr(): never {
+  unwrap_err(): never {
     throw this.value
   }
 
@@ -211,9 +211,9 @@ class ResultOk<T> implements Result<T, never> {
   }
 
   transpose<U extends UnpackOptional<T>>(): Optional<Result<U, never> | never> {
-    if(isSome<U>(this.value)) {
+    if(is_some<U>(this.value)) {
       return Some(Ok(this.value.unwrap()) )
-    } else if(isNone(this.value)) {
+    } else if(is_none(this.value)) {
       return None
     } else {
       throw RESULT_TRANSPOSE
@@ -229,23 +229,23 @@ class ResultErr<E> implements Result<never, E> {
     return new ResultErr(this.value)
   }
 
-  async mapAsync<U>(_fn: (v: never) => Promise<U>): Promise<Result<never, E>> {
+  async map_async<U>(_fn: (v: never) => Promise<U>): Promise<Result<never, E>> {
     return new ResultErr(this.value)
   }
   
-  mapErr<U>(fn: (e: E) => U): Result<never, U> {
+  map_err<U>(fn: (e: E) => U): Result<never, U> {
     return new ResultErr(fn(this.value))
   }
 
-  async mapErrAsync<U>(fn: (e: E) => Promise<U>): Promise<Result<never, U>> {
+  async map_err_async<U>(fn: (e: E) => Promise<U>): Promise<Result<never, U>> {
     return new ResultErr(await fn(this.value))
   }
 
-  isOk(): boolean {
+  is_ok(): boolean {
     return false
   }
 
-  isErr(): boolean {
+  is_err(): boolean {
     return true
   }
   
@@ -253,11 +253,11 @@ class ResultErr<E> implements Result<never, E> {
     return new ResultErr(this.value)
   }
 
-  andThen(_op: (v: never) => Result<never, E>): Result<never, E> {
+  and_then(_op: (v: never) => Result<never, E>): Result<never, E> {
     return new ResultErr(this.value)
   }
 
-  async andThenAsync(_op: (v: never) => Promise<Result<never, E>>): Promise<Result<never, E>> {
+  async and_then_async(_op: (v: never) => Promise<Result<never, E>>): Promise<Result<never, E>> {
     return new ResultErr(this.value)
   }
 
@@ -265,11 +265,11 @@ class ResultErr<E> implements Result<never, E> {
     return res
   }
 
-  orElse<U>(op: (v: E) => Result<never, U>): Result<never, U> {
+  or_else<U>(op: (v: E) => Result<never, U>): Result<never, U> {
     return op(this.value)
   }
 
-  async orElseAsync<U>(op: (v: E) => Promise<Result<never, U>>): Promise<Result<never, U>> {
+  async or_else_async<U>(op: (v: E) => Promise<Result<never, U>>): Promise<Result<never, U>> {
     return op(this.value)
   }
 
@@ -277,19 +277,19 @@ class ResultErr<E> implements Result<never, E> {
     throw this.value
   }
 
-  unwrapOr<U>(v: U): U {
+  unwrap_or<U>(v: U): U {
     return v
   }
 
-  unwrapOrElse<U>(op: (e: E) => U): U {
+  unwrap_or_else<U>(op: (e: E) => U): U {
     return op(this.value)
   }
 
-  async unwrapOrElseAsync<U>(op: (e: E) => Promise<U>): Promise<U> {
+  async unwrap_or_else_async<U>(op: (e: E) => Promise<U>): Promise<U> {
     return op(this.value)
   }
 
-  unwrapErr(): E {
+  unwrap_err(): E {
     return this.value
   }
 

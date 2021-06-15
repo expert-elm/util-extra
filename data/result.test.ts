@@ -64,7 +64,7 @@ describe(`mapping`, () => {
 
   test(`Ok.mapAsync()`, async () => {
     expect(
-      await Ok(42).mapAsync(async () => 41)
+      await Ok(42).map_async(async () => 41)
     ).toEqual(
       Ok(41)
     )
@@ -72,7 +72,7 @@ describe(`mapping`, () => {
 
   test(`Err.mapAsync()`, async () => {
     expect(
-      await Err(ERR).mapAsync(async () => 41)
+      await Err(ERR).map_async(async () => 41)
     ).toEqual(
       Err(ERR)
     )
@@ -80,7 +80,7 @@ describe(`mapping`, () => {
   
   test(`Ok.mapErr()`, () => {
     expect(
-      Ok(42).mapErr(() => ERR)
+      Ok(42).map_err(() => ERR)
     ).toEqual(
       Ok(42)
     )
@@ -88,7 +88,7 @@ describe(`mapping`, () => {
 
   test(`Err.mapErr()`, () => {
     expect(
-      Err(ERR).mapErr(() => ERR2)
+      Err(ERR).map_err(() => ERR2)
     ).toEqual(
       Err(ERR2)
     )
@@ -96,7 +96,7 @@ describe(`mapping`, () => {
 
   test(`Ok.mapErrAsync()`, async () => {
     expect(
-      await Ok(42).mapErrAsync(async () => ERR)
+      await Ok(42).map_err_async(async () => ERR)
     ).toEqual(
       Ok(42)
     )
@@ -104,7 +104,7 @@ describe(`mapping`, () => {
 
   test(`Err.mapErr()`, async () => {
     expect(
-      await Err(ERR).mapErrAsync(async () => ERR2)
+      await Err(ERR).map_err_async(async () => ERR2)
     ).toEqual(
       Err(ERR2)
     )
@@ -118,7 +118,7 @@ describe(`mapping`, () => {
     )
 
     expect(
-      Ok(42).map(() => 41).mapErr(() => ERR)
+      Ok(42).map(() => 41).map_err(() => ERR)
     ).toEqual(
       Ok(41)
     )
@@ -128,8 +128,8 @@ describe(`mapping`, () => {
     expect(
       (await (await 
           Ok(42)
-            .mapAsync(async () => 41))
-            .mapAsync(async () => 40))
+            .map_async(async () => 41))
+            .map_async(async () => 40))
     ).toEqual(
       Ok(40)
     )
@@ -137,8 +137,8 @@ describe(`mapping`, () => {
     expect(
       (await (await 
         Ok(42)
-          .mapAsync(async () => 41))
-          .mapErrAsync(async () => ERR))
+          .map_async(async () => 41))
+          .map_err_async(async () => ERR))
     ).toEqual(
       Ok(41)
     )
@@ -164,7 +164,7 @@ describe(`unwrap`, () => {
   
   test(`Ok.unwrapOr()`, () => {
     expect(
-      Ok(42).unwrapOr('foo')
+      Ok(42).unwrap_or('foo')
     ).toBe(
       42
     )
@@ -172,7 +172,7 @@ describe(`unwrap`, () => {
 
   test(`Err.unwrapOr()`, () => {
     expect(
-      Err(ERR).unwrapOr(42)
+      Err(ERR).unwrap_or(42)
     ).toBe(
       42
     )
@@ -180,7 +180,7 @@ describe(`unwrap`, () => {
   
   test(`Ok.unwrapOrElse()`, () => {
     expect(
-      Ok(42).unwrapOrElse(() => 'foo')
+      Ok(42).unwrap_or_else(() => 'foo')
     ).toBe(
       42
     )
@@ -188,7 +188,7 @@ describe(`unwrap`, () => {
 
   test(`Err.unwrapOrElse()`, () => {
     expect(
-      Err(ERR).unwrapOrElse(() => 42)
+      Err(ERR).unwrap_or_else(() => 42)
     ).toBe(
       42
     )
@@ -196,7 +196,7 @@ describe(`unwrap`, () => {
 
   test(`Ok.unwrapOrElseAsync()`, async () => {
     expect(
-      await Ok(42).unwrapOrElseAsync(async () => 'foo')
+      await Ok(42).unwrap_or_else_async(async () => 'foo')
     ).toBe(
       42
     )
@@ -204,7 +204,7 @@ describe(`unwrap`, () => {
 
   test(`Err.unwrapOrElseAsync()`, async () => {
     expect(
-      await Err(ERR).unwrapOrElseAsync(async () => 42)
+      await Err(ERR).unwrap_or_else_async(async () => 42)
     ).toBe(
       42
     )
@@ -212,7 +212,7 @@ describe(`unwrap`, () => {
 
   test(`Ok.unwrapErr()`, () => {
     expect(
-      () => Ok(42).unwrapErr()
+      () => Ok(42).unwrap_err()
     ).toThrow(
       String(42)
     )
@@ -220,7 +220,7 @@ describe(`unwrap`, () => {
 
   test(`Err.unwrapErr()`, () => {
     expect(
-      Err(ERR).unwrapErr()
+      Err(ERR).unwrap_err()
     ).toEqual(
       ERR
     )
