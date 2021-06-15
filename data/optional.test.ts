@@ -1,4 +1,4 @@
-import { Some, None, isOptional, OPTIONAL_ERROR, isSome, isNone } from './optional'
+import { Some, None, is_optional, OPTIONAL_ERROR, is_some, is_none } from './optional'
 import { Ok, Err } from './result'
 
 const ERR: Error = new Error()
@@ -6,13 +6,13 @@ const ERR: Error = new Error()
 describe(`predicate`, () => {
   test(`isOptional()`, () => {
     expect(
-      isOptional(Some(42))
+      is_optional(Some(42))
     ).toBe(
       true
     )
 
     expect(
-      isOptional(None)
+      is_optional(None)
     ).toBe(
       true
     )
@@ -20,13 +20,13 @@ describe(`predicate`, () => {
 
   test(`isSome()`, () => {
     expect(
-      isSome(Some(42))
+      is_some(Some(42))
     ).toBe(
       true
     )
 
     expect(
-      isSome(None)
+      is_some(None)
     ).toBe(
       false
     )
@@ -34,13 +34,13 @@ describe(`predicate`, () => {
 
   test(`isNone()`, () => {
     expect(
-      isNone(Some(42))
+      is_none(Some(42))
     ).toBe(
       false
     )
 
     expect(
-      isNone(None)
+      is_none(None)
     ).toBe(
       true
     )
@@ -78,13 +78,13 @@ describe(`binary`, () => {
 
   test(`Some.andThen()`, () => {
     expect(
-      Some(42).andThen(() => Some(43))
+      Some(42).and_then(() => Some(43))
     ).toEqual(
       Some(43)
     )
     
     expect(
-      Some(42).andThen(() => None)
+      Some(42).and_then(() => None)
     ).toEqual(
       None
     )
@@ -92,13 +92,13 @@ describe(`binary`, () => {
 
   test(`None.andThen()`, () => {
     expect(
-      None.andThen(() => Some(42))
+      None.and_then(() => Some(42))
     ).toEqual(
       None
     )
 
     expect(
-      None.andThen(() => None)
+      None.and_then(() => None)
     ).toEqual(
       None
     )
@@ -106,13 +106,13 @@ describe(`binary`, () => {
 
   test(`Some.andThenAsync()`, async () => {
     expect(
-      await Some(42).andThenAsync(async () => Some(43))
+      await Some(42).and_then_async(async () => Some(43))
     ).toEqual(
       Some(43)
     )
     
     expect(
-      await Some(42).andThenAsync(async () => None)
+      await Some(42).and_then_async(async () => None)
     ).toEqual(
       None
     )
@@ -120,13 +120,13 @@ describe(`binary`, () => {
 
   test(`None.andThenAsync()`, async () => {
     expect(
-      await None.andThenAsync(async () => Some(42))
+      await None.and_then_async(async () => Some(42))
     ).toEqual(
       None
     )
 
     expect(
-      await None.andThenAsync(async () => None)
+      await None.and_then_async(async () => None)
     ).toEqual(
       None
     )
@@ -162,13 +162,13 @@ describe(`binary`, () => {
 
   test(`Some.orElse()`, () => {
     expect(
-      Some(42).orElse(() => Some(43))
+      Some(42).or_else(() => Some(43))
     ).toEqual(
       Some(42)
     )
     
     expect(
-      Some(42).orElse(() => None)
+      Some(42).or_else(() => None)
     ).toEqual(
       Some(42)
     )
@@ -176,13 +176,13 @@ describe(`binary`, () => {
 
   test(`None.orElse()`, () => {
     expect(
-      None.orElse(() => Some(42))
+      None.or_else(() => Some(42))
     ).toEqual(
       Some(42)
     )
     
     expect(
-      None.orElse(() => None)
+      None.or_else(() => None)
     ).toEqual(
       None
     )
@@ -190,13 +190,13 @@ describe(`binary`, () => {
 
   test(`Some.orElseAsync()`, async () => {
     expect(
-      await Some(42).orElseAsync(async () => Some(43))
+      await Some(42).or_else_async(async () => Some(43))
     ).toEqual(
       Some(42)
     )
     
     expect(
-      await Some(42).orElseAsync(async () => None)
+      await Some(42).or_else_async(async () => None)
     ).toEqual(
       Some(42)
     )
@@ -204,13 +204,13 @@ describe(`binary`, () => {
 
   test(`None.orElseAsync()`, async () => {
     expect(
-      await None.orElseAsync(async () => Some(42))
+      await None.or_else_async(async () => Some(42))
     ).toEqual(
       Some(42)
     )
     
     expect(
-      await None.orElseAsync(async () => None)
+      await None.or_else_async(async () => None)
     ).toEqual(
       None
     )
@@ -238,9 +238,9 @@ describe(`mapping`, () => {
     expect(
       (await (await (await 
         Some(42)
-          .mapAsync(async v => v + 1))
-          .mapAsync(async v => v + 1))
-          .mapAsync(async v => v + 1))
+          .map_async(async v => v + 1))
+          .map_async(async v => v + 1))
+          .map_async(async v => v + 1))
     ).toEqual(
       Some(45)
     )
@@ -248,7 +248,7 @@ describe(`mapping`, () => {
 
   test(`None.mapAsync()`, async () => {
     expect(
-      await None.mapAsync(async _ => {})
+      await None.map_async(async _ => {})
     ).toEqual(None)
   })
 
@@ -279,13 +279,13 @@ describe(`mapping`, () => {
 
   test(`Some.filterAsync()`, async () => {
     expect(
-      await Some(42).filterAsync(async _ => true)
+      await Some(42).filter_async(async _ => true)
     ).toEqual(
       Some(42)
     )
 
     expect(
-      await Some(42).filterAsync(async _ => false)
+      await Some(42).filter_async(async _ => false)
     ).toEqual(
       None
     )
@@ -293,13 +293,13 @@ describe(`mapping`, () => {
 
   test(`None.filterAsync()`, async () => {
     expect(
-      await None.filterAsync(async _ => true)
+      await None.filter_async(async _ => true)
     ).toEqual(
       None
     )
     
     expect(
-      await None.filterAsync(async _ => false)
+      await None.filter_async(async _ => false)
     ).toEqual(
       None
     )
@@ -325,7 +325,7 @@ describe(`unwrap`, () => {
   
   test(`Some.unwrapOr()`, () => {
     expect(
-      Some(42).unwrapOr(41)
+      Some(42).unwrap_or(41)
     ).toBe(
       42
     )
@@ -333,7 +333,7 @@ describe(`unwrap`, () => {
 
   test(`None.unwrapOr()`, () => {
     expect(
-      None.unwrapOr(42)
+      None.unwrap_or(42)
     ).toBe(
       42
     )
@@ -344,7 +344,7 @@ describe(`unwrap`, () => {
 describe(`to Result`, () => {
   test(`Some.okOr()`, () => {
     expect(
-      Some(42).okOr(ERR)
+      Some(42).ok_or(ERR)
     ).toEqual(
       Ok(42)
     )
@@ -352,7 +352,7 @@ describe(`to Result`, () => {
 
   test(`None.okOr()`, () => {
     expect(
-      None.okOr(ERR)
+      None.ok_or(ERR)
     ).toEqual(
       Err(ERR)
     )
@@ -360,7 +360,7 @@ describe(`to Result`, () => {
 
   test(`Some.okOrElse()`, () => {
     expect(
-      Some(42).okOrElse(() => ERR)
+      Some(42).ok_or_else(() => ERR)
     ).toEqual(
       Ok(42)
     )
@@ -368,7 +368,7 @@ describe(`to Result`, () => {
 
   test(`None.okOrElse()`, () => {
     expect(
-      None.okOrElse(() => ERR)
+      None.ok_or_else(() => ERR)
     ).toEqual(
       Err(ERR)
     )
@@ -376,7 +376,7 @@ describe(`to Result`, () => {
 
   test(`Some.okOrElseAsync()`, async () => {
     expect(
-      await Some(42).okOrElseAsync(async () => ERR)
+      await Some(42).ok_or_else_async(async () => ERR)
     ).toEqual(
       Ok(42)
     )
@@ -384,7 +384,7 @@ describe(`to Result`, () => {
 
   test(`None.okOrElseAsync()`, async () => {
     expect(
-      await None.okOrElseAsync(async () => ERR)
+      await None.ok_or_else_async(async () => ERR)
     ).toEqual(
       Err(ERR)
     )

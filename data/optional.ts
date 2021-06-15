@@ -24,24 +24,24 @@ export interface Optional<T> {
   /** the optional container type, `Some` or `None`, readonly */
   readonly type: OptionalType
 
-  /// PREDICATES ///
-
   /**
    * predicate function, test instance was or not a Optional.Some
    * 
-   * @example
-   * assert.strictEqual(Some(42).isSome(), true)
-   * assert.strictEqual(None.isSome(), false)
+   * @example```ts
+   * assert.strictEqual(Some(42).is_some(), true)
+   * assert.strictEqual(None.is_some(), false)
+   * ```
    */
-  isSome(): boolean
+  is_some(): boolean
   /**
    * predicate function, test instance was or not a Optional.None
    * 
-   * @example
-   * assert.strictEqual(Some(42).isNone(), false)
-   * assert.strictEqual(None.isNone(), true)
+   * @example```ts
+   * assert.strictEqual(Some(42).is_none(), false)
+   * assert.strictEqual(None.is_none(), true)
+   * ```
    */
-  isNone(): boolean
+  is_none(): boolean
 
   /// ITERS ///
   /**
@@ -54,7 +54,7 @@ export interface Optional<T> {
    * assert.deepStrictEqual(None.map(inc), None)
    */
   map<U>(fn: (v: T) => U): Optional<U>
-  mapAsync<U>(fn: (v: T) => Promise<U>): Promise<Optional<U>>
+  map_async<U>(fn: (v: T) => Promise<U>): Promise<Optional<U>>
   /**
    * @todo mapOrElse
    */
@@ -67,10 +67,9 @@ export interface Optional<T> {
    * @param fn predicate function
    */
   filter(fn: (v: T) => boolean): Optional<T>
-  filterAsync(fn: (v: T) => Promise<boolean>): Promise<Optional<T>>
+  filter_async(fn: (v: T) => Promise<boolean>): Promise<Optional<T>>
   // flatMap()
 
-  /// LOGIC ///
 
   /**
    * `and` operation for Optional
@@ -83,11 +82,12 @@ export interface Optional<T> {
    * | None  | None  | None   |
    * 
    * @param opt target optional
-   * @example
+   * @example```ts
    * assert.deepStrictEqual(Some(42).add(Some(41)), Some(41))
    * assert.deepStrictEqual(Some(42).add(None), None)
    * assert.deepStrictEqual(None.add(Some(42)), None)
    * assert.deepStrictEqual(None.add(None), None)
+   * ```
    */
   and<U>(opt: Optional<U>): Optional<T | U>
   /**
@@ -95,8 +95,8 @@ export interface Optional<T> {
    * 
    * @param opt target optional
    */
-  andThen<U>(op: (v: T) => Optional<U>): Optional<T | U>
-  andThenAsync<U>(op: (v: T) => Promise<Optional<U>>): Promise<Optional<U>>
+  and_then<U>(op: (v: T) => Optional<U>): Optional<T | U>
+  and_then_async<U>(op: (v: T) => Promise<Optional<U>>): Promise<Optional<U>>
   /**
    * `or` operation for Optional
    * 
@@ -115,11 +115,9 @@ export interface Optional<T> {
    * 
    * @param op apply function
    */
-  orElse<U>(op: (v: T) => Optional<U>): Optional<T | U>
-  orElseAsync<U>(op: (v: T) => Promise<Optional<U>>): Promise<Optional<T | U>>
+  or_else<U>(op: (v: T) => Optional<U>): Optional<T | U>
+  or_else_async<U>(op: (v: T) => Promise<Optional<U>>): Promise<Optional<T | U>>
   // xor<U>(opt: Optional<U>): Optional<U>
-
-  /// UNWRAP ///
 
   /**
    * unwrap the container, throw when `None`
@@ -130,14 +128,14 @@ export interface Optional<T> {
    *   
    * @param u option value
    */
-  unwrapOr<U>(u: U): T | U
+  unwrap_or<U>(u: U): T | U
   /**
    * `unwrapOr` operation for lazily evaluated
    * 
    * @param op caller function
    */
-  unwrapOrElse<U>(op: () => U): T | U
-  unwrapOrElseAsync<U>(op: () => Promise<U>): Promise<T | U>
+  unwrap_or_else<U>(op: () => U): T | U
+  unwrap_or_else_async<U>(op: () => Promise<U>): Promise<T | U>
 
   /// RESULT ///
   
@@ -145,14 +143,14 @@ export interface Optional<T> {
    * transform `Optional<T>` to `Result<T, E>`, mapping `Some(v)` to `Ok(v)`, and
    * `None` to `Err(e)`
    */
-  okOr<E>(e: E): Result<T, E>
+  ok_or<E>(e: E): Result<T, E>
   /**
    * okOr for lazily evaluated
    * 
    * @param e err mapper
    */
-  okOrElse<E>(e: () => E): Result<T, E>
-  okOrElseAsync<E>(e: () => Promise<E>): Promise<Result<T, E>>
+  ok_or_else<E>(e: () => E): Result<T, E>
+  ok_or_else_async<E>(e: () => Promise<E>): Promise<Result<T, E>>
   /**
    * transposes an `Optional` of a `Result` into a `Result` of an `Optional`,
    * 1. `None` will be mapped to `Ok(None)`
@@ -176,7 +174,7 @@ class OptionalSome<T> implements Optional<T> {
     } */
   }
 
-  async mapAsync<U>(fn: (v: T) => Promise<U>): Promise<Optional<U>> {
+  async map_async<U>(fn: (v: T) => Promise<U>): Promise<Optional<U>> {
     return new OptionalSome(await fn(this.value))
   }
 
@@ -184,15 +182,15 @@ class OptionalSome<T> implements Optional<T> {
     return fn(this.value) ? new OptionalSome(this.value) : None
   }
 
-  async filterAsync(fn: (v: T) => Promise<boolean>): Promise<Optional<T>> {
+  async filter_async(fn: (v: T) => Promise<boolean>): Promise<Optional<T>> {
     return await fn(this.value) ? new OptionalSome(this.value) : None
   }
 
-  isSome(): boolean {
+  is_some(): boolean {
     return true
   }
   
-  isNone(): boolean {
+  is_none(): boolean {
     return false
   }
   
@@ -200,11 +198,11 @@ class OptionalSome<T> implements Optional<T> {
     return opt
   }
 
-  andThen<U>(op: (v: T) => Optional<U>): Optional<U> {
+  and_then<U>(op: (v: T) => Optional<U>): Optional<U> {
     return op(this.value)
   }
 
-  async andThenAsync<U>(op: (v: T) => Promise<Optional<U>>): Promise<Optional<U>> {
+  async and_then_async<U>(op: (v: T) => Promise<Optional<U>>): Promise<Optional<U>> {
     return op(this.value)
   }
 
@@ -212,11 +210,11 @@ class OptionalSome<T> implements Optional<T> {
     return new OptionalSome(this.value)
   }
 
-  orElse<U>(_op: (v: T) => Optional<U>): Optional<T> {
+  or_else<U>(_op: (v: T) => Optional<U>): Optional<T> {
     return new OptionalSome(this.value)
   }
 
-  async orElseAsync<U>(_op: (v: T) => Promise<Optional<U>>): Promise<Optional<T | U>> {
+  async or_else_async<U>(_op: (v: T) => Promise<Optional<U>>): Promise<Optional<T | U>> {
     return new OptionalSome(this.value)
   }
 
@@ -224,33 +222,33 @@ class OptionalSome<T> implements Optional<T> {
     return this.value
   }
 
-  unwrapOr<U>(_v: U): T {
+  unwrap_or<U>(_v: U): T {
     return this.value
   }
 
-  unwrapOrElse<U>(_op: () => U): T {
+  unwrap_or_else<U>(_op: () => U): T {
     return this.value
   }
 
-  async unwrapOrElseAsync<U>(_op: () => Promise<U>): Promise<T> {
+  async unwrap_or_else_async<U>(_op: () => Promise<U>): Promise<T> {
     return this.value
   }
 
-  okOr(_e: never): Result<T, never> {
+  ok_or(_e: never): Result<T, never> {
     return Ok(this.value)
   }
 
-  okOrElse(_e: () => never): Result<T, never>{
+  ok_or_else(_e: () => never): Result<T, never>{
     return Ok(this.value)
   }
 
-  async okOrElseAsync(_e: () => Promise<never>): Promise<Result<T, never>> {
+  async ok_or_else_async(_e: () => Promise<never>): Promise<Result<T, never>> {
     return Ok(this.value)
   }
 
   transpose<U extends UnpackResult<T>>(): Result<Optional<U[0]> | never, U[1]> {
     if(is_err<U[1]>(this.value)) {
-      return Err(this.value.unwrapErr())
+      return Err(this.value.unwrap_err())
     } else if(is_ok<U[0]>(this.value)) {
       return Ok(Some(this.value.unwrap()))
     } else {
@@ -267,7 +265,7 @@ class OptionalNone implements Optional<never> {
     return None
   }
 
-  async mapAsync<U>(_fn: (_v: never) => Promise<U>): Promise<Optional<never>> {
+  async map_async<U>(_fn: (_v: never) => Promise<U>): Promise<Optional<never>> {
     return None
   }
 
@@ -275,15 +273,15 @@ class OptionalNone implements Optional<never> {
     return None
   }
 
-  async filterAsync(_fn: (v: never) => Promise<boolean>): Promise<Optional<never>> {
+  async filter_async(_fn: (v: never) => Promise<boolean>): Promise<Optional<never>> {
     return None
   }
 
-  isSome(): boolean {
+  is_some(): boolean {
     return false
   }
 
-  isNone(): boolean {
+  is_none(): boolean {
     return true
   }
   
@@ -291,11 +289,11 @@ class OptionalNone implements Optional<never> {
     return None
   }
 
-  andThen<U>(_op: (v: never) => Optional<U>): Optional<never> {
+  and_then<U>(_op: (v: never) => Optional<U>): Optional<never> {
     return None
   }
 
-  async andThenAsync<U>(_op: (v: never) => Promise<Optional<U>>): Promise<Optional<never>> {
+  async and_then_async<U>(_op: (v: never) => Promise<Optional<U>>): Promise<Optional<never>> {
     return None
   }
 
@@ -303,11 +301,11 @@ class OptionalNone implements Optional<never> {
     return opt
   }
 
-  orElse<U>(op: (v: never) => Optional<U>): Optional<U> {
+  or_else<U>(op: (v: never) => Optional<U>): Optional<U> {
     return op(this.value)
   }
 
-  async orElseAsync<U>(op: (v: never) => Promise<Optional<U>>): Promise<Optional<U>> {
+  async or_else_async<U>(op: (v: never) => Promise<Optional<U>>): Promise<Optional<U>> {
     return op(this.value)
   }
 
@@ -315,27 +313,27 @@ class OptionalNone implements Optional<never> {
     throw OPTIONAL_ERROR
   }
 
-  unwrapOr<U>(v: U): U {
+  unwrap_or<U>(v: U): U {
     return v
   }
 
-  unwrapOrElse<U>(op: (e: never) => U): U {
+  unwrap_or_else<U>(op: (e: never) => U): U {
     return op(this.value)
   }
 
-  async unwrapOrElseAsync<U>(op: (e: never) => Promise<U>): Promise<U> {
+  async unwrap_or_else_async<U>(op: (e: never) => Promise<U>): Promise<U> {
     return op(this.value)
   }
 
-  okOr<E>(e: E): Result<never, E> {
+  ok_or<E>(e: E): Result<never, E> {
     return Err(e)
   }
 
-  okOrElse<E>(e: () => E): Result<never, E> {
+  ok_or_else<E>(e: () => E): Result<never, E> {
     return Err(e())
   }
 
-  async okOrElseAsync<E>(e: () => Promise<E>): Promise<Result<never, E>> {
+  async ok_or_else_async<E>(e: () => Promise<E>): Promise<Result<never, E>> {
     return Err(await e())
   }
 
@@ -365,8 +363,8 @@ export const None: Optional<never> = new OptionalNone()
  * 
  * @param result target result
  */
-export function isOptional<T>(value: unknown): value is Optional<T> {
-  return isSome(value) || isNone(value)
+export function is_optional<T>(value: unknown): value is Optional<T> {
+  return is_some(value) || is_none(value)
 }
 
 /**
@@ -374,7 +372,7 @@ export function isOptional<T>(value: unknown): value is Optional<T> {
  * 
  * @param value value
  */
-export function isSome<T>(value: unknown): value is Optional<T> {
+export function is_some<T>(value: unknown): value is Optional<T> {
   return value instanceof OptionalSome
 }
 
@@ -383,6 +381,6 @@ export function isSome<T>(value: unknown): value is Optional<T> {
  * 
  * @param value value
  */
-export function isNone(value: unknown): value is Optional<never> {
+export function is_none(value: unknown): value is Optional<never> {
   return value === None
 }
